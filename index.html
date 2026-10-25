@@ -685,9 +685,9 @@
       <button type="button" data-tab="register">注册</button>
     </div>
     <form id="authForm" autocomplete="off">
-      <div class="field" id="emailWrap" hidden>
-        <label for="accEmail">邮箱</label>
-        <input id="accEmail" name="email" type="email" placeholder="用于登录与跨设备同步" maxlength="80" />
+      <div class="field" id="emailWrap">
+        <label for="accEmail">邮箱 / 手机号</label>
+        <input id="accEmail" name="account" type="text" placeholder="邮箱或 11 位手机号，用于登录" maxlength="80" />
       </div>
       <div class="field">
         <label for="accUser">用户名</label>
@@ -772,6 +772,15 @@
     });
   }
   function session() { return readJSON(SESSION_KEY, null); }
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var PHONE_RE = /^1[3-9]\d{9}$/;
+  function isContact(v) { return EMAIL_RE.test(v) || PHONE_RE.test(v); }
+  function nickOf(v, fallback) {
+    if (fallback && fallback.length >= 2) return fallback.slice(0, 16);
+    var n = EMAIL_RE.test(v) ? v.split('@')[0] : '同学' + String(v).slice(-4);
+    if (n.length < 2) n = '同学' + String(v).slice(-4);
+    return n.slice(0, 16);
+  }
 
   function renderNav() {
     var box = document.getElementById('navActions');
@@ -798,7 +807,7 @@
   function setMode(next) {
     mode = next;
     confirmWrap.hidden = next !== 'register';
-    emailWrap.hidden = !cloudOn && !backendOn;
+    emailWrap.hidden = false;
     submitBtn.textContent = next === 'register' ? '注册并进入' : '登录';
     document.getElementById('authTitle').textContent = next === 'register'
       ? (cloudOn ? '创建云端账号' : backendOn ? '创建本站账号' : '创建本机账号')
@@ -807,7 +816,7 @@
       ? '账号由云端校验，登录后学习进度会跨设备同步。'
       : backendOn
         ? '账号保存在本站后端，注册后开发者后台会立刻显示，学习进度自动同步。'
-        : '账号保存在本机浏览器，换设备需要重新注册。';
+        : '可用邮箱、手机号或用户名登录；账号保存在本机浏览器。';
     tabButtons.forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-tab') === next); });
     hint.textContent = '';
     hint.className = 'hint';
@@ -861,14 +870,14 @@
 
     if (backendOn) {
       if (mode === 'register') {
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { hint.textContent = '请填写有效邮箱（用于找回账号）'; return; }
-        if (user.length < 2) { hint.textContent = '用户名至少 2 个字符'; return; }
+        if (!isContact(email)) { hint.textContent = '请填写有效邮箱或 11 位手机号'; return; }
+        var nick = nickOf(email, user);
         if (pass.length < 6) { hint.textContent = '密码至少 6 位'; return; }
         if (pass !== pass2) { hint.textContent = '两次输入的密码不一致'; return; }
         hint.className = 'hint';
         hint.textContent = '正在注册到本站后端…';
-        backend.signUp(email, pass, user).then(function (r) {
-          finishLogin((r && r.name) || user);
+        backend.signUp(email, pass, nick).then(function (r) {
+          finishLogin((r && r.name) || nick);
         }).catch(function (err) {
           hint.className = 'hint';
           hint.textContent = '注册失败：' + (err && err.message ? err.message : '网络异常，稍后再试');
@@ -889,26 +898,38 @@
       return;
     }
 
-    if (user.length < 2) { hint.textContent = '用户名至少 2 个字符'; return; }
+    var ident = (email || user).toLowerCase();
+    if (!ident) { hint.textContent = '请输入邮箱、手机号或用户名'; return; }
+    if (mode === 'register' && !isContact(email)) { hint.textContent = '请填写有效邮箱或 11 位手机号'; return; }
+    if (!pass) { hint.textContent = '请输入密码'; return; }
     if (pass.length < 6) { hint.textContent = '密码至少 6 位'; return; }
     if (mode === 'register' && pass !== pass2) { hint.textContent = '两次输入的密码不一致'; return; }
 
     var accounts = readJSON(ACC_KEY, {});
-    var key = user.toLowerCase();
-
     if (mode === 'register') {
-      if (accounts[key]) { hint.textContent = '这个用户名已经注册过了，直接登录吧'; return; }
-      sha(user + '::' + pass).then(function (hash) {
-        accounts[key] = { user: user, hash: hash, at: Date.now() };
+      if (accounts[ident]) { hint.textContent = '这个邮箱或手机号已经注册过了，直接登录吧'; return; }
+      var nick = nickOf(email, user);
+      sha(ident + '::' + pass).then(function (hash) {
+        accounts[ident] = { user: nick, account: email, base: ident, hash: hash, at: Date.now() };
         writeJSON(ACC_KEY, accounts);
-        finishLogin(user);
+        finishLogin(nick);
       });
       return;
     }
 
-    var acc = accounts[key];
+    var acc = accounts[ident];
+    if (!acc) {
+      Object.keys(accounts).some(function (k) {
+        var a = accounts[k];
+        if ((a.user || '').toLowerCase() === ident || (a.account || '').toLowerCase() === ident) {
+          acc = a;
+          return true;
+        }
+        return false;
+      });
+    }
     if (!acc) { hint.textContent = '没有找到这个账号，先点上面的「注册」'; return; }
-    sha(acc.user + '::' + pass).then(function (hash) {
+    sha((acc.base || acc.user) + '::' + pass).then(function (hash) {
       if (hash !== acc.hash) { hint.textContent = '密码不正确，再试一次'; return; }
       finishLogin(acc.user);
     });

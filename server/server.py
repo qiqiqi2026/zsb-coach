@@ -192,6 +192,7 @@ def iso_now(ms=None):
 
 
 EMAIL_RE = re.compile(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
+PHONE_RE = re.compile(r'^1[3-9]\d{9}$')
 
 
 def pick_model():
@@ -285,13 +286,15 @@ class Handler(SimpleHTTPRequestHandler):
         return bool(ADMIN_KEY) and hmac.compare_digest(str(key), ADMIN_KEY)
 
     def api_register(self, data):
-        email = str(data.get('email') or '').strip().lower()
+        email = str(data.get('email') or data.get('account') or '').strip().lower()
         password = str(data.get('password') or '')
         username = str(data.get('username') or '').strip()
-        if not EMAIL_RE.match(email):
-            return self.send_json({'error': '邮箱格式不正确'}, 400)
+        if not (EMAIL_RE.match(email) or PHONE_RE.match(email)):
+            return self.send_json({'error': '邮箱或手机号格式不正确'}, 400)
         if len(password) < 6:
             return self.send_json({'error': '密码至少 6 位'}, 400)
+        if not username:
+            username = ('同学' + email[-4:]) if PHONE_RE.match(email) else email.split('@')[0]
         if not (2 <= len(username) <= 16):
             return self.send_json({'error': '用户名需要 2-16 个字符'}, 400)
         uid = uuid.uuid4().hex
