@@ -791,19 +791,18 @@
   }
   function closeAuth() { modal.hidden = true; pendingStart = false; }
 
+  /* 开发者与普通用户都进学习端；开发者只是多一个后台入口 */
   function startLearning() {
-    if (backend && backend.isAdmin && backend.isAdmin()) location.href = 'admin.html';
-    else if (session()) location.href = 'app.html';
+    if (session()) location.href = 'app.html';
     else openAuth('login', true);
   }
 
-  function finishLogin(name, target) {
-    target = target || 'app.html';
+  function finishLogin(name) {
     writeJSON(SESSION_KEY, { user: name, at: Date.now() });
     hint.className = 'hint ok';
-    hint.textContent = '登录成功，正在进入' + (target === 'admin.html' ? '开发者版本' : '学习端') + '…';
+    hint.textContent = '登录成功，正在进入学习端…';
     renderNav();
-    setTimeout(function () { closeAuth(); location.href = target; }, 450);
+    setTimeout(function () { closeAuth(); location.href = 'app.html'; }, 450);
   }
 
   form.addEventListener('submit', function (e) {
@@ -839,8 +838,7 @@
         hint.className = 'hint';
         hint.textContent = '正在注册到本站后端…';
         backend.signUp(email, pass, user).then(function (r) {
-          var target = (r && r.is_admin) ? 'admin.html' : 'app.html';
-          finishLogin((r && r.name) || user, target);
+          finishLogin((r && r.name) || user);
         }).catch(function (err) {
           hint.className = 'hint';
           hint.textContent = '注册失败：' + (err && err.message ? err.message : '网络异常，稍后再试');
@@ -853,8 +851,7 @@
       hint.className = 'hint';
       hint.textContent = '正在登录…';
       backend.signIn(account, pass).then(function (r) {
-        var target = (r && r.is_admin) ? 'admin.html' : 'app.html';
-        finishLogin((r && r.name) || account, target);
+        finishLogin((r && r.name) || account);
       }).catch(function (err) {
         hint.className = 'hint';
         hint.textContent = '登录失败：' + (err && err.message ? err.message : '网络异常，稍后再试');

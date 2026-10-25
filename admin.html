@@ -611,7 +611,7 @@
   if (!B) {
     btnBackend.hidden = true;
   } else if (B.isAdmin && B.isAdmin()) {
-    btnBackend.textContent = '返回官网';
+    btnBackend.textContent = '返回学习';
   } else if (backendCfg && backendCfg.key) {
     btnBackend.textContent = '断开后端';
     B.setBase(backendCfg.base || '');
@@ -627,7 +627,7 @@
 
   btnBackend.addEventListener('click', function () {
     if (B.isAdmin && B.isAdmin()) {
-      location.href = 'index.html';
+      location.href = 'app.html';
       return;
     }
     if (backendActive()) {
