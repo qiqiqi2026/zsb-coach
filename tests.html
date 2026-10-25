@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>升本教练 · 自检</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { max-width: 720px; margin: 0 auto; padding: 18px; }
+    .t-row { display: flex; gap: 10px; align-items: flex-start; padding: 11px 0; border-bottom: 1px solid var(--line-soft); }
+    .t-mark { width: 22px; flex: none; font-weight: 800; }
+    .t-name { flex: 1; font-size: 13.5px; }
+    .t-detail { font-size: 12px; color: var(--text-dim); margin-top: 3px; white-space: pre-line; }
+    .pass { color: var(--green); }
+    .fail { color: var(--red); }
+    .t-sum { font-size: 14px; font-weight: 700; margin: 14px 0; }
+  </style>
+</head>
+<body>
+  <h1 class="h1">自检 · 纯函数与种子数据</h1>
+  <p class="muted small">测试会临时重置本地数据，结束后自动恢复。</p>
+  <div id="summary" class="t-sum">运行中…</div>
+  <div id="rows"></div>
+
+  <script src="js/data.knowledge.js"></script>
+  <script src="js/lesson-factory.js"></script>
+  <script src="js/data.questions.js"></script>
+  <script src="js/data.questions.eng.js"></script>
+  <script src="js/data.questions.math.js"></script>
+  <script src="js/data.questions.cs.js"></script>
+  <script src="js/data.questions.ext.eng.js"></script>
+  <script src="js/diagrams.js"></script>
+  <script src="js/diagrams2.js"></script>
+  <script src="js/diagrams3.js"></script>
+  <script src="js/data.lessons.js"></script>
+  <script src="js/data.lessons.eng.js"></script>
+  <script src="js/data.lessons.math.js"></script>
+  <script src="js/data.lessons.cs.js"></script>
+  <script src="js/pack.python.js"></script>
+  <script src="js/pack.html.js"></script>
+  <script src="js/pack.js.js"></script>
+  <script src="js/pack.spider.js"></script>
+  <script src="js/pack.database.js"></script>
+  <script src="js/pack.softeng.js"></script>
+  <script src="js/pack.dsa.js"></script>
+  <script src="js/pack.backfill.eng.js"></script>
+  <script src="js/pack.backfill.math.js"></script>
+  <script src="js/pack.security.js"></script>
+  <script src="js/pack.os.js"></script>
+  <script src="js/pack.backfill.cs.js"></script>
+  <script src="js/pack.expand.eng.js"></script>
+  <script src="js/pack.expand.math.js"></script>
+  <script src="js/data.questions.index.js"></script>
+  <script src="js/data.lessons.index.js"></script>
+  <script src="js/data.exam.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/scheduler.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/sandbox.js"></script>
+  <script src="js/question.js"></script>
+  <script src="js/tests.js"></script>
+</body>
+</html>
