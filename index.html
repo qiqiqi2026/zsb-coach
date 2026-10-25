@@ -307,6 +307,8 @@
       * { animation: none !important; transition: none !important; }
     }
   </style>
+  <script src="js/cloud.config.js"></script>
+  <script src="js/cloud.js"></script>
 </head>
 <body>
 
@@ -346,7 +348,7 @@
         </div>
         <div class="hero-note">
           <span><i class="dot"></i>无需安装，浏览器打开即用</span>
-          <span><i class="dot"></i>学习进度自动保存在本机</span>
+          <span><i class="dot"></i><span id="syncNote">学习进度自动保存在本机</span></span>
         </div>
       </div>
 
@@ -535,7 +537,7 @@
 <footer>
   <div class="shell" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;width:100%">
     <span>升本教练 · 学练一体</span>
-    <span>账号与学习进度仅保存在本机浏览器，不上传服务器</span>
+    <span id="footNote">账号与学习进度仅保存在本机浏览器，不上传服务器</span>
   </div>
 </footer>
 
@@ -543,12 +545,16 @@
   <div class="dialog dialog-wrap" role="dialog" aria-modal="true" aria-labelledby="authTitle">
     <button class="close" type="button" data-close-auth aria-label="关闭">×</button>
     <h3 id="authTitle">登录升本教练</h3>
-    <p class="sub">账号保存在本机浏览器，换设备需要重新注册。</p>
+    <p class="sub" id="authSub">账号保存在本机浏览器，换设备需要重新注册。</p>
     <div class="tabs">
       <button type="button" data-tab="login" class="on">登录</button>
       <button type="button" data-tab="register">注册</button>
     </div>
     <form id="authForm" autocomplete="off">
+      <div class="field" id="emailWrap" hidden>
+        <label for="accEmail">邮箱</label>
+        <input id="accEmail" name="email" type="email" placeholder="用于登录与跨设备同步" maxlength="80" />
+      </div>
       <div class="field">
         <label for="accUser">用户名</label>
         <input id="accUser" name="user" type="text" placeholder="2-16 个字符" maxlength="16" />
@@ -579,6 +585,16 @@
   var tabButtons = document.querySelectorAll('[data-tab]');
   var mode = 'login';
   var pendingStart = false;
+  var cloud = window.ZSB && window.ZSB.cloud;
+  var cloudOn = !!(cloud && cloud.enabled);
+  var emailWrap = document.getElementById('emailWrap');
+
+  if (cloudOn) {
+    var syncNote = document.getElementById('syncNote');
+    var footNote = document.getElementById('footNote');
+    if (syncNote) syncNote.textContent = '登录后进度云端同步，换设备接着学';
+    if (footNote) footNote.textContent = '注册后账号与学习进度保存在云端，电脑手机自动同步；离线单文件版只存本机';
+  }
 
   function readJSON(key, fallback) {
     try { return JSON.parse(localStorage.getItem(key) || 'null') || fallback; }
@@ -622,8 +638,14 @@
   function setMode(next) {
     mode = next;
     confirmWrap.hidden = next !== 'register';
+    emailWrap.hidden = !cloudOn;
     submitBtn.textContent = next === 'register' ? '注册并进入' : '登录';
-    document.getElementById('authTitle').textContent = next === 'register' ? '创建本机账号' : '登录升本教练';
+    document.getElementById('authTitle').textContent = next === 'register'
+      ? (cloudOn ? '创建云端账号' : '创建本机账号')
+      : '登录升本教练';
+    document.getElementById('authSub').textContent = cloudOn
+      ? '账号由云端校验，登录后学习进度会跨设备同步。'
+      : '账号保存在本机浏览器，换设备需要重新注册。';
     tabButtons.forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-tab') === next); });
     hint.textContent = '';
     hint.className = 'hint';
@@ -642,11 +664,38 @@
     else openAuth('login', true);
   }
 
+  function finishLogin(name) {
+    writeJSON(SESSION_KEY, { user: name, at: Date.now() });
+    hint.className = 'hint ok';
+    hint.textContent = '登录成功，正在进入…';
+    renderNav();
+    setTimeout(function () { closeAuth(); if (pendingStart) location.href = 'app.html'; }, 450);
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var user = document.getElementById('accUser').value.trim();
     var pass = document.getElementById('accPass').value;
     var pass2 = document.getElementById('accPass2').value;
+    var email = document.getElementById('accEmail').value.trim();
+
+    if (cloudOn) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { hint.textContent = '请输入有效邮箱'; return; }
+      if (mode === 'register' && user.length < 2) { hint.textContent = '用户名至少 2 个字符'; return; }
+      if (pass.length < 6) { hint.textContent = '密码至少 6 位'; return; }
+      if (mode === 'register' && pass !== pass2) { hint.textContent = '两次输入的密码不一致'; return; }
+      hint.className = 'hint';
+      hint.textContent = '正在连接云端…';
+      var action = mode === 'register' ? cloud.signUp(email, pass, user) : cloud.signIn(email, pass);
+      action.then(function (r) {
+        finishLogin((r && r.name) || user || email.split('@')[0]);
+      }).catch(function (err) {
+        hint.className = 'hint';
+        hint.textContent = '失败：' + (err && err.message ? err.message : '网络异常，稍后再试');
+      });
+      return;
+    }
+
     if (user.length < 2) { hint.textContent = '用户名至少 2 个字符'; return; }
     if (pass.length < 6) { hint.textContent = '密码至少 6 位'; return; }
     if (mode === 'register' && pass !== pass2) { hint.textContent = '两次输入的密码不一致'; return; }
@@ -659,11 +708,7 @@
       sha(user + '::' + pass).then(function (hash) {
         accounts[key] = { user: user, hash: hash, at: Date.now() };
         writeJSON(ACC_KEY, accounts);
-        writeJSON(SESSION_KEY, { user: user, at: Date.now() });
-        hint.className = 'hint ok';
-        hint.textContent = '注册成功，正在进入…';
-        renderNav();
-        setTimeout(function () { closeAuth(); if (pendingStart) location.href = 'app.html'; }, 450);
+        finishLogin(user);
       });
       return;
     }
@@ -672,11 +717,7 @@
     if (!acc) { hint.textContent = '没有找到这个账号，先点上面的「注册」'; return; }
     sha(acc.user + '::' + pass).then(function (hash) {
       if (hash !== acc.hash) { hint.textContent = '密码不正确，再试一次'; return; }
-      writeJSON(SESSION_KEY, { user: acc.user, at: Date.now() });
-      hint.className = 'hint ok';
-      hint.textContent = '登录成功，正在进入…';
-      renderNav();
-      setTimeout(function () { closeAuth(); if (pendingStart) location.href = 'app.html'; }, 400);
+      finishLogin(acc.user);
     });
   });
 
@@ -696,6 +737,7 @@
     var cta = t.getAttribute('data-cta');
     if (cta === 'start') startLearning();
     if (cta === 'logout') {
+      if (cloudOn) cloud.signOut();
       try { localStorage.removeItem(SESSION_KEY); } catch (err) {}
       renderNav();
     }
@@ -734,6 +776,11 @@
     e.preventDefault();
     downloadFile(link.getAttribute('href'), link.getAttribute('data-download'), link);
   });
+
+  if (cloudOn && cloud.user() && !session()) {
+    var cu = cloud.user();
+    writeJSON(SESSION_KEY, { user: cu.name || (cu.email || '').split('@')[0], at: Date.now() });
+  }
 
   renderNav();
 })();

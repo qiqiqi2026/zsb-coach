@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: zsb-coach
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /ai/health
+    autoDeploy: true
+    envVars:
+      - key: OLLAMA_BASE
+        value: http://127.0.0.1:11434
+      - key: OLLAMA_MODEL
+        value: qwen3-8b:latest
+      - key: CLOUD_BASE
+        sync: false
+      - key: CLOUD_KEY
+        sync: false
+      - key: CLOUD_MODEL
+        sync: false
