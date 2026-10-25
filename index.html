@@ -1,68 +1,712 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0b1020" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>升本教练 · 学练一体</title>
-  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="description" content="升本教练：专升本学练一体在线学习平台。144 个考点、146 份六阶段讲义、636 道题、52 张图解，支持电脑与手机，可在线使用或下载离线版。" />
+  <title>升本教练 · 专升本学练一体</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #141b2e;
+      --panel-2: #182140;
+      --line: #263250;
+      --text: #eaf0ff;
+      --dim: #9aa8c7;
+      --faint: #6c7a9c;
+      --accent: #7c9cff;
+      --accent-2: #54d2ff;
+      --green: #3ddc97;
+      --amber: #ffc857;
+      --purple: #b28dff;
+      --r-lg: 22px;
+      --r-md: 15px;
+      --r-sm: 10px;
+      --font: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background:
+        radial-gradient(1100px 560px at 50% -15%, rgba(84, 132, 255, .20), transparent 70%),
+        radial-gradient(700px 420px at 88% 8%, rgba(178, 141, 255, .12), transparent 70%),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; color: inherit; cursor: pointer; }
+    ::selection { background: rgba(124, 156, 255, .35); }
+
+    .shell { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+    /* ---------- 导航 ---------- */
+    .nav {
+      position: sticky; top: 0; z-index: 30;
+      backdrop-filter: blur(14px);
+      background: rgba(11, 16, 32, .72);
+      border-bottom: 1px solid rgba(38, 50, 80, .55);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 66px; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .3px; }
+    .brand-mark {
+      width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #06102a; font-weight: 900; font-size: 17px;
+      box-shadow: 0 8px 20px rgba(84, 132, 255, .35);
+    }
+    .brand-text small { display: block; font-size: 11px; color: var(--faint); font-weight: 500; letter-spacing: 1px; }
+    .nav-links { display: flex; gap: 26px; font-size: 14.5px; color: var(--dim); }
+    .nav-links a:hover { color: var(--text); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border-radius: 12px; border: 1px solid transparent;
+      padding: 10px 18px; font-size: 14.5px; font-weight: 600;
+      transition: transform .15s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+      white-space: nowrap;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #06102a; box-shadow: 0 10px 26px rgba(84, 132, 255, .30);
+    }
+    .btn-primary:hover { box-shadow: 0 14px 32px rgba(84, 132, 255, .42); }
+    .btn-ghost { background: rgba(255, 255, 255, .04); border-color: var(--line); color: var(--text); }
+    .btn-ghost:hover { background: rgba(255, 255, 255, .08); border-color: #33436b; }
+    .btn-lg { padding: 14px 26px; font-size: 16px; border-radius: 14px; }
+    .btn-block { width: 100%; }
+
+    /* ---------- Hero ---------- */
+    .hero { padding: 64px 0 40px; }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.08fr .92fr; gap: 52px; align-items: center;
+    }
+    .tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 999px; font-size: 13px;
+      color: var(--accent-2); background: rgba(84, 210, 255, .10);
+      border: 1px solid rgba(84, 210, 255, .26);
+    }
+    h1 {
+      margin: 20px 0 16px; font-size: clamp(30px, 4.4vw, 52px); line-height: 1.24;
+      letter-spacing: -.5px; font-weight: 900;
+    }
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--purple));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .lead { margin: 0 0 26px; color: var(--dim); font-size: 17px; max-width: 560px; }
+    .lead b { color: var(--text); }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+    .hero-note { font-size: 13px; color: var(--faint); display: flex; flex-wrap: wrap; gap: 14px; }
+    .hero-note span { display: inline-flex; align-items: center; gap: 6px; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block; }
+
+    /* ---------- 设备预览 ---------- */
+    .device {
+      border-radius: 26px;
+      background: linear-gradient(180deg, #1b2540, #131a2c);
+      border: 1px solid var(--line);
+      padding: 14px; box-shadow: 0 30px 70px rgba(3, 7, 18, .62);
+      transform: perspective(1200px) rotateY(-6deg) rotateX(2deg);
+    }
+    .device-bar { display: flex; gap: 6px; padding: 2px 4px 12px; }
+    .device-bar i { width: 9px; height: 9px; border-radius: 50%; background: #33436b; display: block; }
+    .device-body {
+      background: #0f1626; border-radius: 18px; padding: 16px;
+      border: 1px solid rgba(38, 50, 80, .8);
+    }
+    .mock-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .mock-head b { font-size: 15px; }
+    .pill {
+      font-size: 11.5px; padding: 3px 10px; border-radius: 999px;
+      background: rgba(61, 220, 151, .14); color: var(--green);
+      border: 1px solid rgba(61, 220, 151, .3);
+    }
+    .mock-card {
+      background: var(--panel); border: 1px solid var(--line-soft, #1e2a45);
+      border-radius: 14px; padding: 13px 14px; margin-bottom: 10px;
+    }
+    .mock-card .row { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--dim); margin-bottom: 8px; }
+    .mock-card .row b { color: var(--text); font-size: 13px; }
+    .bar { height: 7px; border-radius: 99px; background: rgba(124, 156, 255, .14); overflow: hidden; }
+    .bar i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+    .bar.green i { background: linear-gradient(90deg, #2bbd7e, var(--green)); }
+    .bar.amber i { background: linear-gradient(90deg, #d9a53c, var(--amber)); }
+    .mock-chips { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .chip {
+      font-size: 11.5px; color: var(--dim); padding: 5px 11px; border-radius: 999px;
+      background: rgba(255, 255, 255, .04); border: 1px solid var(--line);
+    }
+
+    /* ---------- 数据条 ---------- */
+    .stats {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+      margin: 26px 0 10px; padding: 22px; border-radius: var(--r-lg);
+      background: linear-gradient(180deg, rgba(21, 29, 49, .85), rgba(16, 23, 39, .6));
+      border: 1px solid var(--line);
+    }
+    .stat { text-align: center; }
+    .stat b { display: block; font-size: clamp(22px, 3vw, 32px); font-weight: 900; letter-spacing: -.5px; }
+    .stat span { font-size: 13px; color: var(--faint); }
+    .stat:nth-child(1) b { color: var(--accent); }
+    .stat:nth-child(2) b { color: var(--accent-2); }
+    .stat:nth-child(3) b { color: var(--green); }
+    .stat:nth-child(4) b { color: var(--amber); }
+
+    /* ---------- 通用区块 ---------- */
+    section.block { padding: 64px 0; }
+    .sec-head { max-width: 720px; margin-bottom: 34px; }
+    .sec-eyebrow { font-size: 13px; letter-spacing: 2px; color: var(--accent-2); text-transform: uppercase; }
+    h2 { margin: 10px 0 12px; font-size: clamp(23px, 3vw, 34px); font-weight: 850; letter-spacing: -.3px; }
+    .sec-head p { margin: 0; color: var(--dim); }
+
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .card {
+      background: linear-gradient(180deg, rgba(24, 33, 64, .78), rgba(18, 25, 44, .6));
+      border: 1px solid var(--line); border-radius: var(--r-lg); padding: 22px;
+      transition: transform .18s ease, border-color .18s ease;
+    }
+    .card:hover { transform: translateY(-3px); border-color: #34456f; }
+    .card-ico {
+      width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center;
+      margin-bottom: 14px; font-size: 18px; font-weight: 900;
+      background: rgba(124, 156, 255, .14); color: var(--accent);
+      border: 1px solid rgba(124, 156, 255, .3);
+    }
+    .card h3 { margin: 0 0 8px; font-size: 16.5px; }
+    .card p { margin: 0; font-size: 14px; color: var(--dim); }
+
+    /* ---------- 课程 ---------- */
+    .subject-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .subject {
+      border: 1px solid var(--line); border-radius: var(--r-lg); padding: 22px;
+      background: rgba(20, 27, 46, .62);
+    }
+    .subject-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+    .subject-top h3 { margin: 0; font-size: 17px; }
+    .subject-top span { font-size: 12.5px; color: var(--faint); }
+    .mods { display: flex; flex-wrap: wrap; gap: 7px; }
+    .mod {
+      font-size: 12.5px; padding: 5px 10px; border-radius: 8px;
+      background: rgba(255, 255, 255, .04); border: 1px solid var(--line); color: var(--dim);
+    }
+
+    /* ---------- 六阶段 ---------- */
+    .flow { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+    .step {
+      border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px 12px;
+      background: rgba(20, 27, 46, .55); position: relative;
+    }
+    .step b { display: block; font-size: 14px; margin-bottom: 6px; }
+    .step span { font-size: 12.5px; color: var(--faint); line-height: 1.55; display: block; }
+    .step i {
+      position: absolute; top: 14px; right: 12px; font-style: normal;
+      font-size: 11px; color: var(--accent); opacity: .75;
+    }
+
+    /* ---------- 下载 ---------- */
+    .download-box {
+      display: grid; grid-template-columns: 1.1fr .9fr; gap: 28px; align-items: center;
+      border: 1px solid var(--line); border-radius: 26px; padding: 34px;
+      background:
+        radial-gradient(700px 260px at 12% 0%, rgba(84, 210, 255, .12), transparent 70%),
+        linear-gradient(180deg, rgba(24, 33, 64, .8), rgba(16, 23, 39, .65));
+    }
+    .download-box h2 { margin-top: 8px; }
+    .dl-list { margin: 18px 0 22px; padding: 0; list-style: none; }
+    .dl-list li { display: flex; gap: 10px; font-size: 14px; color: var(--dim); margin-bottom: 9px; }
+    .dl-list li::before {
+      content: ""; flex: 0 0 auto; width: 18px; height: 18px; margin-top: 3px; border-radius: 50%;
+      background: rgba(61, 220, 151, .15); border: 1px solid rgba(61, 220, 151, .4);
+    }
+    .dl-meta { font-size: 12.5px; color: var(--faint); }
+
+    footer {
+      border-top: 1px solid rgba(38, 50, 80, .6); padding: 26px 0 40px;
+      color: var(--faint); font-size: 13px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+
+    /* ---------- 登录弹层 ---------- */
+    .modal {
+      position: fixed; inset: 0; z-index: 60; display: grid; place-items: center;
+      padding: 20px; background: rgba(4, 8, 18, .72); backdrop-filter: blur(6px);
+    }
+    .modal[hidden] { display: none; }
+    .dialog {
+      width: 100%; max-width: 400px; border-radius: 22px; padding: 26px;
+      background: linear-gradient(180deg, #182140, #121a2e);
+      border: 1px solid var(--line); box-shadow: 0 30px 80px rgba(0, 0, 0, .55);
+      animation: pop .18s ease-out;
+    }
+    @keyframes pop { from { transform: translateY(10px) scale(.98); opacity: 0; } }
+    .dialog h3 { margin: 0 0 4px; font-size: 19px; }
+    .dialog p.sub { margin: 0 0 18px; font-size: 13px; color: var(--faint); }
+    .tabs { display: flex; gap: 6px; margin-bottom: 18px; background: rgba(255, 255, 255, .04); padding: 4px; border-radius: 12px; }
+    .tabs button {
+      flex: 1; border: 0; background: transparent; padding: 9px; border-radius: 9px;
+      font-size: 14px; font-weight: 600; color: var(--dim);
+    }
+    .tabs button.on { background: rgba(124, 156, 255, .18); color: var(--text); }
+    .field { margin-bottom: 13px; }
+    .field label { display: block; font-size: 12.5px; color: var(--dim); margin-bottom: 6px; }
+    .field input {
+      width: 100%; padding: 11px 13px; border-radius: 11px; font-size: 14.5px;
+      background: rgba(9, 14, 27, .8); border: 1px solid var(--line); color: var(--text);
+      outline: none; transition: border-color .15s ease;
+    }
+    .field input:focus { border-color: var(--accent); }
+    .field input::placeholder { color: #4d5a78; }
+    .hint { font-size: 12px; color: var(--red, #ff6b7a); min-height: 18px; margin: 2px 0 10px; }
+    .hint.ok { color: var(--green); }
+    .dialog .close {
+      position: absolute; top: 14px; right: 14px; width: 32px; height: 32px;
+      border-radius: 50%; border: 1px solid var(--line); background: rgba(255, 255, 255, .04);
+      color: var(--dim); font-size: 15px; line-height: 1;
+    }
+    .dialog-wrap { position: relative; }
+    .auth-user { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--dim); }
+    .avatar {
+      width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #06102a; font-weight: 800; font-size: 14px;
+    }
+
+    /* ---------- 响应式 ---------- */
+    @media (max-width: 980px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+      .device { transform: none; max-width: 460px; }
+      .cards, .subject-grid { grid-template-columns: 1fr 1fr; }
+      .flow { grid-template-columns: repeat(3, 1fr); }
+      .download-box { grid-template-columns: 1fr; padding: 26px; }
+    }
+    @media (max-width: 720px) {
+      .shell { padding: 0 18px; }
+      .nav-links { display: none; }
+      .hero { padding: 40px 0 26px; }
+      .stats { grid-template-columns: 1fr 1fr; gap: 18px 10px; padding: 18px; }
+      .cards, .subject-grid { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr 1fr; }
+      .hero-cta .btn { flex: 1 1 100%; }
+      footer { flex-direction: column; }
+      section.block { padding: 44px 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
 </head>
 <body>
-  <div id="app" class="app-shell">
-    <header id="topbar" class="topbar"></header>
-    <main id="view" class="view" aria-live="polite"></main>
-    <nav id="tabbar" class="tabbar" aria-label="主导航"></nav>
-  </div>
-  <div id="overlay-root"></div>
-  <div id="toast-root" class="toast-root"></div>
 
-  <script src="js/data.knowledge.js"></script>
-  <script src="js/lesson-factory.js"></script>
-  <script src="js/data.questions.js"></script>
-  <script src="js/data.questions.eng.js"></script>
-  <script src="js/data.questions.math.js"></script>
-  <script src="js/data.questions.cs.js"></script>
-  <script src="js/data.questions.ext.eng.js"></script>
-  <script src="js/diagrams.js"></script>
-  <script src="js/diagrams2.js"></script>
-  <script src="js/diagrams3.js"></script>
-  <script src="js/data.lessons.js"></script>
-  <script src="js/data.lessons.eng.js"></script>
-  <script src="js/data.lessons.math.js"></script>
-  <script src="js/data.lessons.cs.js"></script>
-  <script src="js/pack.python.js"></script>
-  <script src="js/pack.html.js"></script>
-  <script src="js/pack.js.js"></script>
-  <script src="js/pack.spider.js"></script>
-  <script src="js/pack.database.js"></script>
-  <script src="js/pack.softeng.js"></script>
-  <script src="js/pack.dsa.js"></script>
-  <script src="js/pack.backfill.eng.js"></script>
-  <script src="js/pack.backfill.math.js"></script>
-  <script src="js/pack.security.js"></script>
-  <script src="js/pack.os.js"></script>
-  <script src="js/pack.backfill.cs.js"></script>
-  <script src="js/pack.expand.eng.js"></script>
-  <script src="js/pack.expand.math.js"></script>
-  <script src="js/data.questions.index.js"></script>
-  <script src="js/data.lessons.index.js"></script>
-  <script src="js/data.exam.js"></script>
-  <script src="js/store.js"></script>
-  <script src="js/scheduler.js"></script>
-  <script src="js/engine.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/sandbox.js"></script>
-  <script src="js/question.js"></script>
-  <script src="js/blocks.js"></script>
-  <script src="js/lesson.js"></script>
-  <script src="js/practice.js"></script>
-  <script src="js/exam.js"></script>
-  <script src="js/me.js"></script>
-  <script src="js/app.js"></script>
+<header class="nav">
+  <div class="shell nav-inner">
+    <a class="brand" href="./">
+      <span class="brand-mark">升</span>
+      <span class="brand-text">升本教练<small>ZSB COACH</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#features">产品能力</a>
+      <a href="#courses">课程体系</a>
+      <a href="#flow">学习方式</a>
+      <a href="#download">下载</a>
+    </nav>
+    <div class="nav-actions" id="navActions">
+      <button class="btn btn-ghost" type="button" data-open-auth="login">登录</button>
+      <button class="btn btn-primary" type="button" data-cta="start">免费开始</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <span class="tag"><span class="dot"></span>英语 · 高数 · 计算机，全考点覆盖</span>
+        <h1>把专升本的每个考点，<br /><em>真正学明白</em></h1>
+        <p class="lead">
+          不是刷题机器，也不是看完就忘的网课。每个知识点都配一份六阶段讲义：
+          <b>讲清楚 → 看例题 → 跟着做 → 独立练 → 回头测 → 讲给自己听</b>。
+          电脑、手机都能用，断网也能学。
+        </p>
+        <div class="hero-cta">
+          <button class="btn btn-primary btn-lg" type="button" data-cta="start">在线使用</button>
+          <a class="btn btn-ghost btn-lg" href="升本教练-单文件版.html" download>下载离线版</a>
+        </div>
+        <div class="hero-note">
+          <span><i class="dot"></i>无需安装，浏览器打开即用</span>
+          <span><i class="dot"></i>学习进度自动保存在本机</span>
+        </div>
+      </div>
+
+      <div class="device" aria-hidden="true">
+        <div class="device-bar"><i></i><i></i><i></i></div>
+        <div class="device-body">
+          <div class="mock-head">
+            <b>今日任务</b>
+            <span class="pill">3 / 5 已完成</span>
+          </div>
+          <div class="mock-card">
+            <div class="row"><b>极限与连续 · 夹逼准则</b><span>讲义 4/6</span></div>
+            <div class="bar"><i style="width:62%"></i></div>
+          </div>
+          <div class="mock-card">
+            <div class="row"><b>Python · 列表与切片</b><span>练习 8/10</span></div>
+            <div class="bar green"><i style="width:80%"></i></div>
+          </div>
+          <div class="mock-card">
+            <div class="row"><b>英语 · 定语从句</b><span>待复习</span></div>
+            <div class="bar amber"><i style="width:34%"></i></div>
+          </div>
+          <div class="mock-chips">
+            <span class="chip">六阶段讲义</span>
+            <span class="chip">错题归因</span>
+            <span class="chip">模考复盘</span>
+            <span class="chip">图解 52 张</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shell">
+      <div class="stats">
+        <div class="stat"><b>144</b><span>知识考点</span></div>
+        <div class="stat"><b>146</b><span>份完整讲义</span></div>
+        <div class="stat"><b>636</b><span>道配套题目</span></div>
+        <div class="stat"><b>52</b><span>张原理图解</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="features">
+    <div class="shell">
+      <div class="sec-head">
+        <div class="sec-eyebrow">为什么是它</div>
+        <h2>学得懂，才考得高</h2>
+        <p>把「看讲义」和「做题目」缝在一起，每学完一个点就立刻验证，避免学了后面忘了前面。</p>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <div class="card-ico">六</div>
+          <h3>六阶段学练闭环</h3>
+          <p>导入、精讲、例题、跟练、独立练、小结与费曼复述。每一步都有明确的完成标准，不是翻完就算学完。</p>
+        </article>
+        <article class="card">
+          <div class="card-ico">题</div>
+          <h3>每题都有四段解析</h3>
+          <p>答案、思路、步骤、坑点分开写。做错了能立刻看清是哪一步断的，而不是只看到一个红叉。</p>
+        </article>
+        <article class="card">
+          <div class="card-ico">图</div>
+          <h3>抽象概念配图解</h3>
+          <p>事件循环、三次握手、B+ 树、极限过程等抽象内容，用 SVG 图解讲清楚，比纯文字好理解得多。</p>
+        </article>
+        <article class="card">
+          <div class="card-ico">算</div>
+          <h3>掌握度与达标预测</h3>
+          <p>按考点权重、正确率、复习间隔算出掌握度，告诉你现在离目标分数还差多少，今天该补哪一块。</p>
+        </article>
+        <article class="card">
+          <div class="card-ico">错</div>
+          <h3>错题自动归因</h3>
+          <p>错题按知识点、错误类型归档，配合记忆卡和回炉练习，把同一类错误压下去。</p>
+        </article>
+        <article class="card">
+          <div class="card-ico">离</div>
+          <h3>离线可用</h3>
+          <p>全部内容随页面缓存，地铁上、断网时都能继续学，回到有网再同步本机进度。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="courses">
+    <div class="shell">
+      <div class="sec-head">
+        <div class="sec-eyebrow">课程体系</div>
+        <h2>三科全覆盖，计算机细分到 13 个模块</h2>
+        <p>从基础语法到网络攻击原理、从函数极限到级数，按考试频次标注了重要程度，优先学高权重的。</p>
+      </div>
+      <div class="subject-grid">
+        <article class="subject">
+          <div class="subject-top"><h3>英语</h3><span>28 考点 · 168 题</span></div>
+          <div class="mods">
+            <span class="mod">词性与句子成分</span><span class="mod">五大句型</span>
+            <span class="mod">时态语态</span><span class="mod">非谓语</span>
+            <span class="mod">定语从句</span><span class="mod">名词性从句</span>
+            <span class="mod">状语从句</span><span class="mod">虚拟语气</span>
+            <span class="mod">倒装强调</span><span class="mod">完形阅读</span>
+            <span class="mod">翻译写作</span>
+          </div>
+        </article>
+        <article class="subject">
+          <div class="subject-top"><h3>高等数学</h3><span>40 考点 · 160 题</span></div>
+          <div class="mods">
+            <span class="mod">函数与极限</span><span class="mod">夹逼准则</span>
+            <span class="mod">导数与微分</span><span class="mod">中值定理</span>
+            <span class="mod">洛必达</span><span class="mod">单调与凹凸</span>
+            <span class="mod">不定积分</span><span class="mod">定积分</span>
+            <span class="mod">反常积分</span><span class="mod">微分方程</span>
+            <span class="mod">级数</span><span class="mod">向量与经济应用</span>
+          </div>
+        </article>
+        <article class="subject">
+          <div class="subject-top"><h3>计算机</h3><span>76 考点 · 308 题</span></div>
+          <div class="mods">
+            <span class="mod">Python 编程</span><span class="mod">HTML 与 CSS</span>
+            <span class="mod">JavaScript 前端</span><span class="mod">网络安全</span>
+            <span class="mod">爬虫与数据</span><span class="mod">数据库</span>
+            <span class="mod">软件工程</span><span class="mod">操作系统</span>
+            <span class="mod">数据结构</span><span class="mod">算法</span>
+            <span class="mod">计算机基础</span><span class="mod">网络基础</span>
+            <span class="mod">编程基础</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="flow">
+    <div class="shell">
+      <div class="sec-head">
+        <div class="sec-eyebrow">学习方式</div>
+        <h2>一个考点，六个阶段</h2>
+        <p>每份讲义都按同样节奏推进。学完打勾，系统才知道你是真的掌握了，还是只是看过了。</p>
+      </div>
+      <div class="flow">
+        <div class="step"><i>01</i><b>导入</b><span>先用一个生活场景或旧知识，把这个点「勾」出来。</span></div>
+        <div class="step"><i>02</i><b>精讲</b><span>拆成小段讲，配比喻、对比表和易错提醒。</span></div>
+        <div class="step"><i>03</i><b>例题</b><span>分步演示，把思路和踩坑点摊开写。</span></div>
+        <div class="step"><i>04</i><b>跟练</b><span>照着例题做一道同构题，立刻校对。</span></div>
+        <div class="step"><i>05</i><b>独立练</b><span>脱离模板自己做，再补一道挑战题。</span></div>
+        <div class="step"><i>06</i><b>小结</b><span>三句话总结 + 费曼复述，讲不出来就是没懂。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="download">
+    <div class="shell">
+      <div class="download-box">
+        <div>
+          <div class="sec-eyebrow">下载或在线</div>
+          <h2>两种方式，内容完全一样</h2>
+          <ul class="dl-list">
+            <li>在线使用：登录后直接进入，支持保存到桌面 / 主屏幕，像 App 一样打开。</li>
+            <li>下载离线版：单个 HTML 文件，双击即用，断网也不影响，进度存在本机。</li>
+            <li>电脑、手机、平板都适配，同一套内容，界面自动调整。</li>
+          </ul>
+          <div class="hero-cta">
+            <button class="btn btn-primary btn-lg" type="button" data-cta="start">登录并开始</button>
+            <a class="btn btn-ghost btn-lg" href="升本教练-单文件版.html" download>下载单文件版</a>
+          </div>
+          <p class="dl-meta">单文件约 1.5 MB，无需安装、无需联网、不收集任何数据。</p>
+        </div>
+        <div class="device" aria-hidden="true">
+          <div class="device-bar"><i></i><i></i><i></i></div>
+          <div class="device-body">
+            <div class="mock-head"><b>文件已就绪</b><span class="pill">离线可用</span></div>
+            <div class="mock-card">
+              <div class="row"><b>升本教练-单文件版.html</b><span>1.5 MB</span></div>
+              <div class="bar green"><i style="width:100%"></i></div>
+            </div>
+            <div class="mock-chips">
+              <span class="chip">双击打开</span>
+              <span class="chip">无需网络</span>
+              <span class="chip">可复制分发</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="shell" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;width:100%">
+    <span>升本教练 · 学练一体</span>
+    <span>账号与学习进度仅保存在本机浏览器，不上传服务器</span>
+  </div>
+</footer>
+
+<div class="modal" id="authModal" hidden>
+  <div class="dialog dialog-wrap" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <button class="close" type="button" data-close-auth aria-label="关闭">×</button>
+    <h3 id="authTitle">登录升本教练</h3>
+    <p class="sub">账号保存在本机浏览器，换设备需要重新注册。</p>
+    <div class="tabs">
+      <button type="button" data-tab="login" class="on">登录</button>
+      <button type="button" data-tab="register">注册</button>
+    </div>
+    <form id="authForm" autocomplete="off">
+      <div class="field">
+        <label for="accUser">用户名</label>
+        <input id="accUser" name="user" type="text" placeholder="2-16 个字符" maxlength="16" />
+      </div>
+      <div class="field">
+        <label for="accPass">密码</label>
+        <input id="accPass" name="pass" type="password" placeholder="至少 6 位" maxlength="32" />
+      </div>
+      <div class="field" id="confirmWrap" hidden>
+        <label for="accPass2">确认密码</label>
+        <input id="accPass2" name="pass2" type="password" placeholder="再输入一次" maxlength="32" />
+      </div>
+      <div class="hint" id="authHint"></div>
+      <button class="btn btn-primary btn-block btn-lg" type="submit" id="authSubmit">登录</button>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  var ACC_KEY = 'zsb.accounts.v1';
+  var SESSION_KEY = 'zsb.session.v1';
+  var modal = document.getElementById('authModal');
+  var form = document.getElementById('authForm');
+  var hint = document.getElementById('authHint');
+  var confirmWrap = document.getElementById('confirmWrap');
+  var submitBtn = document.getElementById('authSubmit');
+  var tabButtons = document.querySelectorAll('[data-tab]');
+  var mode = 'login';
+  var pendingStart = false;
+
+  function readJSON(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key) || 'null') || fallback; }
+    catch (e) { return fallback; }
+  }
+  function writeJSON(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
+  }
+  function sha(text) {
+    if (!window.crypto || !window.crypto.subtle) return Promise.resolve('plain:' + text);
+    var buf = new TextEncoder().encode(text);
+    return window.crypto.subtle.digest('SHA-256', buf).then(function (d) {
+      return Array.prototype.map.call(new Uint8Array(d), function (b) {
+        return ('0' + b.toString(16)).slice(-2);
+      }).join('');
+    });
+  }
+  function session() { return readJSON(SESSION_KEY, null); }
+
+  function renderNav() {
+    var box = document.getElementById('navActions');
+    var s = session();
+    if (s && s.user) {
+      box.innerHTML =
+        '<span class="auth-user"><span class="avatar">' + esc(s.user.charAt(0).toUpperCase()) + '</span>' +
+        esc(s.user) + '</span>' +
+        '<button class="btn btn-ghost" type="button" data-cta="logout">退出</button>' +
+        '<button class="btn btn-primary" type="button" data-cta="start">进入学习</button>';
+    } else {
+      box.innerHTML =
+        '<button class="btn btn-ghost" type="button" data-open-auth="login">登录</button>' +
+        '<button class="btn btn-primary" type="button" data-cta="start">免费开始</button>';
+    }
+  }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function setMode(next) {
+    mode = next;
+    confirmWrap.hidden = next !== 'register';
+    submitBtn.textContent = next === 'register' ? '注册并进入' : '登录';
+    document.getElementById('authTitle').textContent = next === 'register' ? '创建本机账号' : '登录升本教练';
+    tabButtons.forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-tab') === next); });
+    hint.textContent = '';
+    hint.className = 'hint';
+  }
+
+  function openAuth(nextMode, forStart) {
+    pendingStart = !!forStart;
+    setMode(nextMode || 'login');
+    modal.hidden = false;
+    setTimeout(function () { document.getElementById('accUser').focus(); }, 30);
+  }
+  function closeAuth() { modal.hidden = true; pendingStart = false; }
+
+  function startLearning() {
+    if (session()) location.href = 'app.html';
+    else openAuth('login', true);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var user = document.getElementById('accUser').value.trim();
+    var pass = document.getElementById('accPass').value;
+    var pass2 = document.getElementById('accPass2').value;
+    if (user.length < 2) { hint.textContent = '用户名至少 2 个字符'; return; }
+    if (pass.length < 6) { hint.textContent = '密码至少 6 位'; return; }
+    if (mode === 'register' && pass !== pass2) { hint.textContent = '两次输入的密码不一致'; return; }
+
+    var accounts = readJSON(ACC_KEY, {});
+    var key = user.toLowerCase();
+
+    if (mode === 'register') {
+      if (accounts[key]) { hint.textContent = '这个用户名已经注册过了，直接登录吧'; return; }
+      sha(user + '::' + pass).then(function (hash) {
+        accounts[key] = { user: user, hash: hash, at: Date.now() };
+        writeJSON(ACC_KEY, accounts);
+        writeJSON(SESSION_KEY, { user: user, at: Date.now() });
+        hint.className = 'hint ok';
+        hint.textContent = '注册成功，正在进入…';
+        renderNav();
+        setTimeout(function () { closeAuth(); if (pendingStart) location.href = 'app.html'; }, 450);
+      });
+      return;
+    }
+
+    var acc = accounts[key];
+    if (!acc) { hint.textContent = '没有找到这个账号，先点上面的「注册」'; return; }
+    sha(acc.user + '::' + pass).then(function (hash) {
+      if (hash !== acc.hash) { hint.textContent = '密码不正确，再试一次'; return; }
+      writeJSON(SESSION_KEY, { user: acc.user, at: Date.now() });
+      hint.className = 'hint ok';
+      hint.textContent = '登录成功，正在进入…';
+      renderNav();
+      setTimeout(function () { closeAuth(); if (pendingStart) location.href = 'app.html'; }, 400);
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest
+      ? e.target.closest('[data-open-auth], [data-cta], [data-close-auth], [data-tab]')
+      : null;
+    if (!t) {
+      if (e.target === modal) closeAuth();
+      return;
+    }
+    var openAttr = t.getAttribute('data-open-auth');
+    if (openAttr) { openAuth(openAttr, false); return; }
+    if (t.hasAttribute('data-close-auth')) { closeAuth(); return; }
+    var tab = t.getAttribute('data-tab');
+    if (tab) { setMode(tab); return; }
+    var cta = t.getAttribute('data-cta');
+    if (cta === 'start') startLearning();
+    if (cta === 'logout') {
+      try { localStorage.removeItem(SESSION_KEY); } catch (err) {}
+      renderNav();
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !modal.hidden) closeAuth();
+  });
+
+  renderNav();
+})();
+</script>
 </body>
 </html>

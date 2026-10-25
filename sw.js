@@ -1,8 +1,9 @@
 /* 离线缓存：应用外壳 + 全部静态资源 */
-var CACHE = 'zsb-coach-v3';
+var CACHE = 'zsb-coach-v4';
 var ASSETS = [
   './',
   './index.html',
+  './app.html',
   './styles.css',
   './manifest.webmanifest',
   './icon.svg',

@@ -3,7 +3,7 @@
   "short_name": "升本教练",
   "description": "专升本自适应学习教练：今日任务、六阶段讲义、错题归因、模考失分分析与间隔复习。",
   "lang": "zh-CN",
-  "start_url": "./index.html",
+  "start_url": "./app.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
