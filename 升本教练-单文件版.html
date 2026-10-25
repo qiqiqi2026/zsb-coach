@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- 升本教练单文件离线版 · 构建于 2026-10-25 20:52 -->
+<!-- 升本教练单文件离线版 · 构建于 2026-10-25 21:42 -->
 <html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="utf-8" />
@@ -12,7 +12,7 @@
   <title>升本教练 · 专升本学练一体</title>
   
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <style>
 /* ===== 设计变量 ===== */
 :root {
@@ -16274,6 +16274,11 @@ window.ZSB_CLOUD = {
 
 </script>
   <script>
+/* 公网后端地址（Cloudflare Tunnel 域名）。留空表示自动探测本机 / 同源后端。 */
+window.ZSB_API_BASE = '';
+
+</script>
+  <script>
 /* 本站后端账号与学习数据（配合 server/server.py；静态站不可达时自动关闭） */
 (function (Z) {
   var SESSION_KEY = 'zsb.api.session.v1';
@@ -16295,6 +16300,8 @@ window.ZSB_CLOUD = {
 
   /* 返回 '' 表示与页面同源；返回地址表示跨源；返回 null 表示当前环境不可用 */
   function base() {
+    var pub = String(window.ZSB_API_BASE || '').replace(/\/+$/, '');
+    if (pub) return pub;
     var saved = '';
     try { saved = String(localStorage.getItem(BASE_KEY) || '').replace(/\/+$/, ''); } catch (e) {}
     if (saved) return saved;
@@ -16423,7 +16430,14 @@ window.ZSB_CLOUD = {
   function signOut() {
     session = null;
     try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+    try { localStorage.removeItem('zsb.dev.flag'); } catch (e) {}
   }
+
+  /* 开发者界面：后端角色，或本地登录时命中的开发者邮箱 */
+  function devLocal() {
+    try { return localStorage.getItem('zsb.dev.flag') === '1'; } catch (e) { return false; }
+  }
+  function isDev() { return !!(session && session.is_admin) || devLocal(); }
 
   function stageIndex(p) {
     if (!p) return 0;
@@ -16555,6 +16569,7 @@ window.ZSB_CLOUD = {
     session: function () { return session; },
     user: function () { return session && session.user ? session.user : null; },
     isAdmin: function () { return !!(session && session.is_admin); },
+    isDev: isDev,
     signUp: signUp,
     signIn: signIn,
     signOut: signOut,
@@ -20262,7 +20277,7 @@ window.ZSB_AI = {
     var gaps = Z.engine.topGaps(3);
     var notes = allNotes();
     var onlyRead = Z.engine.onlyReadingDays();
-    var isDev = !!(Z.backend && Z.backend.isAdmin && Z.backend.isAdmin());
+    var isDev = !!(Z.backend && Z.backend.isDev && Z.backend.isDev());
 
     var html = '<div class="page-head"><h1 class="page-title">我的学情</h1>' +
       '<p class="page-sub">所有数据保存在本机，刷新不丢；可导出备份。</p></div>';
@@ -20573,7 +20588,7 @@ window.ZSB_AI = {
         Z.ui.icon('back') + '</button><div class="brand-title" style="flex:1">' + Z.ui.esc(title) + '</div>' +
         '<button class="icon-btn" data-theme-btn aria-label="切换主题">' + Z.ui.icon(themeIcon()) + '</button></div>';
     } else {
-      var isDev = !!(Z.backend && Z.backend.isAdmin && Z.backend.isAdmin());
+      var isDev = !!(Z.backend && Z.backend.isDev && Z.backend.isDev());
       var devBtn = isDev
         ? '<button class="icon-btn" data-dev-admin aria-label="开发者后台" title="开发者后台">' + Z.ui.icon('gear') + '</button>'
         : '';

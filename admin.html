@@ -332,7 +332,7 @@
 
   var unlockedAt = Number(sessionStorage.getItem(UNLOCK_KEY) || 0);
   /* 开发者账号从官网登录进来，直接放行，不再需要本地口令 */
-  var isDevUser = !!(B && B.isAdmin && B.isAdmin());
+  var isDevUser = !!(B && B.isDev && B.isDev());
   if (B && B.session && B.session()) {
     var roleP = B.refreshRole ? B.refreshRole() : null;
     if (roleP && roleP.then) {

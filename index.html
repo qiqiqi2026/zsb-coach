@@ -94,8 +94,9 @@
     ]
   }
   </script>
+  <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <style>
     :root {
       --bg: #0b1020;
@@ -322,6 +323,17 @@
       background: rgba(61, 220, 151, .15); border: 1px solid rgba(61, 220, 151, .4);
     }
     .dl-meta { font-size: 12.5px; color: var(--faint); }
+    .dl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 22px; }
+    .dl-card {
+      display: flex; flex-direction: column; gap: 11px;
+      background: var(--panel); border: 1px solid var(--line);
+      border-radius: 16px; padding: 20px;
+    }
+    .dl-card h3 { margin: 0; font-size: 17px; }
+    .dl-card p { margin: 0; flex: 1; font-size: 13.5px; color: var(--dim); line-height: 1.65; }
+    .dl-card small { font-size: 12px; color: var(--faint); line-height: 1.5; }
+    .dl-card .btn { width: 100%; }
+    @media (max-width: 860px) { .dl-grid { grid-template-columns: 1fr; } }
 
     /* ---------- 常见问题 ---------- */
     .faq { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -409,6 +421,8 @@
   </style>
   <script src="js/cloud.config.js"></script>
   <script src="js/cloud.js"></script>
+  <script src="js/backend.config.js"></script>
+  <script src="js/dev.config.js"></script>
   <script src="js/backend.js"></script>
 </head>
 <body>
@@ -604,35 +618,29 @@
 
   <section class="block" id="download">
     <div class="shell">
-      <div class="download-box">
-        <div>
-          <div class="sec-eyebrow">下载或在线</div>
-          <h2>两种方式，内容完全一样</h2>
-          <ul class="dl-list">
-            <li>在线使用：登录后直接进入，支持保存到桌面 / 主屏幕，像 App 一样打开。</li>
-            <li>下载离线版：单个 HTML 文件，双击即用，断网也不影响，进度存在本机。</li>
-            <li>电脑、手机、平板都适配，同一套内容，界面自动调整。</li>
-          </ul>
-          <div class="hero-cta">
-            <button class="btn btn-primary btn-lg" type="button" data-cta="start">登录并开始</button>
-            <a class="btn btn-ghost btn-lg" href="升本教练-单文件版.html" download data-download="升本教练-单文件版.html">下载单文件版</a>
-          </div>
-          <p class="dl-meta">单文件约 1.5 MB，无需安装、无需联网、不收集任何数据。</p>
+      <div class="sec-head">
+        <div class="sec-eyebrow">下载 App</div>
+        <h2>电脑装 Windows 版，手机装到桌面</h2>
+        <p>内容完全一样，按你的设备任选一个。</p>
+      </div>
+      <div class="dl-grid">
+        <div class="dl-card">
+          <h3>Windows 电脑版</h3>
+          <p>独立窗口打开，没有浏览器地址栏，双击就能学。基于系统自带 Edge 内核，体积很小。</p>
+          <a class="btn btn-primary" href="download/ZSB-Coach-Windows.exe" download>下载 Windows 版</a>
+          <small>Windows 10 / 11</small>
         </div>
-        <div class="device" aria-hidden="true">
-          <div class="device-bar"><i></i><i></i><i></i></div>
-          <div class="device-body">
-            <div class="mock-head"><b>文件已就绪</b><span class="pill">离线可用</span></div>
-            <div class="mock-card">
-              <div class="row"><b>升本教练-单文件版.html</b><span>1.5 MB</span></div>
-              <div class="bar green"><i style="width:100%"></i></div>
-            </div>
-            <div class="mock-chips">
-              <span class="chip">双击打开</span>
-              <span class="chip">无需网络</span>
-              <span class="chip">可复制分发</span>
-            </div>
-          </div>
+        <div class="dl-card">
+          <h3>手机版</h3>
+          <p>Android 用 Chrome，iPhone 用 Safari，添加到主屏幕后全屏运行，支持离线缓存。</p>
+          <button class="btn btn-primary" type="button" id="btnPwa">安装到手机</button>
+          <small id="pwaHint">Android：Chrome 菜单 →「安装应用」；iPhone：分享 →「添加到主屏幕」</small>
+        </div>
+        <div class="dl-card">
+          <h3>离线单文件版</h3>
+          <p>一个 HTML 文件，断网也能看讲义、做题，适合拷到任何设备或发给同学。</p>
+          <a class="btn btn-ghost" href="升本教练-单文件版.html" download data-download="升本教练-单文件版.html">下载离线版</a>
+          <small>约 1.6 MB，无需安装</small>
         </div>
       </div>
     </div>
@@ -781,6 +789,15 @@
     if (n.length < 2) n = '同学' + String(v).slice(-4);
     return n.slice(0, 16);
   }
+  function setDevFlag(on) {
+    try { localStorage.setItem('zsb.dev.flag', on ? '1' : '0'); } catch (e) {}
+  }
+  function markDev(account) {
+    if (!window.ZSB_DEV_EMAIL_HASH) { setDevFlag(false); return; }
+    sha(String(account || '').toLowerCase()).then(function (h) {
+      setDevFlag(h === window.ZSB_DEV_EMAIL_HASH);
+    });
+  }
 
   function renderNav() {
     var box = document.getElementById('navActions');
@@ -877,6 +894,7 @@
         hint.className = 'hint';
         hint.textContent = '正在注册到本站后端…';
         backend.signUp(email, pass, nick).then(function (r) {
+          setDevFlag(!!(backend.isAdmin && backend.isAdmin()));
           finishLogin((r && r.name) || nick);
         }).catch(function (err) {
           hint.className = 'hint';
@@ -890,6 +908,7 @@
       hint.className = 'hint';
       hint.textContent = '正在登录…';
       backend.signIn(account, pass).then(function (r) {
+        setDevFlag(!!(backend.isAdmin && backend.isAdmin()));
         finishLogin((r && r.name) || account);
       }).catch(function (err) {
         hint.className = 'hint';
@@ -912,6 +931,7 @@
       sha(ident + '::' + pass).then(function (hash) {
         accounts[ident] = { user: nick, account: email, base: ident, hash: hash, at: Date.now() };
         writeJSON(ACC_KEY, accounts);
+        markDev(ident);
         finishLogin(nick);
       });
       return;
@@ -931,6 +951,7 @@
     if (!acc) { hint.textContent = '没有找到这个账号，先点上面的「注册」'; return; }
     sha((acc.base || acc.user) + '::' + pass).then(function (hash) {
       if (hash !== acc.hash) { hint.textContent = '密码不正确，再试一次'; return; }
+      markDev(ident);
       finishLogin(acc.user);
     });
   });
@@ -995,6 +1016,30 @@
   if (cloudOn && cloud.user() && !session()) {
     var cu = cloud.user();
     writeJSON(SESSION_KEY, { user: cu.name || (cu.email || '').split('@')[0], at: Date.now() });
+  }
+
+  var pwaPrompt = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    pwaPrompt = e;
+  });
+  var pwaBtn = document.getElementById('btnPwa');
+  if (pwaBtn) {
+    pwaBtn.addEventListener('click', function () {
+      if (pwaPrompt) {
+        pwaPrompt.prompt();
+        pwaPrompt.userChoice.then(function () { pwaPrompt = null; });
+        return;
+      }
+      var ua = navigator.userAgent || '';
+      if (/iPhone|iPad|iPod/.test(ua)) {
+        alert('iPhone / iPad：点 Safari 底部的「分享」按钮，选择「添加到主屏幕」。');
+      } else if (/Android/.test(ua)) {
+        alert('Android：用 Chrome 打开本页，点右上角「⋮」菜单，选「安装应用」或「添加到主屏幕」。');
+      } else {
+        alert('电脑：用 Edge 或 Chrome 打开本页，点地址栏右侧的「安装」图标即可装成桌面应用。');
+      }
+    });
   }
 
   renderNav();

@@ -29,7 +29,7 @@
         Z.ui.icon('back') + '</button><div class="brand-title" style="flex:1">' + Z.ui.esc(title) + '</div>' +
         '<button class="icon-btn" data-theme-btn aria-label="切换主题">' + Z.ui.icon(themeIcon()) + '</button></div>';
     } else {
-      var isDev = !!(Z.backend && Z.backend.isAdmin && Z.backend.isAdmin());
+      var isDev = !!(Z.backend && Z.backend.isDev && Z.backend.isDev());
       var devBtn = isDev
         ? '<button class="icon-btn" data-dev-admin aria-label="开发者后台" title="开发者后台">' + Z.ui.icon('gear') + '</button>'
         : '';

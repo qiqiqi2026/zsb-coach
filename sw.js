@@ -1,5 +1,5 @@
 /* 离线缓存：应用外壳 + 全部静态资源 */
-var CACHE = 'zsb-coach-v10';
+var CACHE = 'zsb-coach-v11';
 var ASSETS = [
   './',
   './index.html',
@@ -41,6 +41,13 @@ var ASSETS = [
   './js/cloud.config.js',
   './js/cloud.js',
   './js/backend.js',
+  './js/backend.config.js',
+  './js/dev.config.js',
+  './manifest.webmanifest',
+  './icon-192.png',
+  './icon-512.png',
+  './icon-maskable-512.png',
+  './apple-touch-icon.png',
   './js/ai.js',
   './js/store.js',
   './js/scheduler.js',

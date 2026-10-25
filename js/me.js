@@ -91,7 +91,7 @@
     var gaps = Z.engine.topGaps(3);
     var notes = allNotes();
     var onlyRead = Z.engine.onlyReadingDays();
-    var isDev = !!(Z.backend && Z.backend.isAdmin && Z.backend.isAdmin());
+    var isDev = !!(Z.backend && Z.backend.isDev && Z.backend.isDev());
 
     var html = '<div class="page-head"><h1 class="page-title">我的学情</h1>' +
       '<p class="page-sub">所有数据保存在本机，刷新不丢；可导出备份。</p></div>';

@@ -19,6 +19,8 @@
 
   /* 返回 '' 表示与页面同源；返回地址表示跨源；返回 null 表示当前环境不可用 */
   function base() {
+    var pub = String(window.ZSB_API_BASE || '').replace(/\/+$/, '');
+    if (pub) return pub;
     var saved = '';
     try { saved = String(localStorage.getItem(BASE_KEY) || '').replace(/\/+$/, ''); } catch (e) {}
     if (saved) return saved;
@@ -147,7 +149,14 @@
   function signOut() {
     session = null;
     try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+    try { localStorage.removeItem('zsb.dev.flag'); } catch (e) {}
   }
+
+  /* 开发者界面：后端角色，或本地登录时命中的开发者邮箱 */
+  function devLocal() {
+    try { return localStorage.getItem('zsb.dev.flag') === '1'; } catch (e) { return false; }
+  }
+  function isDev() { return !!(session && session.is_admin) || devLocal(); }
 
   function stageIndex(p) {
     if (!p) return 0;
@@ -279,6 +288,7 @@
     session: function () { return session; },
     user: function () { return session && session.user ? session.user : null; },
     isAdmin: function () { return !!(session && session.is_admin); },
+    isDev: isDev,
     signUp: signUp,
     signIn: signIn,
     signOut: signOut,
