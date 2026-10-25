@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- 升本教练单文件离线版 · 构建于 2026-10-25 18:02 -->
+<!-- 升本教练单文件离线版 · 构建于 2026-10-25 18:14 -->
 <html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="utf-8" />
@@ -16379,15 +16379,32 @@ window.ZSB_CLOUD = {
     };
   }
 
+  /* 服务端可能后来把账号提升成开发者，心跳时同步角色，页面才知道该进哪个版本 */
+  function applyRole(isAdmin) {
+    if (!session) return;
+    var v = !!isAdmin;
+    if (v !== !!session.is_admin) {
+      session.is_admin = v;
+      write(SESSION_KEY, session);
+    }
+  }
+
+  function beat() {
+    if (!session || !session.token) return Promise.resolve(null);
+    return request('GET', '/api/heartbeat', null, session.token).then(function (d) {
+      if (d && d.is_admin != null) applyRole(d.is_admin);
+      return d;
+    }).catch(function (err) {
+      if (err && err.status === 401) signOut();
+      return null;
+    });
+  }
+
   var hbTimer = null;
   function startHeartbeat() {
     if (hbTimer) clearInterval(hbTimer);
-    hbTimer = setInterval(function () {
-      if (!session || !session.token) return;
-      request('GET', '/api/heartbeat', null, session.token).catch(function (err) {
-        if (err && err.status === 401) signOut();
-      });
-    }, 60000);
+    beat();
+    hbTimer = setInterval(beat, 60000);
   }
   if (session && session.token) startHeartbeat();
 
@@ -16543,18 +16560,18 @@ window.ZSB_CLOUD = {
     signOut: signOut,
     sync: sync,
     hydrate: hydrate,
-    heartbeat: function () {
-      if (!session || !session.token) return Promise.resolve(null);
-      return request('GET', '/api/heartbeat', null, session.token);
-    },
+    heartbeat: beat,
+    refreshRole: beat,
     promote: function (email, adminKey) {
       return request('POST', '/api/admin/promote?key=' + encodeURIComponent(adminKey || ''), { email: email });
     },
-    stats: function () {
-      return request('GET', '/api/admin/stats', null, session && session.token);
+    stats: function (key) {
+      return request('GET', '/api/admin/stats' + (key ? '?key=' + encodeURIComponent(key) : ''),
+        null, session && session.token);
     },
-    users: function () {
-      return request('GET', '/api/admin/users', null, session && session.token);
+    users: function (key) {
+      return request('GET', '/api/admin/users' + (key ? '?key=' + encodeURIComponent(key) : ''),
+        null, session && session.token);
     }
   };
   Z.backend.enabled = !!(session && session.token);
@@ -20245,6 +20262,7 @@ window.ZSB_AI = {
     var gaps = Z.engine.topGaps(3);
     var notes = allNotes();
     var onlyRead = Z.engine.onlyReadingDays();
+    var isDev = !!(Z.backend && Z.backend.isAdmin && Z.backend.isAdmin());
 
     var html = '<div class="page-head"><h1 class="page-title">我的学情</h1>' +
       '<p class="page-sub">所有数据保存在本机，刷新不丢；可导出备份。</p></div>';
@@ -20307,6 +20325,7 @@ window.ZSB_AI = {
       row('gear', '考试与目标', '日期 · 目标分 · 每日时长', 'data-me-exam') +
       row('chart', '掌握度算法说明', '权重、遗忘、封顶', 'data-me-algo') +
       row('book', '分层与解锁规则', 'L1–L4 / 计算机深度', 'data-me-layers') +
+      (isDev ? row('gear', '开发者后台', '全部用户 · 在线人数', 'data-me-admin') : '') +
       row('refresh', '重置全部数据', '不可撤销', 'data-me-reset') +
       '</div>';
 
@@ -20329,6 +20348,7 @@ window.ZSB_AI = {
       'data-me-exam': function () { openExamSettings(); },
       'data-me-algo': function () { location.hash = '#/algo'; },
       'data-me-layers': function () { location.hash = '#/layers'; },
+      'data-me-admin': function () { location.href = 'admin.html'; },
       'data-me-reset': function () {
         Z.ui.confirm({ title: '重置全部数据', body: '所有学习记录、笔记、模考成绩都会被删除，且无法恢复。建议先导出备份。', okText: '确认重置', danger: true }).then(function (ok) {
           if (!ok) return;
@@ -20553,10 +20573,18 @@ window.ZSB_AI = {
         Z.ui.icon('back') + '</button><div class="brand-title" style="flex:1">' + Z.ui.esc(title) + '</div>' +
         '<button class="icon-btn" data-theme-btn aria-label="切换主题">' + Z.ui.icon(themeIcon()) + '</button></div>';
     } else {
+      var isDev = !!(Z.backend && Z.backend.isAdmin && Z.backend.isAdmin());
+      var devBtn = isDev
+        ? '<button class="icon-btn" data-dev-admin aria-label="开发者后台" title="开发者后台">' + Z.ui.icon('gear') + '</button>'
+        : '';
       bar.innerHTML = '<div class="topbar-row"><div class="brand"><div class="brand-mark">升</div>' +
-        '<div><div class="brand-title">升本教练</div><div class="brand-sub">学练一体 · 本地优先</div></div></div>' +
-        '<div class="topbar-actions"><button class="icon-btn" data-theme-btn aria-label="切换主题">' + Z.ui.icon(themeIcon()) + '</button></div></div>';
+        '<div><div class="brand-title">升本教练</div><div class="brand-sub">' +
+        (isDev ? '开发者版本 · 全站数据' : '学练一体 · 本地优先') + '</div></div></div>' +
+        '<div class="topbar-actions">' + devBtn +
+        '<button class="icon-btn" data-theme-btn aria-label="切换主题">' + Z.ui.icon(themeIcon()) + '</button></div></div>';
     }
+    var dv = bar.querySelector('[data-dev-admin]');
+    if (dv) dv.onclick = function () { location.href = 'admin.html'; };
     var t = bar.querySelector('[data-theme-btn]');
     if (t) t.onclick = function () {
       var next = Z.store.get().settings.theme === 'light' ? 'dark' : 'light';

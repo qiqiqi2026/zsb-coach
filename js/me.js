@@ -91,6 +91,7 @@
     var gaps = Z.engine.topGaps(3);
     var notes = allNotes();
     var onlyRead = Z.engine.onlyReadingDays();
+    var isDev = !!(Z.backend && Z.backend.isAdmin && Z.backend.isAdmin());
 
     var html = '<div class="page-head"><h1 class="page-title">我的学情</h1>' +
       '<p class="page-sub">所有数据保存在本机，刷新不丢；可导出备份。</p></div>';
@@ -153,6 +154,7 @@
       row('gear', '考试与目标', '日期 · 目标分 · 每日时长', 'data-me-exam') +
       row('chart', '掌握度算法说明', '权重、遗忘、封顶', 'data-me-algo') +
       row('book', '分层与解锁规则', 'L1–L4 / 计算机深度', 'data-me-layers') +
+      (isDev ? row('gear', '开发者后台', '全部用户 · 在线人数', 'data-me-admin') : '') +
       row('refresh', '重置全部数据', '不可撤销', 'data-me-reset') +
       '</div>';
 
@@ -175,6 +177,7 @@
       'data-me-exam': function () { openExamSettings(); },
       'data-me-algo': function () { location.hash = '#/algo'; },
       'data-me-layers': function () { location.hash = '#/layers'; },
+      'data-me-admin': function () { location.href = 'admin.html'; },
       'data-me-reset': function () {
         Z.ui.confirm({ title: '重置全部数据', body: '所有学习记录、笔记、模考成绩都会被删除，且无法恢复。建议先导出备份。', okText: '确认重置', danger: true }).then(function (ok) {
           if (!ok) return;

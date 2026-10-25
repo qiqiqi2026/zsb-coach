@@ -720,7 +720,8 @@
       if (f) f.textContent = '账号与学习进度保存在本站后端，开发者后台可实时查看；换设备登录即可继续';
       if (n) n.textContent = '登录后进度同步到本站后端，换设备接着学';
       setMode(mode);
-      renderNav();
+      var p = backend.refreshRole ? backend.refreshRole() : null;
+      if (p && p.then) p.then(renderNav); else renderNav();
     });
   }
 
@@ -746,9 +747,10 @@
     var box = document.getElementById('navActions');
     var s = session();
     if (s && s.user) {
+      var devNow = !!(backend && backend.isAdmin && backend.isAdmin());
       box.innerHTML =
         '<span class="auth-user"><span class="avatar">' + esc(s.user.charAt(0).toUpperCase()) + '</span>' +
-        esc(s.user) + '</span>' +
+        esc(s.user) + (devNow ? ' · 开发者' : '') + '</span>' +
         '<button class="btn btn-ghost" type="button" data-cta="logout">退出</button>' +
         '<button class="btn btn-primary" type="button" data-cta="start">进入学习</button>';
     } else {

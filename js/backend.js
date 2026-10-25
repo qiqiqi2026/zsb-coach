@@ -103,15 +103,32 @@
     };
   }
 
+  /* 服务端可能后来把账号提升成开发者，心跳时同步角色，页面才知道该进哪个版本 */
+  function applyRole(isAdmin) {
+    if (!session) return;
+    var v = !!isAdmin;
+    if (v !== !!session.is_admin) {
+      session.is_admin = v;
+      write(SESSION_KEY, session);
+    }
+  }
+
+  function beat() {
+    if (!session || !session.token) return Promise.resolve(null);
+    return request('GET', '/api/heartbeat', null, session.token).then(function (d) {
+      if (d && d.is_admin != null) applyRole(d.is_admin);
+      return d;
+    }).catch(function (err) {
+      if (err && err.status === 401) signOut();
+      return null;
+    });
+  }
+
   var hbTimer = null;
   function startHeartbeat() {
     if (hbTimer) clearInterval(hbTimer);
-    hbTimer = setInterval(function () {
-      if (!session || !session.token) return;
-      request('GET', '/api/heartbeat', null, session.token).catch(function (err) {
-        if (err && err.status === 401) signOut();
-      });
-    }, 60000);
+    beat();
+    hbTimer = setInterval(beat, 60000);
   }
   if (session && session.token) startHeartbeat();
 
@@ -267,18 +284,18 @@
     signOut: signOut,
     sync: sync,
     hydrate: hydrate,
-    heartbeat: function () {
-      if (!session || !session.token) return Promise.resolve(null);
-      return request('GET', '/api/heartbeat', null, session.token);
-    },
+    heartbeat: beat,
+    refreshRole: beat,
     promote: function (email, adminKey) {
       return request('POST', '/api/admin/promote?key=' + encodeURIComponent(adminKey || ''), { email: email });
     },
-    stats: function () {
-      return request('GET', '/api/admin/stats', null, session && session.token);
+    stats: function (key) {
+      return request('GET', '/api/admin/stats' + (key ? '?key=' + encodeURIComponent(key) : ''),
+        null, session && session.token);
     },
-    users: function () {
-      return request('GET', '/api/admin/users', null, session && session.token);
+    users: function (key) {
+      return request('GET', '/api/admin/users' + (key ? '?key=' + encodeURIComponent(key) : ''),
+        null, session && session.token);
     }
   };
   Z.backend.enabled = !!(session && session.token);

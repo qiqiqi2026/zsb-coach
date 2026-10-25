@@ -29,10 +29,18 @@
         Z.ui.icon('back') + '</button><div class="brand-title" style="flex:1">' + Z.ui.esc(title) + '</div>' +
         '<button class="icon-btn" data-theme-btn aria-label="切换主题">' + Z.ui.icon(themeIcon()) + '</button></div>';
     } else {
+      var isDev = !!(Z.backend && Z.backend.isAdmin && Z.backend.isAdmin());
+      var devBtn = isDev
+        ? '<button class="icon-btn" data-dev-admin aria-label="开发者后台" title="开发者后台">' + Z.ui.icon('gear') + '</button>'
+        : '';
       bar.innerHTML = '<div class="topbar-row"><div class="brand"><div class="brand-mark">升</div>' +
-        '<div><div class="brand-title">升本教练</div><div class="brand-sub">学练一体 · 本地优先</div></div></div>' +
-        '<div class="topbar-actions"><button class="icon-btn" data-theme-btn aria-label="切换主题">' + Z.ui.icon(themeIcon()) + '</button></div></div>';
+        '<div><div class="brand-title">升本教练</div><div class="brand-sub">' +
+        (isDev ? '开发者版本 · 全站数据' : '学练一体 · 本地优先') + '</div></div></div>' +
+        '<div class="topbar-actions">' + devBtn +
+        '<button class="icon-btn" data-theme-btn aria-label="切换主题">' + Z.ui.icon(themeIcon()) + '</button></div></div>';
     }
+    var dv = bar.querySelector('[data-dev-admin]');
+    if (dv) dv.onclick = function () { location.href = 'admin.html'; };
     var t = bar.querySelector('[data-theme-btn]');
     if (t) t.onclick = function () {
       var next = Z.store.get().settings.theme === 'light' ? 'dark' : 'light';

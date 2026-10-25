@@ -174,6 +174,9 @@
     <input id="gatePass" type="password" maxlength="64" placeholder="只有你知道" />
     <div class="gate-msg" id="gateMsg"></div>
     <button class="btn btn-primary btn-block" type="submit" id="gateBtn">设置并进入</button>
+    <div style="text-align:center;margin-top:12px">
+      <a href="index.html" style="font-size:12.5px;color:var(--faint);text-decoration:none">← 返回官网登录</a>
+    </div>
   </form>
 </div>
 
@@ -185,6 +188,7 @@
     </div>
     <div class="top-actions">
       <span class="live"><span class="pulse"></span><span id="liveText">实时同步中</span></span>
+      <span class="live" id="devWho" hidden></span>
       <button class="btn btn-ghost" type="button" id="btnBackend">连接后端</button>
       <button class="btn btn-ghost" type="button" id="btnCloud">连接云端</button>
       <button class="btn btn-ghost" type="button" id="btnRefresh">立即刷新</button>
@@ -275,6 +279,11 @@
   var gateLabel = document.getElementById('gateLabel');
   var board = document.getElementById('board');
 
+  /* 必须在下面的门禁判断之前赋值（var 提升会让后置赋值变成 undefined） */
+  var B = window.ZSB && window.ZSB.backend;
+  var DEV_BACKEND = 'zsb.dev.backend';
+  var backendCfg = readJSON(DEV_BACKEND, null);
+
   var dev = readJSON(DEV_KEY, null);
   var fails = 0;
   var lockedUntil = 0;
@@ -324,8 +333,28 @@
   var unlockedAt = Number(sessionStorage.getItem(UNLOCK_KEY) || 0);
   /* 开发者账号从官网登录进来，直接放行，不再需要本地口令 */
   var isDevUser = !!(B && B.isAdmin && B.isAdmin());
-  if (isDevUser) { enter(); }
-  else if (dev && unlockedAt && Date.now() - unlockedAt < 30 * 60 * 1000) enter();
+  if (B && B.session && B.session()) {
+    var roleP = B.refreshRole ? B.refreshRole() : null;
+    if (roleP && roleP.then) {
+      roleP.then(function () {
+        /* 后端刚把账号提升成开发者：角色刷新后直接放行 */
+        if (!isDevUser && B.isAdmin && B.isAdmin()) { isDevUser = true; enter(); }
+      });
+    }
+  }
+  if (isDevUser) {
+    var du = B.user && B.user();
+    var who = document.getElementById('devWho');
+    if (du && who) {
+      who.hidden = false;
+      who.textContent = (du.username || du.email || '开发者') + ' · 开发者';
+    }
+    enter();
+  } else if (dev && unlockedAt && Date.now() - unlockedAt < 30 * 60 * 1000) {
+    enter();
+  } else if (B && B.session && B.session()) {
+    gateSub.textContent = '当前登录账号不是开发者。请回官网，用开发者账号重新登录。';
+  }
 
   gateForm.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -575,12 +604,9 @@
   });
 
   /* ============ 本站后端模式（server/server.py） ============ */
-  var DEV_BACKEND = 'zsb.dev.backend';
-  var backendCfg = readJSON(DEV_BACKEND, null);
   var backendBusy = false;
   var lastBackend = 0;
   var btnBackend = document.getElementById('btnBackend');
-  var B = window.ZSB && window.ZSB.backend;
 
   if (!B) {
     btnBackend.hidden = true;
@@ -675,7 +701,7 @@
       document.getElementById('learnRows').innerHTML =
         '<tr><td style="color:var(--faint)">数据来源</td><td>本站后端 SQLite</td></tr>' +
         '<tr><td style="color:var(--faint)">24 小时答题</td><td class="num">' + (s.answered_24h || 0) + '</td></tr>' +
-        '<tr><td style="color:var(--faint)">后端地址</td><td class="num">' + esc(backendCfg.base || '同源') + '</td></tr>';
+        '<tr><td style="color:var(--faint)">后端地址</td><td class="num">' + esc((backendCfg && backendCfg.base) || '同源') + '</td></tr>';
       document.getElementById('learnMeta').textContent = '后端聚合';
       document.getElementById('liveText').textContent = '后端 · ' + new Date().toLocaleTimeString('zh-CN', { hour12: false });
     }).catch(function (err) {

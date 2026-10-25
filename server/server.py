@@ -133,8 +133,18 @@ def init_db():
         conn.commit()
 
 
-# 开发者邮箱：在 server/.env 里写 DEV_EMAIL=你的邮箱，注册该邮箱自动成为开发者
+# 开发者身份：在 server/.env 里写 DEV_EMAIL=你的邮箱（可选 DEV_USERNAME=你的用户名），
+# 用这组信息注册或登录，账号自动成为开发者，官网登录后直接进入开发者版本
 DEV_EMAIL = os.environ.get('DEV_EMAIL', '').strip().lower()
+DEV_USERNAME = os.environ.get('DEV_USERNAME', '').strip().lower()
+
+
+def is_dev_identity(email, username):
+    if DEV_EMAIL and str(email or '').strip().lower() == DEV_EMAIL:
+        return True
+    if DEV_USERNAME and str(username or '').strip().lower() == DEV_USERNAME:
+        return True
+    return False
 
 
 def hash_password(password):
@@ -264,9 +274,11 @@ class Handler(SimpleHTTPRequestHandler):
         return dict(row) if row else None
 
     def require_admin(self):
-        """开发者账号才能访问管理接口。ADMIN_KEY 作为备用提升手段仅用于 promote。"""
+        """管理接口：开发者账号 token，或用 ADMIN_KEY 查询参数（后台口令模式）。"""
         user = self.current_user()
-        return bool(user and user.get('is_admin'))
+        if user and user.get('is_admin'):
+            return True
+        return self.admin_ok()
 
     def admin_ok(self):
         key = (self.query().get('key') or [''])[0]
@@ -284,7 +296,7 @@ class Handler(SimpleHTTPRequestHandler):
             return self.send_json({'error': '用户名需要 2-16 个字符'}, 400)
         uid = uuid.uuid4().hex
         now = int(time.time() * 1000)
-        is_admin = 1 if (DEV_EMAIL and email == DEV_EMAIL) else 0
+        is_admin = 1 if is_dev_identity(email, username) else 0
         try:
             with closing(db()) as conn:
                 conn.execute(
@@ -314,6 +326,10 @@ class Handler(SimpleHTTPRequestHandler):
                 return self.send_json({'error': '账号或密码不正确'}, 401)
             is_admin = int(row['is_admin'] or 0)
             now_ms = int(time.time() * 1000)
+            # 已有账号后来才配置 DEV_EMAIL / DEV_USERNAME 的，登录时自动补成开发者
+            if not is_admin and is_dev_identity(row['email'], row['username']):
+                is_admin = 1
+                conn.execute('UPDATE users SET is_admin=1 WHERE id=?', (row['id'],))
             conn.execute('UPDATE users SET last_login=?, last_seen=? WHERE id=?',
                          (now_ms, now_ms, row['id']))
             conn.commit()
