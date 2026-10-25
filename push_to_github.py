@@ -49,11 +49,21 @@ def main():
     base_tree = base_commit['tree']['sha']
     print('远端 HEAD:', base_sha[:12])
 
-    # 2. 列出本地变更（相对 HEAD）
-    out = subprocess.check_output(['git', 'diff', '--name-only', base_sha, 'HEAD'])
+    # 2. 列出本地变更（相对上次同步点，避免 API 推送后本地/远端历史分叉）
+    root = os.path.dirname(os.path.abspath(__file__))
+    marker = os.path.join(root, '.push_baseline')
+    diff_base = base_sha
+    if os.path.exists(marker):
+        cand = open(marker, encoding='utf-8').read().strip()
+        try:
+            subprocess.check_output(['git', 'cat-file', '-e', cand + '^{commit}'], stderr=subprocess.DEVNULL)
+            diff_base = cand
+        except subprocess.CalledProcessError:
+            pass
+    out = subprocess.check_output(['git', '-c', 'core.quotepath=false', 'diff', '--name-only', diff_base, 'HEAD'])
     files = [f for f in out.decode('utf-8').splitlines() if f.strip()]
     # 也加上新增但远端没有的文件
-    out2 = subprocess.check_output(['git', 'diff', '--name-only', '--diff-filter=A', base_sha, 'HEAD'])
+    out2 = subprocess.check_output(['git', '-c', 'core.quotepath=false', 'diff', '--name-only', '--diff-filter=A', diff_base, 'HEAD'])
     added = [f for f in out2.decode('utf-8').splitlines() if f.strip()]
     files = sorted(set(files + added))
     print('待推送文件 %d 个：' % len(files))
@@ -64,7 +74,6 @@ def main():
 
     # 3. 为每个变更文件创建 blob，构造 tree
     tree = []
-    root = os.path.dirname(os.path.abspath(__file__))
     for f in files:
         full = os.path.join(root, f)
         if not os.path.exists(full):
@@ -112,6 +121,9 @@ def main():
     if status != 200:
         print('更新分支失败:', upd)
         sys.exit(1)
+    head_local = subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode('utf-8').strip()
+    with open(marker, 'w', encoding='utf-8') as mh:
+        mh.write(head_local)
     print('✅ 已推送到 GitHub Pages，稍后访问 https://%s.github.io/%s/' % (OWNER, REPO))
 
 if __name__ == '__main__':

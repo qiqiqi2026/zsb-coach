@@ -7,3 +7,4 @@ server/data/
 __pycache__/
 *.pyc
 .gh_token
+.push_baseline
