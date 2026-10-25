@@ -67,9 +67,26 @@
 
   var state = load();
 
+  if (Z.cloud && Z.cloud.hydrate) {
+    Z.cloud.hydrate(state, function () {
+      try { localStorage.setItem(storageKey(), JSON.stringify(state)); } catch (e) {}
+      emit();
+    });
+  }
+
+  /* 已登录本站后端时，换设备登录后自动把进度拉回本机 */
+  if (Z.backend && Z.backend.session && Z.backend.session()) {
+    Z.backend.hydrate(state, function () {
+      try { localStorage.setItem(storageKey(), JSON.stringify(state)); } catch (e) {}
+      emit();
+    });
+  }
+
   function save() {
     try {
       localStorage.setItem(storageKey(), JSON.stringify(state));
+      if (Z.cloud && Z.cloud.sync) Z.cloud.sync(state);
+      if (Z.backend && Z.backend.sync) Z.backend.sync(state);
     } catch (e) {
       console.warn('本地数据保存失败', e);
       if (Z.ui && Z.ui.toast) Z.ui.toast('本地存储写入失败，请清理空间');

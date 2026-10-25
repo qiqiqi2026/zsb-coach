@@ -4,8 +4,72 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0b1020" />
-  <meta name="description" content="升本教练：专升本学练一体在线学习平台。144 个考点、146 份六阶段讲义、636 道题、52 张图解，支持电脑与手机，可在线使用或下载离线版。" />
-  <title>升本教练 · 专升本学练一体</title>
+  <meta name="description" content="升本教练：专升本学练一体在线学习平台。覆盖专升本英语、高等数学、计算机全部考点，144 个考点、146 份六阶段讲义、636 道题、52 张图解，支持电脑与手机，可在线使用或下载离线版。" />
+  <meta name="keywords" content="专升本,升本教练,专升本考试,统招专升本,专升本英语,专升本高数,专升本高等数学,专升本计算机,专升本刷题,专升本题库,专升本网课,专升本学习平台,专升本备考" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="https://qiqiqi2026.github.io/zsb-coach/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="升本教练" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="升本教练 · 专升本学练一体在线学习平台" />
+  <meta property="og:description" content="专升本英语、高数、计算机全考点：六阶段讲义 + 题库 + 图解，电脑手机都能用，免费在线学习或下载离线版。" />
+  <meta property="og:url" content="https://qiqiqi2026.github.io/zsb-coach/" />
+  <meta property="og:image" content="https://qiqiqi2026.github.io/zsb-coach/icon.svg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="升本教练 · 专升本学练一体" />
+  <meta name="twitter:description" content="专升本英语、高数、计算机全考点，六阶段讲义 + 题库 + 图解，免费使用。" />
+  <title>升本教练 · 专升本学练一体在线学习平台</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://qiqiqi2026.github.io/zsb-coach/#website",
+        "url": "https://qiqiqi2026.github.io/zsb-coach/",
+        "name": "升本教练",
+        "alternateName": ["专升本学练一体", "专升本学习平台", "升本教练专升本"],
+        "inLanguage": "zh-CN",
+        "description": "面向专升本考生的学练一体学习平台，覆盖英语、高等数学、计算机全部考点。"
+      },
+      {
+        "@type": "EducationalOrganization",
+        "@id": "https://qiqiqi2026.github.io/zsb-coach/#org",
+        "name": "升本教练",
+        "url": "https://qiqiqi2026.github.io/zsb-coach/",
+        "logo": "https://qiqiqi2026.github.io/zsb-coach/icon.svg",
+        "description": "专升本在线学习平台：六阶段讲义、覆盖全部考点的题库与图解，支持在线使用和离线下载。",
+        "knowsAbout": ["专升本", "专升本英语", "专升本高等数学", "专升本计算机基础", "专升本刷题"]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://qiqiqi2026.github.io/zsb-coach/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "升本教练是什么？",
+            "acceptedAnswer": { "@type": "Answer", "text": "升本教练是面向专升本考生的学练一体在线学习平台，每个考点配一份六阶段讲义：导入、精讲、例题、跟练、独立练、小结与费曼复述。" }
+          },
+          {
+            "@type": "Question",
+            "name": "覆盖哪些专升本科目和考点？",
+            "acceptedAnswer": { "@type": "Answer", "text": "覆盖专升本英语、高等数学和计算机三大科目，计算机细分为 Python、HTML、JavaScript、网络安全、爬虫与数据、数据库、软件工程、操作系统、数据结构、算法等 13 个模块。" }
+          },
+          {
+            "@type": "Question",
+            "name": "升本教练需要付费或安装吗？",
+            "acceptedAnswer": { "@type": "Answer", "text": "免费使用，浏览器打开即可，不需要安装。也可以下载单文件离线版，断网时照样能学。" }
+          },
+          {
+            "@type": "Question",
+            "name": "手机能用吗？学习进度会同步吗？",
+            "acceptedAnswer": { "@type": "Answer", "text": "电脑、手机、平板都适配。注册登录后学习进度会保存并同步，换设备登录即可继续。" }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <style>
@@ -233,6 +297,16 @@
     }
     .dl-meta { font-size: 12.5px; color: var(--faint); }
 
+    /* ---------- 常见问题 ---------- */
+    .faq { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .faq-item {
+      border: 1px solid var(--line); border-radius: var(--r-md); padding: 18px 20px;
+      background: linear-gradient(180deg, rgba(24, 33, 64, .55), rgba(16, 23, 39, .45));
+    }
+    .faq-item b { display: block; font-size: 15px; margin-bottom: 7px; }
+    .faq-item p { margin: 0; font-size: 13.5px; line-height: 1.75; color: var(--dim); }
+    @media (max-width: 860px) { .faq { grid-template-columns: 1fr; } }
+
     footer {
       border-top: 1px solid rgba(38, 50, 80, .6); padding: 26px 0 40px;
       color: var(--faint); font-size: 13px;
@@ -307,6 +381,9 @@
       * { animation: none !important; transition: none !important; }
     }
   </style>
+  <script src="js/cloud.config.js"></script>
+  <script src="js/cloud.js"></script>
+  <script src="js/backend.js"></script>
 </head>
 <body>
 
@@ -321,6 +398,7 @@
       <a href="#courses">课程体系</a>
       <a href="#flow">学习方式</a>
       <a href="#download">下载</a>
+      <a href="#faq">常见问题</a>
     </nav>
     <div class="nav-actions" id="navActions">
       <button class="btn btn-ghost" type="button" data-open-auth="login">登录</button>
@@ -346,7 +424,7 @@
         </div>
         <div class="hero-note">
           <span><i class="dot"></i>无需安装，浏览器打开即用</span>
-          <span><i class="dot"></i>学习进度自动保存在本机</span>
+          <span><i class="dot"></i><span id="syncNote">学习进度自动保存在本机</span></span>
         </div>
       </div>
 
@@ -530,12 +608,40 @@
       </div>
     </div>
   </section>
+
+  <section class="block" id="faq">
+    <div class="shell">
+      <div class="sec-head">
+        <div class="sec-eyebrow">常见问题</div>
+        <h2>关于升本教练</h2>
+        <p>第一次来的同学，常问的几件事。</p>
+      </div>
+      <div class="faq">
+        <article class="faq-item">
+          <b>升本教练是什么？</b>
+          <p>面向专升本考生的学练一体学习平台。每个考点配一份六阶段讲义：导入、精讲、例题、跟练、独立练、小结与费曼复述，学完能讲出来才算掌握。</p>
+        </article>
+        <article class="faq-item">
+          <b>覆盖哪些专升本科目？</b>
+          <p>英语、高等数学、计算机三大科目。计算机再细分 Python、HTML、JavaScript、网络安全、爬虫与数据、数据库、软件工程、操作系统、数据结构、算法等 13 个模块。</p>
+        </article>
+        <article class="faq-item">
+          <b>需要付费或安装吗？</b>
+          <p>免费使用，浏览器打开就能学，不用安装。也可以下载单文件离线版，断网时照样能看讲义、做题。</p>
+        </article>
+        <article class="faq-item">
+          <b>手机能用吗？进度会同步吗？</b>
+          <p>电脑、手机、平板都适配。注册登录后学习进度自动保存并同步，换设备登录即可接着学。</p>
+        </article>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer>
   <div class="shell" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;width:100%">
     <span>升本教练 · 学练一体</span>
-    <span>账号与学习进度仅保存在本机浏览器，不上传服务器</span>
+    <span id="footNote">纯静态版进度保存在本机浏览器；接入本站后端后自动同步</span>
   </div>
 </footer>
 
@@ -543,12 +649,16 @@
   <div class="dialog dialog-wrap" role="dialog" aria-modal="true" aria-labelledby="authTitle">
     <button class="close" type="button" data-close-auth aria-label="关闭">×</button>
     <h3 id="authTitle">登录升本教练</h3>
-    <p class="sub">账号保存在本机浏览器，换设备需要重新注册。</p>
+    <p class="sub" id="authSub">账号保存在本机浏览器，换设备需要重新注册。</p>
     <div class="tabs">
       <button type="button" data-tab="login" class="on">登录</button>
       <button type="button" data-tab="register">注册</button>
     </div>
     <form id="authForm" autocomplete="off">
+      <div class="field" id="emailWrap" hidden>
+        <label for="accEmail">邮箱</label>
+        <input id="accEmail" name="email" type="email" placeholder="用于登录与跨设备同步" maxlength="80" />
+      </div>
       <div class="field">
         <label for="accUser">用户名</label>
         <input id="accUser" name="user" type="text" placeholder="2-16 个字符" maxlength="16" />
@@ -579,6 +689,40 @@
   var tabButtons = document.querySelectorAll('[data-tab]');
   var mode = 'login';
   var pendingStart = false;
+  var cloud = window.ZSB && window.ZSB.cloud;
+  var cloudOn = !!(cloud && cloud.enabled);
+  var backend = window.ZSB && window.ZSB.backend;
+  var backendOn = false;
+  var emailWrap = document.getElementById('emailWrap');
+
+  if (cloudOn) {
+    var syncNote = document.getElementById('syncNote');
+    var footNote = document.getElementById('footNote');
+    if (syncNote) syncNote.textContent = '登录后进度云端同步，换设备接着学';
+    if (footNote) footNote.textContent = '注册后账号与学习进度保存在云端，电脑手机自动同步；离线单文件版只存本机';
+  }
+
+  /* 本站后端可用时：注册 / 登录都走后端，开发者后台能立刻看到 */
+  if (backend) {
+    if (backend.session() && !session()) {
+      var bu = backend.user();
+      if (bu) writeJSON(SESSION_KEY, {
+        user: bu.username || (bu.email || '').split('@')[0],
+        at: Date.now()
+      });
+    }
+    backend.probe().then(function (ok) {
+      backendOn = !!ok;
+      if (!backendOn) return;
+      emailWrap.hidden = false;
+      var f = document.getElementById('footNote');
+      var n = document.getElementById('syncNote');
+      if (f) f.textContent = '账号与学习进度保存在本站后端，开发者后台可实时查看；换设备登录即可继续';
+      if (n) n.textContent = '登录后进度同步到本站后端，换设备接着学';
+      setMode(mode);
+      renderNav();
+    });
+  }
 
   function readJSON(key, fallback) {
     try { return JSON.parse(localStorage.getItem(key) || 'null') || fallback; }
@@ -622,8 +766,16 @@
   function setMode(next) {
     mode = next;
     confirmWrap.hidden = next !== 'register';
+    emailWrap.hidden = !cloudOn && !backendOn;
     submitBtn.textContent = next === 'register' ? '注册并进入' : '登录';
-    document.getElementById('authTitle').textContent = next === 'register' ? '创建本机账号' : '登录升本教练';
+    document.getElementById('authTitle').textContent = next === 'register'
+      ? (cloudOn ? '创建云端账号' : backendOn ? '创建本站账号' : '创建本机账号')
+      : '登录升本教练';
+    document.getElementById('authSub').textContent = cloudOn
+      ? '账号由云端校验，登录后学习进度会跨设备同步。'
+      : backendOn
+        ? '账号保存在本站后端，注册后开发者后台会立刻显示，学习进度自动同步。'
+        : '账号保存在本机浏览器，换设备需要重新注册。';
     tabButtons.forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-tab') === next); });
     hint.textContent = '';
     hint.className = 'hint';
@@ -638,8 +790,18 @@
   function closeAuth() { modal.hidden = true; pendingStart = false; }
 
   function startLearning() {
-    if (session()) location.href = 'app.html';
+    if (backend && backend.isAdmin && backend.isAdmin()) location.href = 'admin.html';
+    else if (session()) location.href = 'app.html';
     else openAuth('login', true);
+  }
+
+  function finishLogin(name, target) {
+    target = target || 'app.html';
+    writeJSON(SESSION_KEY, { user: name, at: Date.now() });
+    hint.className = 'hint ok';
+    hint.textContent = '登录成功，正在进入' + (target === 'admin.html' ? '开发者版本' : '学习端') + '…';
+    renderNav();
+    setTimeout(function () { closeAuth(); location.href = target; }, 450);
   }
 
   form.addEventListener('submit', function (e) {
@@ -647,6 +809,57 @@
     var user = document.getElementById('accUser').value.trim();
     var pass = document.getElementById('accPass').value;
     var pass2 = document.getElementById('accPass2').value;
+    var email = document.getElementById('accEmail').value.trim();
+
+    if (cloudOn) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { hint.textContent = '请输入有效邮箱'; return; }
+      if (mode === 'register' && user.length < 2) { hint.textContent = '用户名至少 2 个字符'; return; }
+      if (pass.length < 6) { hint.textContent = '密码至少 6 位'; return; }
+      if (mode === 'register' && pass !== pass2) { hint.textContent = '两次输入的密码不一致'; return; }
+      hint.className = 'hint';
+      hint.textContent = '正在连接云端…';
+      var action = mode === 'register' ? cloud.signUp(email, pass, user) : cloud.signIn(email, pass);
+      action.then(function (r) {
+        finishLogin((r && r.name) || user || email.split('@')[0]);
+      }).catch(function (err) {
+        hint.className = 'hint';
+        hint.textContent = '失败：' + (err && err.message ? err.message : '网络异常，稍后再试');
+      });
+      return;
+    }
+
+    if (backendOn) {
+      if (mode === 'register') {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { hint.textContent = '请填写有效邮箱（用于找回账号）'; return; }
+        if (user.length < 2) { hint.textContent = '用户名至少 2 个字符'; return; }
+        if (pass.length < 6) { hint.textContent = '密码至少 6 位'; return; }
+        if (pass !== pass2) { hint.textContent = '两次输入的密码不一致'; return; }
+        hint.className = 'hint';
+        hint.textContent = '正在注册到本站后端…';
+        backend.signUp(email, pass, user).then(function (r) {
+          var target = (r && r.is_admin) ? 'admin.html' : 'app.html';
+          finishLogin((r && r.name) || user, target);
+        }).catch(function (err) {
+          hint.className = 'hint';
+          hint.textContent = '注册失败：' + (err && err.message ? err.message : '网络异常，稍后再试');
+        });
+        return;
+      }
+      var account = email || user;
+      if (!account) { hint.textContent = '请输入用户名或邮箱'; return; }
+      if (!pass) { hint.textContent = '请输入密码'; return; }
+      hint.className = 'hint';
+      hint.textContent = '正在登录…';
+      backend.signIn(account, pass).then(function (r) {
+        var target = (r && r.is_admin) ? 'admin.html' : 'app.html';
+        finishLogin((r && r.name) || account, target);
+      }).catch(function (err) {
+        hint.className = 'hint';
+        hint.textContent = '登录失败：' + (err && err.message ? err.message : '网络异常，稍后再试');
+      });
+      return;
+    }
+
     if (user.length < 2) { hint.textContent = '用户名至少 2 个字符'; return; }
     if (pass.length < 6) { hint.textContent = '密码至少 6 位'; return; }
     if (mode === 'register' && pass !== pass2) { hint.textContent = '两次输入的密码不一致'; return; }
@@ -659,11 +872,7 @@
       sha(user + '::' + pass).then(function (hash) {
         accounts[key] = { user: user, hash: hash, at: Date.now() };
         writeJSON(ACC_KEY, accounts);
-        writeJSON(SESSION_KEY, { user: user, at: Date.now() });
-        hint.className = 'hint ok';
-        hint.textContent = '注册成功，正在进入…';
-        renderNav();
-        setTimeout(function () { closeAuth(); if (pendingStart) location.href = 'app.html'; }, 450);
+        finishLogin(user);
       });
       return;
     }
@@ -672,11 +881,7 @@
     if (!acc) { hint.textContent = '没有找到这个账号，先点上面的「注册」'; return; }
     sha(acc.user + '::' + pass).then(function (hash) {
       if (hash !== acc.hash) { hint.textContent = '密码不正确，再试一次'; return; }
-      writeJSON(SESSION_KEY, { user: acc.user, at: Date.now() });
-      hint.className = 'hint ok';
-      hint.textContent = '登录成功，正在进入…';
-      renderNav();
-      setTimeout(function () { closeAuth(); if (pendingStart) location.href = 'app.html'; }, 400);
+      finishLogin(acc.user);
     });
   });
 
@@ -696,6 +901,8 @@
     var cta = t.getAttribute('data-cta');
     if (cta === 'start') startLearning();
     if (cta === 'logout') {
+      if (cloudOn) cloud.signOut();
+      if (backend) backend.signOut();
       try { localStorage.removeItem(SESSION_KEY); } catch (err) {}
       renderNav();
     }
@@ -734,6 +941,11 @@
     e.preventDefault();
     downloadFile(link.getAttribute('href'), link.getAttribute('data-download'), link);
   });
+
+  if (cloudOn && cloud.user() && !session()) {
+    var cu = cloud.user();
+    writeJSON(SESSION_KEY, { user: cu.name || (cu.email || '').split('@')[0], at: Date.now() });
+  }
 
   renderNav();
 })();

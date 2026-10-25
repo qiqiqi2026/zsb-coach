@@ -185,6 +185,8 @@
     </div>
     <div class="top-actions">
       <span class="live"><span class="pulse"></span><span id="liveText">实时同步中</span></span>
+      <button class="btn btn-ghost" type="button" id="btnBackend">连接后端</button>
+      <button class="btn btn-ghost" type="button" id="btnCloud">连接云端</button>
       <button class="btn btn-ghost" type="button" id="btnRefresh">立即刷新</button>
       <button class="btn btn-ghost" type="button" id="btnLock">锁定</button>
     </div>
@@ -192,7 +194,7 @@
 
   <div class="kpis">
     <div class="kpi c1"><span>注册账号</span><b id="kUsers">0</b></div>
-    <div class="kpi c2"><span>当前会话</span><b id="kOnline">0</b></div>
+    <div class="kpi c2"><span id="kOnlineLabel">当前会话</span><b id="kOnline">0</b></div>
     <div class="kpi c3"><span>已学考点</span><b id="kKp">0</b></div>
     <div class="kpi c4"><span>累计答题</span><b id="kAns">0</b></div>
     <div class="kpi c5"><span>正确率</span><b id="kAcc">--</b></div>
@@ -240,8 +242,8 @@
   </div>
 
   <div class="note">
-    <b>数据范围说明：</b>当前站点是纯静态部署，没有服务器。后台读取的是<strong>这台浏览器</strong>里的账号与学习记录，实时刷新只对本机有效。
-    若要查看所有用户的真实数据（跨设备、实时汇总），需要接入一个云端数据库（例如 Supabase 免费版），我可以再帮你接上。
+    <b>数据范围说明：</b>纯静态部署时没有服务器，后台读取的是<strong>这台浏览器</strong>里的账号与学习记录。
+    启动 <code>server/server.py</code> 后点「连接后端」，即可看到本站后端里所有注册用户与学习数据（跨设备汇总）；官网的注册与学习进度会自动写进后端。
   </div>
 
   <div class="panel" style="margin-top:16px">
@@ -253,6 +255,9 @@
   </div>
 </div>
 
+<script src="js/cloud.config.js"></script>
+<script src="js/cloud.js"></script>
+<script src="js/backend.js"></script>
 <script>
 (function () {
   var DEV_KEY = 'zsb.dev.v1';
@@ -317,7 +322,10 @@
   }
 
   var unlockedAt = Number(sessionStorage.getItem(UNLOCK_KEY) || 0);
-  if (dev && unlockedAt && Date.now() - unlockedAt < 30 * 60 * 1000) enter();
+  /* 开发者账号从官网登录进来，直接放行，不再需要本地口令 */
+  var isDevUser = !!(B && B.isAdmin && B.isAdmin());
+  if (isDevUser) { enter(); }
+  else if (dev && unlockedAt && Date.now() - unlockedAt < 30 * 60 * 1000) enter();
 
   gateForm.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -422,6 +430,8 @@
   }
 
   function render() {
+    if (backendActive()) { renderBackend(); return; }
+    if (cloudKey && cloudOn) { renderCloud(); return; }
     var accounts = readJSON(ACC_KEY, {});
     var sess = readJSON(SESSION_KEY, null);
     var state = appState();
@@ -563,6 +573,200 @@
     } catch (e) {}
     render();
   });
+
+  /* ============ 本站后端模式（server/server.py） ============ */
+  var DEV_BACKEND = 'zsb.dev.backend';
+  var backendCfg = readJSON(DEV_BACKEND, null);
+  var backendBusy = false;
+  var lastBackend = 0;
+  var btnBackend = document.getElementById('btnBackend');
+  var B = window.ZSB && window.ZSB.backend;
+
+  if (!B) {
+    btnBackend.hidden = true;
+  } else if (B.isAdmin && B.isAdmin()) {
+    btnBackend.textContent = '返回官网';
+  } else if (backendCfg && backendCfg.key) {
+    btnBackend.textContent = '断开后端';
+    B.setBase(backendCfg.base || '');
+  }
+
+  function backendActive() {
+    return !!(B && ((backendCfg && backendCfg.key) || (B.isAdmin && B.isAdmin())));
+  }
+
+  function backendUsesToken() {
+    return !!(B && B.isAdmin && B.isAdmin());
+  }
+
+  btnBackend.addEventListener('click', function () {
+    if (B.isAdmin && B.isAdmin()) {
+      location.href = 'index.html';
+      return;
+    }
+    if (backendActive()) {
+      backendCfg = null;
+      try { localStorage.removeItem(DEV_BACKEND); } catch (e) {}
+      btnBackend.textContent = '连接后端';
+      lastBackend = 0;
+      document.getElementById('liveText').textContent = '本机模式';
+      renderLocal();
+      return;
+    }
+    var def = String(location.port) === '8140' ? location.origin : 'http://127.0.0.1:8140';
+    var base = prompt('后端地址（启动 server.py 后就是下面这个）', def);
+    if (!base) return;
+    var key = prompt('后台管理口令（启动 server.py 时终端会打印，也在 server/data/admin.key 里）');
+    if (!key) return;
+    backendCfg = { base: String(base).trim().replace(/\/+$/, ''), key: String(key).trim() };
+    writeJSON(DEV_BACKEND, backendCfg);
+    B.setBase(backendCfg.base);
+    btnBackend.textContent = '断开后端';
+    lastBackend = 0;
+    renderBackend();
+  });
+
+  function renderBackend() {
+    if (!backendActive()) return renderLocal();
+    if (backendBusy || Date.now() - lastBackend < 3000) return;
+    backendBusy = true;
+    lastBackend = Date.now();
+    if (backendCfg && backendCfg.base) B.setBase(backendCfg.base);
+    var useToken = backendUsesToken();
+    var p1 = useToken ? B.stats() : B.stats(backendCfg.key);
+    var p2 = useToken ? B.users() : B.users(backendCfg.key);
+    Promise.all([p1, p2]).then(function (res) {
+      var s = res[0] || {};
+      var users = res[1] || [];
+      document.getElementById('kUsers').textContent = s.users == null ? 0 : s.users;
+      if (s.online_5m != null) {
+        document.getElementById('kOnline').textContent = s.online_5m;
+        document.getElementById('kOnlineLabel').textContent = '在线人数';
+      } else {
+        document.getElementById('kOnline').textContent = s.active_24h == null ? 0 : s.active_24h;
+        document.getElementById('kOnlineLabel').textContent = '24h 活跃';
+      }
+      document.getElementById('kKp').textContent = s.kp_touched == null ? 0 : s.kp_touched;
+      document.getElementById('kAns').textContent = s.answered_total == null ? 0 : s.answered_total;
+      document.getElementById('kAcc').textContent = s.accuracy == null ? '--' : s.accuracy + '%';
+      document.getElementById('userMeta').textContent = users.length + ' 个账号 · 本站后端';
+      document.getElementById('userRows').innerHTML = users.map(function (u) {
+        var born = typeof u.created_at === 'number' ? u.created_at : Date.parse(u.created_at);
+        var seen = typeof u.last_login === 'number' ? u.last_login : Date.parse(u.last_login);
+        return '<tr>' +
+          '<td>' + esc(u.username || '--') + '<div class="tiny faint">' + esc(u.email || '') + '</div></td>' +
+          '<td>' + fmt(born) + '</td>' +
+          '<td>' + ago(seen) + '</td>' +
+          '<td><span class="tag">' + (u.kp_count || 0) + ' 考点</span> ' +
+          '<span class="tag">' + (u.answers || 0) + ' 题</span> ' +
+          '<span class="tag green">' + (u.accuracy == null ? '--' : u.accuracy + '%') + '</span></td>' +
+          '</tr>';
+      }).join('');
+      document.getElementById('userEmpty').hidden = users.length > 0;
+
+      var feed = (s.recent || []).map(function (e) {
+        var t = Date.parse(e.created_at) || 0;
+        return '<div class="ev"><i class="' + (e.ok ? 'good' : 'bad') + '"></i><div>' +
+          '<b>' + esc(e.username || '--') + ' · ' + (e.ok ? '答对' : '答错') + '</b>' +
+          '<span>' + esc(e.kp_id || '') + ' · ' + fmt(t) + ' · ' + ago(t) + '</span></div></div>';
+      }).join('');
+      document.getElementById('feed').innerHTML = feed || '<div class="empty">后端还没有答题记录</div>';
+
+      document.getElementById('learnRows').innerHTML =
+        '<tr><td style="color:var(--faint)">数据来源</td><td>本站后端 SQLite</td></tr>' +
+        '<tr><td style="color:var(--faint)">24 小时答题</td><td class="num">' + (s.answered_24h || 0) + '</td></tr>' +
+        '<tr><td style="color:var(--faint)">后端地址</td><td class="num">' + esc(backendCfg.base || '同源') + '</td></tr>';
+      document.getElementById('learnMeta').textContent = '后端聚合';
+      document.getElementById('liveText').textContent = '后端 · ' + new Date().toLocaleTimeString('zh-CN', { hour12: false });
+    }).catch(function (err) {
+      document.getElementById('liveText').textContent = '后端读取失败：' + (err && err.message ? err.message : '未知错误');
+    }).then(function () { backendBusy = false; });
+  }
+
+  /* ============ 云端模式（Supabase） ============ */
+  var cloudOn = !!(window.ZSB && window.ZSB.cloud && window.ZSB.cloud.enabled);
+  var cloudKey = '';
+  try { cloudKey = localStorage.getItem('zsb.dev.cloudkey') || ''; } catch (e) {}
+  var cloudBusy = false;
+  var lastCloud = 0;
+  var btnCloud = document.getElementById('btnCloud');
+
+  if (!cloudOn) {
+    btnCloud.hidden = true;
+  } else {
+    btnCloud.textContent = cloudKey ? '断开云端' : '连接云端';
+    btnCloud.addEventListener('click', function () {
+      if (cloudKey) {
+        cloudKey = '';
+        try { localStorage.removeItem('zsb.dev.cloudkey'); } catch (e) {}
+        btnCloud.textContent = '连接云端';
+        document.getElementById('liveText').textContent = '本机模式';
+        document.getElementById('kOnlineLabel').textContent = '当前会话';
+        lastCloud = 0;
+        renderLocal();
+        return;
+      }
+      var k = prompt('输入云端后台口令（建库时在 schema.sql 里设置的那个）');
+      if (!k) return;
+      cloudKey = k;
+      try { localStorage.setItem('zsb.dev.cloudkey', k); } catch (e) {}
+      btnCloud.textContent = '断开云端';
+      lastCloud = 0;
+      renderCloud();
+    });
+  }
+
+  function renderCloud() {
+    if (!cloudOn || !cloudKey) return renderLocal();
+    if (cloudBusy || Date.now() - lastCloud < 8000) return;
+    cloudBusy = true;
+    lastCloud = Date.now();
+    var C = window.ZSB.cloud;
+    Promise.all([C.stats(cloudKey), C.users(cloudKey, 200)]).then(function (res) {
+      var s = res[0] || {};
+      var users = res[1] || [];
+      document.getElementById('kUsers').textContent = s.users == null ? 0 : s.users;
+      document.getElementById('kOnline').textContent = s.active_24h == null ? 0 : s.active_24h;
+      document.getElementById('kKp').textContent = s.kp_touched == null ? 0 : s.kp_touched;
+      document.getElementById('kAns').textContent = s.answered_total == null ? 0 : s.answered_total;
+      document.getElementById('kAcc').textContent = s.accuracy == null ? '--' : s.accuracy + '%';
+      document.getElementById('kOnlineLabel').textContent = '24h 活跃';
+      document.getElementById('userMeta').textContent = users.length + ' 个账号 · 云端';
+      document.getElementById('userRows').innerHTML = users.map(function (u) {
+        return '<tr>' +
+          '<td>' + esc(u.username || '--') + '</td>' +
+          '<td>' + fmt(Date.parse(u.created_at)) + '</td>' +
+          '<td>' + ago(Date.parse(u.last_seen)) + '</td>' +
+          '<td><span class="tag">' + (u.kp_count || 0) + ' 考点</span> ' +
+          '<span class="tag">' + (u.accuracy == null ? '--' : u.accuracy + '%') + '</span></td>' +
+          '</tr>';
+      }).join('');
+      document.getElementById('userEmpty').hidden = users.length > 0;
+
+      var feed = (s.recent || []).map(function (e) {
+        var t = Date.parse(e.created_at) || 0;
+        return '<div class="ev"><i class="' + (e.ok ? 'good' : 'bad') + '"></i><div>' +
+          '<b>' + esc(e.username || '--') + ' · ' + (e.ok ? '答对' : '答错') + '</b>' +
+          '<span>' + esc(e.kp_id || '') + ' · ' + fmt(t) + ' · ' + ago(t) + '</span></div></div>';
+      }).join('');
+      document.getElementById('feed').innerHTML = feed || '<div class="empty">云端暂无动态</div>';
+
+      document.getElementById('learnRows').innerHTML =
+        '<tr><td style="color:var(--faint)">数据来源</td><td>Supabase 云端</td></tr>' +
+        '<tr><td style="color:var(--faint)">24 小时答题</td><td class="num">' + (s.answered_24h || 0) + '</td></tr>';
+      document.getElementById('learnMeta').textContent = '云端聚合';
+      document.getElementById('liveText').textContent = '云端 · ' + new Date().toLocaleTimeString('zh-CN', { hour12: false });
+    }).catch(function (err) {
+      document.getElementById('liveText').textContent = '云端读取失败：' + (err && err.message ? err.message : '未知错误');
+    }).then(function () { cloudBusy = false; });
+  }
+
+  function renderLocal() {
+    var keep = cloudKey;
+    cloudKey = '';
+    render();
+    cloudKey = keep;
+  }
 })();
 </script>
 </body>

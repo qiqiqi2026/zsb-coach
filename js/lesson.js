@@ -740,11 +740,54 @@
     Z.ui.toast(added ? '已加入记忆卡' : '这张卡已经在卡盒里了');
   }
 
+  function stripMd(text) {
+    return String(text || '')
+      .replace(/```[\s\S]*?```/g, function (m) { return m.replace(/```[a-z]*/g, ''); })
+      .replace(/[`*_#>|]/g, '')
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+  }
+
+  /* 把当前这一块讲义转成纯文本，交给 AI 当上下文 */
+  function blockPlainText(block) {
+    if (!block) return '';
+    if (block.md) return stripMd(block.md);
+    if (block.type === 'formula') {
+      return String(block.latex || '') + (block.caption ? '（' + block.caption + '）' : '');
+    }
+    if (block.type === 'compare') {
+      var rows = Array.isArray(block.rows) ? block.rows : [block.rows];
+      return [].concat(block.headers || []).join(' | ') + '\n' +
+        rows.map(function (r) { return [].concat(r || []).join(' | '); }).join('\n');
+    }
+    if (block.type === 'code') return String(block.code || '');
+    if (block.type === 'diagram') {
+      var d = Z.DIAGRAMS && Z.DIAGRAMS[block.diagramId];
+      return String(block.caption || (d && d.caption) || '');
+    }
+    if (block.type === 'quiz') {
+      var q = Z.Q_BY_ID[block.questionId];
+      return q ? stripMd(q.stem) + (q.analysis ? '\n官方解析：' + stripMd(q.analysis) : '') : '';
+    }
+    return '';
+  }
+
   function openConfused() {
     var l = ctx.lesson;
     var bi = ctx.blockIndex;
     var block = l.sections[bi];
     var prev = bi > 0 ? l.sections[bi - 1] : null;
+
+    /* 有 AI 就直接把这一块原文发给 AI 讲，不再让用户先看通用解释 */
+    var labels = { text: '讲解', analogy: '类比', tip: '技巧', warning: '易错点', formula: '公式', compare: '对比表', code: '代码', diagram: '图解', quiz: '随堂小问' };
+    var excerpt = blockPlainText(block);
+    if (excerpt && Z.aiUI && Z.aiUI.askWithContext) {
+      var subject = (Z.SUBJECTS && Z.SUBJECTS[l.subject] && Z.SUBJECTS[l.subject].name) || '';
+      var contextText = '《' + (l.title || '') + '》' + (subject ? '（' + subject + '）' : '') +
+        ' 第 ' + (bi + 1) + '/' + l.sections.length + ' 段 · ' + (labels[block.type] || block.type) + '\n' + excerpt;
+      if (Z.aiUI.askWithContext(contextText, '这一块我没看懂，请就上面这段讲义直接给我讲明白：先用一句话说它到底在讲什么，再分步骤拆开，最后举一个贴近专升本考点的例子。')) return;
+    }
     var glossary = {
       english: '本课常见符号：n. 名词；v. 动词；adj. 形容词；adv. 副词；prep. 介词；conj. 连词。判断时看位置，不背词义。',
       math: '本课常见符号：Δ 表示变化量；lim 表示极限；f′(x₀) 表示导数；→ 表示趋近。极限不是直接代入。',
@@ -756,7 +799,7 @@
       (prev ? '上一块讲的是：' + Z.ui.esc(String(prev.md || prev.caption || '').slice(0, 80)) + '…；这一块是在它的基础上再往前一步。' : '这是本课第一块，它负责建立场景，后面才会给定义。') +
       '</p></div>' +
       '<div class="card pad-sm"><b>换一种更笨的说法</b><p class="small muted mt8">先别管公式，问自己三个问题：这块解决什么问题？关键量是什么？如果换个数字，结论还成立吗？</p></div>' +
-      '<div class="tiny faint">本地解释先兜底；接入 AI 后会基于当前段落生成针对性讲解。</div>' +
+      '<div class="tiny faint">当前 AI 助教不可用，先看这份本地解释；在右下角 AI 设置里配好模型后，这里会直接由 AI 针对当前段落讲解。</div>' +
       '</div>';
     Z.ui.sheet({ title: '这块没看懂', body: body, foot: '<button class="btn ghost" data-close>先自己再读一遍</button>' })
       .el.querySelector('[data-close]').addEventListener('click', function (e) { e.target.closest('.sheet').remove(); document.querySelector('.sheet-backdrop').remove(); });

@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- 升本教练单文件离线版 · 构建于 2026-10-25 18:02 -->
 <html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="utf-8" />
@@ -6,10 +7,12 @@
   <meta name="theme-color" content="#0b1020" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>升本教练 · 学练一体</title>
+  <meta name="description" content="升本教练学习端：专升本英语、高等数学、计算机全部考点的六阶段讲义、题库与图解。" />
+  <meta name="robots" content="noindex,follow" />
+  <title>升本教练 · 专升本学练一体</title>
   
-  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjN2M5Y2ZmIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzNkZGM5NyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTIiIGZpbGw9IiMwYjEwMjAiLz4KICA8cmVjdCB4PSIzNCIgeT0iMzQiIHdpZHRoPSI0NDQiIGhlaWdodD0iNDQ0IiByeD0iOTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNnKSIgc3Ryb2tlLXdpZHRoPSI4IiBvcGFjaXR5PSIwLjUiLz4KICA8cGF0aCBkPSJNMjg2IDkyIDE3OCAyODhoNzRsLTMyIDEzMiAxMTYtMjA2aC03NnoiIGZpbGw9InVybCgjZykiLz4KICA8Y2lyY2xlIGN4PSIxNTAiIGN5PSIzNjgiIHI9IjE2IiBmaWxsPSIjN2M5Y2ZmIiBvcGFjaXR5PSIwLjgiLz4KICA8Y2lyY2xlIGN4PSIzNjAiIGN5PSIxNTAiIHI9IjEwIiBmaWxsPSIjM2RkYzk3IiBvcGFjaXR5PSIwLjgiLz4KPC9zdmc+Cg==" />
-  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjN2M5Y2ZmIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzNkZGM5NyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTIiIGZpbGw9IiMwYjEwMjAiLz4KICA8cmVjdCB4PSIzNCIgeT0iMzQiIHdpZHRoPSI0NDQiIGhlaWdodD0iNDQ0IiByeD0iOTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNnKSIgc3Ryb2tlLXdpZHRoPSI4IiBvcGFjaXR5PSIwLjUiLz4KICA8cGF0aCBkPSJNMjg2IDkyIDE3OCAyODhoNzRsLTMyIDEzMiAxMTYtMjA2aC03NnoiIGZpbGw9InVybCgjZykiLz4KICA8Y2lyY2xlIGN4PSIxNTAiIGN5PSIzNjgiIHI9IjE2IiBmaWxsPSIjN2M5Y2ZmIiBvcGFjaXR5PSIwLjgiLz4KICA8Y2lyY2xlIGN4PSIzNjAiIGN5PSIxNTAiIHI9IjEwIiBmaWxsPSIjM2RkYzk3IiBvcGFjaXR5PSIwLjgiLz4KPC9zdmc+Cg==" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon.svg" />
   <style>
 /* ===== 设计变量 ===== */
 :root {
@@ -615,7 +618,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
   <div id="toast-root" class="toast-root"></div>
 
   <script>
-/* ==== data.knowledge.js ==== */
 /* 知识图谱：三科 × 22 个考点 = 66 个考点 */
 (function (Z) {
   Z.SUBJECTS = {
@@ -757,7 +759,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== lesson-factory.js ==== */
 /* 内容工厂：把精简的「讲义脚本」展开成六阶段完整讲义；同时快速生成规范题目 */
 (function (Z) {
   var LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
@@ -918,7 +919,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== data.questions.js ==== */
 /* 题库种子数据：45+ 题，覆盖选择/填空/计算/代码/阅读/完形/翻译 */
 (function (Z) {
   function ana(answer, idea, steps, pit) {
@@ -1545,7 +1545,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== data.questions.eng.js ==== */
 /* 英语扩展题库：8 个考点 × 5 题，判分字段与主题库一致 */
 (function (Z) {
   Z.QUESTIONS.push(
@@ -2154,7 +2153,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== data.questions.math.js ==== */
 /* 数学扩展题库：8 个考点 × 5 题，答案解析含完整步骤 */
 (function (Z) {
   Z.QUESTIONS.push(
@@ -2763,7 +2761,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== data.questions.cs.js ==== */
 /* 计算机扩展题库：8 个考点 × 5 题，含可运行代码题 */
 (function (Z) {
   Z.QUESTIONS.push(
@@ -3386,7 +3383,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== data.questions.ext.eng.js ==== */
 /* 英语扩展题库：12 个新考点 × 4 题 = 48 题 */
 (function (Z) {
   function ana(answer, idea, steps, pit) {
@@ -3723,7 +3719,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== diagrams.js ==== */
 /* 讲义图解库：内联 SVG，统一风格，移动端自适应 */
 (function (Z) {
   function t(x, y, s, size, anchor, weight, fill) {
@@ -4093,7 +4088,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== diagrams2.js ==== */
 /* 第二批图解：扩展考点的可视化（18 张） */
 (function (Z) {
   var C = { text: '#dbe3f5', dim: '#8b95ab', line: '#3a4358', box: '#171b26', accent: '#7c9cff', green: '#4ec9a2', amber: '#f0b45f', red: '#ff7b8a' };
@@ -4421,7 +4415,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== diagrams3.js ==== */
 /* 第三批图解：新增计算机模块的可视化（11 张） */
 (function (Z) {
   var C = { text: '#dbe3f5', dim: '#8b95ab', line: '#3a4358', box: '#171b26', accent: '#7c9cff', green: '#4ec9a2', amber: '#f0b45f', red: '#ff7b8a', purple: '#b28dff' };
@@ -4580,7 +4573,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== data.lessons.js ==== */
 /* 学习单元（Lesson）种子数据：三科各 2 个，含完整六阶段素材 */
 (function (Z) {
   Z.LESSONS = [
@@ -4956,7 +4948,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== data.lessons.eng.js ==== */
 /* 英语扩展讲义：每个考点一份，六阶段结构完整，含图解与详细例子 */
 (function (Z) {
   Z.LESSONS.push(
@@ -5378,7 +5369,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== data.lessons.math.js ==== */
 /* 数学扩展讲义：每个考点一份，含图解、推导与易错点 */
 (function (Z) {
   Z.LESSONS.push(
@@ -5801,7 +5791,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== data.lessons.cs.js ==== */
 /* 计算机扩展讲义：8 个考点各一份，含图解、代码示例与易错点 */
 (function (Z) {
   Z.LESSONS.push(
@@ -6311,7 +6300,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.python.js ==== */
 /* Python 模块包：8 个考点 + 8 份完整讲义 + 32 道题 */
 (function (Z) {
   Z.addKps([
@@ -6994,7 +6982,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.html.js ==== */
 /* HTML 与 CSS 模块包：8 个考点 + 8 份完整讲义 + 32 道题 */
 (function (Z) {
   Z.addKps([
@@ -7696,7 +7683,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.js.js ==== */
 /* JavaScript 前端模块包：8 个考点 + 8 份完整讲义 + 32 道题 */
 (function (Z) {
   Z.addKps([
@@ -8392,7 +8378,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.spider.js ==== */
 /* 爬虫与数据模块包：8 个考点 + 8 份完整讲义 + 32 道题 */
 (function (Z) {
   Z.addKps([
@@ -9091,7 +9076,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.database.js ==== */
 /* 数据库模块包：6 个考点 + 6 份完整讲义 + 24 道题 */
 (function (Z) {
   Z.addKps([
@@ -9608,7 +9592,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.softeng.js ==== */
 /* 软件工程模块包：6 个考点 + 6 份完整讲义 + 24 道题 */
 (function (Z) {
   Z.addKps([
@@ -10123,7 +10106,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.dsa.js ==== */
 /* 数据结构与算法模块包：6 个考点 + 6 份完整讲义 + 24 道题 */
 (function (Z) {
   Z.addKps([
@@ -10645,7 +10627,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.backfill.eng.js ==== */
 /* 英语补讲义包：12 个已有考点各补 1 份完整讲义，不新增考点、不新增题目 */
 (function (Z) {
   Z.LESSONS.push(
@@ -11441,7 +11422,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.backfill.math.js ==== */
 /* 高数补齐包：12 个考点 × 4 题 + 12 份完整讲义 */
 (function (Z) {
   Z.QUESTIONS.push.apply(Z.QUESTIONS, Z.makeQs([
@@ -12273,7 +12253,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.security.js ==== */
 /* 网络安全模块：8 考点 × 4 题 + 8 份完整讲义 */
 (function (Z) {
   Z.addKps([
@@ -12947,7 +12926,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.os.js ==== */
 /* 操作系统模块包：7 个考点 + 7 份完整讲义 + 28 道题 */
 (function (Z) {
   Z.addKps([
@@ -13555,7 +13533,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.backfill.cs.js ==== */
 /* 存量CS考点回填：15考点 × 4题 + 15份完整讲义 */
 (function (Z) {
   /* 补充注册：使「网络与数据库」章节达到 3 个考点 */
@@ -14777,7 +14754,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.expand.eng.js ==== */
 /* 英语扩展包：6 个考点 + 24 道题 + 6 份完整讲义 */
 (function (Z) {
   Z.addKps([
@@ -15320,7 +15296,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== pack.expand.math.js ==== */
 /* 高数扩展包：6 个考点 + 6 份完整讲义 + 24 道题 */
 (function (Z) {
   Z.addKps([
@@ -15842,7 +15817,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== data.questions.index.js ==== */
 /* 题库索引：在所有分科题库加载后重建映射与查询函数 */
 (function (Z) {
   var LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
@@ -15868,7 +15842,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== data.lessons.index.js ==== */
 /* 讲义索引：在所有分科讲义加载后重建映射与查询函数 */
 (function (Z) {
   Z.LESSON_BY_ID = {};
@@ -15884,7 +15857,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== data.exam.js ==== */
 /* 迷你模考卷：10 题 × 10 分，覆盖三科与阅读/完形/翻译 */
 (function (Z) {
   function ana(answer, idea, steps, pit) {
@@ -16021,7 +15993,900 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== store.js ==== */
+/* Supabase 接入配置：把下面两个值替换成你的项目信息后即启用云端同步 */
+window.ZSB_CLOUD = {
+  url: '',
+  anonKey: ''
+};
+
+</script>
+  <script>
+/* 云端同步（Supabase REST）——配置为空时自动关闭，页面回到纯本机模式 */
+(function (Z) {
+  var cfg = window.ZSB_CLOUD || {};
+  var enabled = !!(cfg.url && cfg.anonKey);
+  var SESSION_KEY = 'zsb.cloud.session.v1';
+  var base = String(cfg.url || '').replace(/\/+$/, '');
+  var session = read(SESSION_KEY, null);
+  var timer = null;
+  var pushing = false;
+  var again = false;
+  var STAGES = ['intro', 'learn', 'demo', 'guided', 'solo', 'wrap'];
+
+  function read(k, fb) {
+    try { return JSON.parse(localStorage.getItem(k) || 'null') || fb; } catch (e) { return fb; }
+  }
+  function save(k, v) {
+    try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
+  }
+  function headers(token) {
+    var h = { apikey: cfg.anonKey, 'Content-Type': 'application/json' };
+    if (token) h.Authorization = 'Bearer ' + token;
+    return h;
+  }
+  function request(method, path, body, token, prefer) {
+    var h = headers(token);
+    if (prefer) h.Prefer = prefer;
+    return fetch(base + path, {
+      method: method,
+      headers: h,
+      body: body == null ? undefined : JSON.stringify(body)
+    }).then(function (r) {
+      return r.text().then(function (text) {
+        var data = null;
+        try { data = text ? JSON.parse(text) : null; } catch (e) { data = text; }
+        if (!r.ok) {
+          var msg = (data && (data.msg || data.message || data.error_description || data.error)) || ('HTTP ' + r.status);
+          var err = new Error(msg);
+          err.status = r.status;
+          err.data = data;
+          throw err;
+        }
+        return data;
+      });
+    });
+  }
+  function keep(payload, name) {
+    session = {
+      access: payload.access_token,
+      refresh: payload.refresh_token,
+      exp: Date.now() + (Number(payload.expires_in) || 3600) * 1000,
+      uid: payload.user && payload.user.id,
+      email: payload.user && payload.user.email,
+      name: name || ((payload.user && payload.user.email) || '').split('@')[0]
+    };
+    save(SESSION_KEY, session);
+    return session;
+  }
+  function refreshToken() {
+    if (!session || !session.refresh) return Promise.reject(new Error('会话已失效，请重新登录'));
+    return request('POST', '/auth/v1/token?grant_type=refresh_token', { refresh_token: session.refresh })
+      .then(function (d) { return keep(d, session.name).access; });
+  }
+  function token() {
+    if (!session) return Promise.reject(new Error('未登录'));
+    if (session.exp - Date.now() < 60000) return refreshToken();
+    return Promise.resolve(session.access);
+  }
+  function profileName(uid) {
+    return request('GET', '/rest/v1/profiles?select=username&id=eq.' + uid, null, session.access)
+      .then(function (rows) {
+        if (rows && rows.length && rows[0].username) session.name = rows[0].username;
+        return session.name;
+      })
+      .catch(function () { return session.name; });
+  }
+  function upsertProfile(username) {
+    return token().then(function (t) {
+      return request('POST', '/rest/v1/profiles?on_conflict=id',
+        [{ id: session.uid, username: username || session.name, last_seen: new Date().toISOString() }],
+        t, 'resolution=merge-duplicates,return=minimal');
+    });
+  }
+
+  Z.cloud = { enabled: enabled, sync: function () {} };
+  if (!enabled) return;
+
+  Z.cloud.session = function () { return session; };
+  Z.cloud.user = function () {
+    return session ? { id: session.uid, email: session.email, name: session.name } : null;
+  };
+
+  Z.cloud.signUp = function (email, password, username) {
+    return request('POST', '/auth/v1/signup', { email: email, password: password, data: { username: username } })
+      .then(function (d) {
+        if (!d || !d.access_token) {
+          throw new Error('账号已创建，但项目开启了邮箱验证。请到 Supabase 关闭 Confirm email，或在邮箱里点确认链接后再登录。');
+        }
+        keep(d, username);
+        return upsertProfile(username).catch(function () {}).then(function () {
+          return { name: username, email: email };
+        });
+      });
+  };
+
+  Z.cloud.signIn = function (email, password) {
+    return request('POST', '/auth/v1/token?grant_type=password', { email: email, password: password })
+      .then(function (d) {
+        keep(d, (d.user && d.user.user_metadata && d.user.user_metadata.username) || '');
+        return profileName(session.uid).then(function (name) {
+          return { name: name || session.email.split('@')[0], email: session.email };
+        });
+      });
+  };
+
+  Z.cloud.signOut = function () {
+    session = null;
+    try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+  };
+
+  /* ---------- 阶段换算：本机用字符串阶段，云端只存序号 ---------- */
+  function stageIndex(p) {
+    if (!p) return 0;
+    if (p.status === 'done') return STAGES.length;
+    var i = STAGES.indexOf(p.stage);
+    return i < 0 ? 0 : i;
+  }
+  function masteryOf(p) {
+    var n = stageIndex(p);
+    return Math.round((n / STAGES.length) * 1000) / 1000;
+  }
+
+  /* ---------- 上报：进度 upsert + 答题事件 upsert（重复也无害） ---------- */
+  Z.cloud.sync = function (state) {
+    if (!state || !session) return;
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(function () { run(state); }, 1800);
+  };
+
+  function run(state) {
+    if (!session) return;
+    if (pushing) { again = true; return; }
+    pushing = true;
+    again = false;
+    token().then(function (t) {
+      return pushProgress(t, state).then(function () { return pushAttempts(t, state); });
+    }).catch(function () {}).then(function () {
+      pushing = false;
+      if (again) run(state);
+    });
+  }
+
+  function pushProgress(t, state) {
+    var rows = [];
+    var prog = state.progress || {};
+    Object.keys(prog).forEach(function (k) {
+      var p = prog[k] || {};
+      rows.push({
+        user_id: session.uid,
+        kp_id: String(k),
+        stage: stageIndex(p),
+        mastery: masteryOf(p),
+        updated_at: new Date(Number(p.lastReadAt) || Number(p.completedAt) || Date.now()).toISOString()
+      });
+    });
+    if (!rows.length) return Promise.resolve(null);
+    return request('POST', '/rest/v1/progress?on_conflict=user_id,kp_id',
+      rows.slice(0, 400), t, 'resolution=merge-duplicates,return=minimal');
+  }
+
+  function pushAttempts(t, state) {
+    var list = (state.attempts || []).slice(-150);
+    if (!list.length) return Promise.resolve(null);
+    var rows = list.map(function (a) {
+      return {
+        user_id: session.uid,
+        attempt_id: String(a.id || ('a' + (a.ts || Date.now()))),
+        kp_id: a.kpId || a.kp || (a.kpIds && a.kpIds[0]) || null,
+        ok: a.correct === true || a.ok === true,
+        type: a.type || null,
+        payload: {
+          questionId: a.questionId || a.qid || null,
+          kpIds: a.kpIds || null,
+          mode: a.mode || null,
+          ts: a.ts || Date.now()
+        },
+        created_at: new Date(a.ts || Date.now()).toISOString()
+      };
+    });
+    return request('POST', '/rest/v1/attempts?on_conflict=user_id,attempt_id',
+      rows, t, 'resolution=merge-duplicates,return=minimal');
+  }
+
+  /* ---------- 拉取：换设备后把云端进度与答题合并回本机 ---------- */
+  Z.cloud.hydrate = function (state, done) {
+    if (!state) return;
+    var finish = function () { if (done) { try { done(); } catch (e) {} } };
+    if (!session) { finish(); return; }
+    token().then(function (t) {
+      return Promise.all([
+        request('GET', '/rest/v1/progress?select=kp_id,stage,mastery,updated_at&user_id=eq.' +
+          session.uid + '&limit=1000', null, t),
+        request('GET', '/rest/v1/attempts?select=attempt_id,kp_id,ok,type,payload,created_at&user_id=eq.' +
+          session.uid + '&order=created_at.asc&limit=2000', null, t)
+      ]);
+    }).then(function (res) {
+      mergeProgress(state, res[0] || []);
+      mergeAttempts(state, res[1] || []);
+      finish();
+    }).catch(finish);
+  };
+
+  function mergeProgress(state, rows) {
+    state.progress = state.progress || {};
+    rows.forEach(function (r) {
+      if (!r || !r.kp_id) return;
+      var key = String(r.kp_id);
+      var p = state.progress[key] || (state.progress[key] = {
+        lessonId: key, status: 'unlocked', stage: 'intro', blockIndex: 0
+      });
+      var remote = Number(r.stage) || 0;
+      var remoteTs = Date.parse(r.updated_at) || 0;
+      if (remote > stageIndex(p)) {
+        if (remote >= STAGES.length) {
+          p.stage = 'wrap';
+          p.status = 'done';
+          p.completedAt = p.completedAt || remoteTs || Date.now();
+        } else {
+          p.stage = STAGES[remote];
+          if (p.status !== 'done') p.status = 'inProgress';
+        }
+      }
+      p.syncedAt = Math.max(Number(p.syncedAt) || 0, remoteTs);
+    });
+  }
+
+  function mergeAttempts(state, rows) {
+    state.attempts = state.attempts || [];
+    var seen = {};
+    state.attempts.forEach(function (a) { if (a && a.id) seen[a.id] = 1; });
+    var added = 0;
+    rows.forEach(function (r) {
+      var id = r && r.attempt_id;
+      if (!id || seen[id]) return;
+      var p = r.payload || {};
+      state.attempts.push({
+        id: id,
+        ts: Date.parse(r.created_at) || Number(p.ts) || Date.now(),
+        questionId: p.questionId || null,
+        kpIds: p.kpIds || (r.kp_id ? [r.kp_id] : []),
+        correct: r.ok === true,
+        type: r.type || null,
+        fromCloud: true
+      });
+      seen[id] = 1;
+      added += 1;
+    });
+    if (added) {
+      state.attempts.sort(function (a, b) { return (a.ts || 0) - (b.ts || 0); });
+      if (state.attempts.length > 4000) state.attempts = state.attempts.slice(-3500);
+    }
+  }
+
+  /* ---------- 开发者后台：带口令读取云端聚合数据 ---------- */
+  Z.cloud.stats = function (key) {
+    return request('POST', '/rest/v1/rpc/admin_stats', { p_key: key }, cfg.anonKey);
+  };
+  Z.cloud.users = function (key, limit) {
+    return request('POST', '/rest/v1/rpc/admin_users', { p_key: key, p_limit: limit || 200 }, cfg.anonKey);
+  };
+})(window.ZSB = window.ZSB || {});
+
+</script>
+  <script>
+/* 本站后端账号与学习数据（配合 server/server.py；静态站不可达时自动关闭） */
+(function (Z) {
+  var SESSION_KEY = 'zsb.api.session.v1';
+  var BASE_KEY = 'zsb.api.base';
+  var STAGES = ['intro', 'learn', 'demo', 'guided', 'solo', 'wrap'];
+
+  var session = read(SESSION_KEY, null);
+  var timer = null;
+  var pushing = false;
+  var again = false;
+  var probed = null;
+
+  function read(k, fb) {
+    try { return JSON.parse(localStorage.getItem(k) || 'null') || fb; } catch (e) { return fb; }
+  }
+  function write(k, v) {
+    try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
+  }
+
+  /* 返回 '' 表示与页面同源；返回地址表示跨源；返回 null 表示当前环境不可用 */
+  function base() {
+    var saved = '';
+    try { saved = String(localStorage.getItem(BASE_KEY) || '').replace(/\/+$/, ''); } catch (e) {}
+    if (saved) return saved;
+    if (location.protocol !== 'http:' && location.protocol !== 'https:') return null;
+    if (String(location.port) === '8140') return '';
+    /* 线上 https 页面不能访问 http 的本机后端（混合内容会被浏览器拦截） */
+    if (location.protocol === 'https:') return null;
+    return 'http://127.0.0.1:8140';
+  }
+
+  function setBase(url) {
+    try {
+      var v = String(url || '').trim().replace(/\/+$/, '');
+      if (v) localStorage.setItem(BASE_KEY, v);
+      else localStorage.removeItem(BASE_KEY);
+    } catch (e) {}
+    probed = null;
+  }
+
+  function request(method, path, body, token) {
+    var b = base();
+    if (b === null) return Promise.reject(new Error('当前页面无法连接本机后端'));
+    var headers = { 'Content-Type': 'application/json' };
+    if (token) headers.Authorization = 'Bearer ' + token;
+    return fetch((b || '') + path, {
+      method: method,
+      headers: headers,
+      cache: 'no-store',
+      body: body == null ? undefined : JSON.stringify(body)
+    }).then(function (r) {
+      return r.text().then(function (text) {
+        var data = null;
+        try { data = text ? JSON.parse(text) : null; } catch (e) { data = text; }
+        if (!r.ok) {
+          var err = new Error((data && (data.error || data.message)) || ('HTTP ' + r.status));
+          err.status = r.status;
+          throw err;
+        }
+        return data;
+      });
+    });
+  }
+
+  function probe() {
+    if (probed) return probed;
+    probed = new Promise(function (resolve) {
+      var b = base();
+      if (b === null) return resolve(false);
+      var done = false;
+      var tid = setTimeout(function () { if (!done) { done = true; resolve(false); } }, 2200);
+      fetch((b || '') + '/api/health', { cache: 'no-store' }).then(function (r) {
+        return r.ok ? r.json() : null;
+      }).then(function (d) {
+        if (done) return;
+        done = true;
+        clearTimeout(tid);
+        resolve(!!(d && d.ok));
+      }).catch(function () {
+        if (done) return;
+        done = true;
+        clearTimeout(tid);
+        resolve(false);
+      });
+    });
+    return probed;
+  }
+
+  function keep(d) {
+    var u = (d && d.user) || {};
+    session = {
+      token: d && d.token,
+      user: u,
+      is_admin: !!(u.is_admin),
+      at: Date.now()
+    };
+    write(SESSION_KEY, session);
+    startHeartbeat();
+    return {
+      name: u.username || '',
+      email: u.email || '',
+      is_admin: !!u.is_admin
+    };
+  }
+
+  var hbTimer = null;
+  function startHeartbeat() {
+    if (hbTimer) clearInterval(hbTimer);
+    hbTimer = setInterval(function () {
+      if (!session || !session.token) return;
+      request('GET', '/api/heartbeat', null, session.token).catch(function (err) {
+        if (err && err.status === 401) signOut();
+      });
+    }, 60000);
+  }
+  if (session && session.token) startHeartbeat();
+
+  function signUp(email, password, username) {
+    return request('POST', '/api/register', {
+      email: email, password: password, username: username
+    }).then(keep);
+  }
+
+  function signIn(account, password) {
+    return request('POST', '/api/login', {
+      account: account, password: password
+    }).then(keep);
+  }
+
+  function signOut() {
+    session = null;
+    try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+  }
+
+  function stageIndex(p) {
+    if (!p) return 0;
+    if (p.status === 'done') return STAGES.length;
+    var i = STAGES.indexOf(p.stage);
+    return i < 0 ? 0 : i;
+  }
+
+  function iso(ms) {
+    return new Date(Number(ms) || Date.now()).toISOString();
+  }
+
+  function payloadOf(state) {
+    var progress = [];
+    var prog = (state && state.progress) || {};
+    Object.keys(prog).forEach(function (k) {
+      var p = prog[k] || {};
+      progress.push({
+        kpId: k,
+        stage: stageIndex(p),
+        mastery: Math.round((stageIndex(p) / STAGES.length) * 1000) / 1000,
+        updatedAt: iso(Number(p.lastReadAt) || Number(p.completedAt) || Date.now())
+      });
+    });
+    var attempts = ((state && state.attempts) || []).slice(-150).map(function (a) {
+      return {
+        id: a.id || ('a' + (a.ts || Date.now())),
+        kpId: a.kpId || a.kp || (a.kpIds && a.kpIds[0]) || '',
+        ok: a.correct === true || a.ok === true,
+        type: a.type || '',
+        payload: {
+          questionId: a.questionId || a.qid || null,
+          kpIds: a.kpIds || null,
+          mode: a.mode || null,
+          ts: a.ts || Date.now()
+        },
+        createdAt: iso(a.ts || Date.now())
+      };
+    });
+    return { progress: progress.slice(0, 400), attempts: attempts };
+  }
+
+  function sync(state) {
+    if (!session || !session.token || !state) return;
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(function () { push(state); }, 2000);
+  }
+
+  function push(state) {
+    if (!session || !session.token) return;
+    if (pushing) { again = true; return; }
+    pushing = true;
+    request('POST', '/api/sync', payloadOf(state), session.token).catch(function (err) {
+      if (err && err.status === 401) signOut();
+    }).then(function () {
+      pushing = false;
+      if (again) { again = false; push(state); }
+    });
+  }
+
+  function mergeProgress(state, rows) {
+    state.progress = state.progress || {};
+    (rows || []).forEach(function (r) {
+      if (!r || !r.kp_id) return;
+      var key = String(r.kp_id);
+      var p = state.progress[key] || (state.progress[key] = {
+        lessonId: key, status: 'unlocked', stage: 'intro', blockIndex: 0
+      });
+      var remote = Number(r.stage) || 0;
+      var remoteTs = Date.parse(r.updated_at) || 0;
+      if (remote > stageIndex(p)) {
+        if (remote >= STAGES.length) {
+          p.stage = 'wrap';
+          p.status = 'done';
+          p.completedAt = p.completedAt || remoteTs || Date.now();
+        } else {
+          p.stage = STAGES[remote];
+          if (p.status !== 'done') p.status = 'inProgress';
+        }
+      }
+      p.syncedAt = Math.max(Number(p.syncedAt) || 0, remoteTs);
+    });
+  }
+
+  function mergeAttempts(state, rows) {
+    state.attempts = state.attempts || [];
+    var seen = {};
+    state.attempts.forEach(function (a) { if (a && a.id) seen[a.id] = 1; });
+    var added = 0;
+    (rows || []).forEach(function (r) {
+      var id = r && r.attempt_id;
+      if (!id || seen[id]) return;
+      var p = r.payload || {};
+      state.attempts.push({
+        id: id,
+        ts: Date.parse(r.created_at) || Number(p.ts) || Date.now(),
+        questionId: p.questionId || null,
+        kpIds: p.kpIds || (r.kp_id ? [r.kp_id] : []),
+        correct: r.ok === true,
+        type: r.type || null,
+        fromBackend: true
+      });
+      seen[id] = 1;
+      added += 1;
+    });
+    if (added) {
+      state.attempts.sort(function (a, b) { return (a.ts || 0) - (b.ts || 0); });
+      if (state.attempts.length > 4000) state.attempts = state.attempts.slice(-3500);
+    }
+  }
+
+  function hydrate(state, done) {
+    var finish = function () { if (done) { try { done(); } catch (e) {} } };
+    if (!state || !session || !session.token) return finish();
+    request('GET', '/api/data', null, session.token).then(function (d) {
+      mergeProgress(state, (d && d.progress) || []);
+      mergeAttempts(state, (d && d.attempts) || []);
+      finish();
+    }).catch(function (err) {
+      if (err && err.status === 401) signOut();
+      finish();
+    });
+  }
+
+  Z.backend = {
+    probe: probe,
+    base: base,
+    setBase: setBase,
+    session: function () { return session; },
+    user: function () { return session && session.user ? session.user : null; },
+    isAdmin: function () { return !!(session && session.is_admin); },
+    signUp: signUp,
+    signIn: signIn,
+    signOut: signOut,
+    sync: sync,
+    hydrate: hydrate,
+    heartbeat: function () {
+      if (!session || !session.token) return Promise.resolve(null);
+      return request('GET', '/api/heartbeat', null, session.token);
+    },
+    promote: function (email, adminKey) {
+      return request('POST', '/api/admin/promote?key=' + encodeURIComponent(adminKey || ''), { email: email });
+    },
+    stats: function () {
+      return request('GET', '/api/admin/stats', null, session && session.token);
+    },
+    users: function () {
+      return request('GET', '/api/admin/users', null, session && session.token);
+    }
+  };
+  Z.backend.enabled = !!(session && session.token);
+})(window.ZSB = window.ZSB || {});
+
+</script>
+  <script>
+/* AI 配置：云端接口优先（电脑关机也能用），本机 Ollama 兜底。也可以不填，用户在应用内设置 */
+window.ZSB_AI = {
+  cloud: {
+    base: '',   /* 例：https://api.siliconflow.cn/v1 */
+    key: '',    /* 云端 API Key */
+    model: ''   /* 例：Qwen/Qwen2.5-7B-Instruct */
+  },
+  local: {
+    base: 'http://localhost:11434',
+    model: 'qwen3-8b:latest'
+  },
+  system: '你是「升本教练」的 AI 助教，面向专升本考生。用简体中文、口语化地讲解，先给结论再给步骤；最多 6 行就要有一个小结论。数学公式写成纯文本（如 x^2、∫），不要输出 LaTeX。不要编造考点之外的事实。'
+};
+
+</script>
+  <script>
+/* AI 客户端：云端 OpenAI 兼容接口优先，本机 Ollama 兜底，自动降级 */
+(function (Z) {
+  var KEY = 'zsb.ai.cfg.v2';
+  var defaults = window.ZSB_AI || {};
+  var abortCtrl = null;
+
+  function read(k, fb) {
+    try { return JSON.parse(localStorage.getItem(k) || 'null') || fb; } catch (e) { return fb; }
+  }
+  function write(k, v) {
+    try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
+  }
+  function clean(u) {
+    return String(u || '').trim().replace(/\/+$/, '');
+  }
+  function savedAll() {
+    return read(KEY, null) || {};
+  }
+  function section(name) {
+    var saved = savedAll()[name] || {};
+    var d = defaults[name] || {};
+    return {
+      base: clean(saved.base != null ? saved.base : d.base),
+      model: String(saved.model != null ? saved.model : (d.model || '')).trim(),
+      key: String(saved.key != null ? saved.key : (d.key || '')).trim()
+    };
+  }
+
+  function cfg() {
+    return {
+      local: section('local'),
+      cloud: section('cloud'),
+      gateway: {
+        url: String((defaults.gateway && defaults.gateway.url) || '').trim(),
+        model: String((defaults.gateway && defaults.gateway.model) || '').trim()
+      },
+      system: String(savedAll().system || defaults.system || '')
+    };
+  }
+
+  function setCfg(patch) {
+    var cur = cfg();
+    var next = {
+      local: {
+        base: clean(patch && patch.local && patch.local.base != null ? patch.local.base : cur.local.base),
+        model: String(patch && patch.local && patch.local.model != null ? patch.local.model : cur.local.model).trim()
+      },
+      cloud: {
+        base: clean(patch && patch.cloud && patch.cloud.base != null ? patch.cloud.base : cur.cloud.base),
+        model: String(patch && patch.cloud && patch.cloud.model != null ? patch.cloud.model : cur.cloud.model).trim(),
+        key: String(patch && patch.cloud && patch.cloud.key != null ? patch.cloud.key : cur.cloud.key).trim()
+      },
+      system: (patch && patch.system) || cur.system
+    };
+    write(KEY, next);
+    return next;
+  }
+
+  function resetCfg() {
+    try { localStorage.removeItem(KEY); } catch (e) {}
+  }
+
+  function mixedBlocked(base) {
+    return location.protocol === 'https:' &&
+      /^http:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])/i.test(String(base || ''));
+  }
+
+  /* 优先级：云端 -> 本机；不可用的直接跳过 */
+  function endpoints() {
+    var c = cfg();
+    var list = [];
+    if (c.gateway.url) {
+      list.push({ kind: 'gateway', mode: 'gateway', base: c.gateway.url, model: c.gateway.model, key: '', label: '本站 AI' });
+    }
+    if (c.cloud.base && c.cloud.model) {
+      list.push({ kind: 'cloud', mode: 'openai', base: c.cloud.base, model: c.cloud.model, key: c.cloud.key, label: '云端 · ' + c.cloud.model });
+    }
+    if (c.local.base && c.local.model && !mixedBlocked(c.local.base)) {
+      list.push({ kind: 'local', mode: 'ollama', base: c.local.base, model: c.local.model, label: '本机 · ' + c.local.model });
+    }
+    return list;
+  }
+
+  function ready() {
+    return endpoints().length > 0;
+  }
+
+  function which() {
+    var list = endpoints();
+    if (!list.length) return '';
+    return list.length > 1 ? list[0].label + '（含本机兜底）' : list[0].label;
+  }
+
+  function chatUrl(base) {
+    if (/\/chat\/completions$/.test(base)) return base;
+    return base + '/chat/completions';
+  }
+
+  function modelsUrl(base) {
+    if (/\/models$/.test(base)) return base;
+    return clean(base) + '/models';
+  }
+
+  function models(baseOverride) {
+    var base = clean(baseOverride || cfg().local.base);
+    if (!base) return Promise.reject(new Error('还没有填写本机地址'));
+    return fetch(base + '/api/tags').then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(function (d) {
+      return (d && d.models ? d.models : []).map(function (m) { return m.name; }).filter(Boolean);
+    });
+  }
+
+  function testCloud(baseOverride, keyOverride) {
+    var c = cfg();
+    var base = clean(baseOverride || c.cloud.base);
+    if (!base) return Promise.reject(new Error('还没有填写云端地址'));
+    var headers = {};
+    var key = String(keyOverride != null ? keyOverride : c.cloud.key).trim();
+    if (key) headers.Authorization = 'Bearer ' + key;
+    return fetch(modelsUrl(base), { headers: headers }).then(function (r) {
+      if (!r.ok) {
+        return r.text().then(function (t) {
+          throw new Error('HTTP ' + r.status + (t ? '：' + String(t).slice(0, 120) : ''));
+        });
+      }
+      return r.json();
+    }).then(function (d) {
+      return ((d && d.data) || []).map(function (m) { return m.id; }).filter(Boolean);
+    });
+  }
+
+  /* ---------- 流式解析 ---------- */
+  function readOllama(res, h, finish) {
+    if (!res.body || !res.body.getReader) {
+      return res.json().then(function (d) {
+        var t = (d && d.message && d.message.content) || '';
+        if (t && h.onDelta) h.onDelta(t);
+        finish(d);
+      });
+    }
+    var reader = res.body.getReader();
+    var decoder = new TextDecoder();
+    var buf = '';
+    function line(raw) {
+      var s = raw.trim();
+      if (!s) return;
+      var d = null;
+      try { d = JSON.parse(s); } catch (e) { return; }
+      if (d && d.error) { if (h.onError) h.onError(new Error(d.error)); return; }
+      var piece = d && d.message && d.message.content;
+      if (piece && h.onDelta) h.onDelta(piece);
+      if (d && d.done) finish(d);
+    }
+    function pump() {
+      return reader.read().then(function (r) {
+        if (r.done) { if (buf.trim()) line(buf); finish(); return; }
+        buf += decoder.decode(r.value, { stream: true });
+        var i;
+        while ((i = buf.indexOf('\n')) >= 0) { line(buf.slice(0, i)); buf = buf.slice(i + 1); }
+        return pump();
+      });
+    }
+    return pump();
+  }
+
+  function readOpenAI(res, h, finish) {
+    if (!res.body || !res.body.getReader) {
+      return res.json().then(function (d) {
+        var t = '';
+        try { t = d.choices[0].message.content || ''; } catch (e) {}
+        if (t && h.onDelta) h.onDelta(t);
+        finish(d);
+      });
+    }
+    var reader = res.body.getReader();
+    var decoder = new TextDecoder();
+    var buf = '';
+    function line(raw) {
+      var s = raw.trim();
+      if (!s || s.indexOf('data:') !== 0) return;
+      var payload = s.slice(5).trim();
+      if (!payload) return;
+      if (payload === '[DONE]') { finish(); return; }
+      var d = null;
+      try { d = JSON.parse(payload); } catch (e) { return; }
+      var choice = d && d.choices && d.choices[0];
+      var piece = (choice && choice.delta && choice.delta.content) || (choice && choice.message && choice.message.content);
+      if (piece && h.onDelta) h.onDelta(piece);
+      if (choice && choice.finish_reason) finish(d);
+    }
+    function pump() {
+      return reader.read().then(function (r) {
+        if (r.done) { if (buf.trim()) line(buf); finish(); return; }
+        buf += decoder.decode(r.value, { stream: true });
+        var i;
+        while ((i = buf.indexOf('\n')) >= 0) { line(buf.slice(0, i)); buf = buf.slice(i + 1); }
+        return pump();
+      });
+    }
+    return pump();
+  }
+
+  function call(ep, messages, h, signal) {
+    var finished = false;
+    function finish(d) {
+      if (finished) return;
+      finished = true;
+      if (h.onDone) h.onDone(d || {});
+    }
+    var url;
+    var headers = { 'Content-Type': 'application/json' };
+    var body;
+    if (ep.mode === 'openai') {
+      url = chatUrl(ep.base);
+      if (ep.key) headers.Authorization = 'Bearer ' + ep.key;
+      body = { model: ep.model, messages: messages, stream: true, temperature: 0.4 };
+    } else {
+      url = ep.base + '/api/chat';
+      body = { model: ep.model, messages: messages, stream: true, think: false, options: { temperature: 0.4 } };
+    }
+    return fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(body),
+      signal: signal
+    }).then(function (res) {
+      if (!res.ok) {
+        return res.text().then(function (t) {
+          var msg = 'HTTP ' + res.status;
+          if (t) {
+            var parsed = null;
+            try { parsed = JSON.parse(t); } catch (e) {}
+            var detail = parsed && ((parsed.error && (parsed.error.message || parsed.error)) || parsed.message);
+            msg += '：' + String(detail || t).slice(0, 140);
+          }
+          var err = new Error(msg);
+          err.status = res.status;
+          err.provider = ep.label;
+          throw err;
+        });
+      }
+      return ep.mode === 'openai' ? readOpenAI(res, h, finish) : readOllama(res, h, finish);
+    });
+  }
+
+  function stop() {
+    if (abortCtrl) {
+      try { abortCtrl.abort(); } catch (e) {}
+      abortCtrl = null;
+    }
+  }
+
+  function ask(messages, h) {
+    h = h || {};
+    var list = endpoints();
+    if (!list.length) return Promise.reject(new Error('还没有配置可用的 AI 服务'));
+    stop();
+    var ctrl = null;
+    try { ctrl = new AbortController(); } catch (e) {}
+    abortCtrl = ctrl;
+    var got = false;
+    var wrapped = {
+      onDelta: function (t) {
+        if (t) got = true;
+        if (h.onDelta) h.onDelta(t);
+      },
+      onDone: h.onDone,
+      onError: h.onError
+    };
+    function attempt(i) {
+      var ep = list[i];
+      return call(ep, messages, wrapped, ctrl ? ctrl.signal : undefined).catch(function (err) {
+        if (err && err.name === 'AbortError') throw err;
+        if (!got && i + 1 < list.length) return attempt(i + 1);
+        throw err;
+      });
+    }
+    return attempt(0).then(function (r) {
+      abortCtrl = null;
+      return r;
+    }, function (err) {
+      abortCtrl = null;
+      if (err && err.name === 'AbortError') {
+        if (h.onDone) h.onDone({ aborted: true });
+        return;
+      }
+      throw err;
+    });
+  }
+
+  Z.ai = {
+    cfg: cfg,
+    setCfg: setCfg,
+    resetCfg: resetCfg,
+    ready: ready,
+    which: which,
+    endpoints: endpoints,
+    models: models,
+    testCloud: testCloud,
+    ask: ask,
+    stop: stop,
+    blocked: mixedBlocked
+  };
+})(window.ZSB = window.ZSB || {});
+
+</script>
+  <script>
 /* 本地数据层：localStorage 持久化（离线优先、刷新不丢） */
 (function (Z) {
   var BASE_KEY = 'zsb-coach-v2';
@@ -16091,9 +16956,26 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
   var state = load();
 
+  if (Z.cloud && Z.cloud.hydrate) {
+    Z.cloud.hydrate(state, function () {
+      try { localStorage.setItem(storageKey(), JSON.stringify(state)); } catch (e) {}
+      emit();
+    });
+  }
+
+  /* 已登录本站后端时，换设备登录后自动把进度拉回本机 */
+  if (Z.backend && Z.backend.session && Z.backend.session()) {
+    Z.backend.hydrate(state, function () {
+      try { localStorage.setItem(storageKey(), JSON.stringify(state)); } catch (e) {}
+      emit();
+    });
+  }
+
   function save() {
     try {
       localStorage.setItem(storageKey(), JSON.stringify(state));
+      if (Z.cloud && Z.cloud.sync) Z.cloud.sync(state);
+      if (Z.backend && Z.backend.sync) Z.backend.sync(state);
     } catch (e) {
       console.warn('本地数据保存失败', e);
       if (Z.ui && Z.ui.toast) Z.ui.toast('本地存储写入失败，请清理空间');
@@ -16393,7 +17275,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== scheduler.js ==== */
 /* 间隔重复调度：项目内轻量版 FSRS（stability / difficulty / due） */
 (function (Z) {
   var DAY = 86400000;
@@ -16447,7 +17328,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== engine.js ==== */
 /* 学习引擎：掌握度 / 解锁 / 今日任务 / 失分分析 / 达标预测（纯函数为主） */
 (function (Z) {
   var CONFIG = {
@@ -16966,7 +17846,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== ui.js ==== */
 /* UI 基础工具：转义 / 轻量 markdown / 公式渲染 / 图标 / 弹层 / toast */
 (function (Z) {
   function esc(s) {
@@ -17163,7 +18042,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== sandbox.js ==== */
 /* 代码沙箱：sandbox iframe 内执行用户 JS，支持输出捕获与测试用例 */
 (function (Z) {
   var RUNNER = [
@@ -17238,7 +18116,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== question.js ==== */
 /* 通用题目卡片：渲染 / 判分 / 交互（练习、独立练、模考复盘共用） */
 (function (Z) {
   var supMap = { '²': '^2', '³': '^3', '⁴': '^4', '⁵': '^5', '⁻': '^-' };
@@ -17363,6 +18240,9 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
     if (q.type !== 'code' && !opts.quiz && !opts.exam) {
       html += '<div class="btn-row mt12"><button class="btn primary block" data-submit>提交答案</button></div>';
+    }
+    if (!opts.exam && Z.ai && Z.ai.ready && Z.ai.ready()) {
+      html += '<div class="q-ai-row"><button type="button" class="btn sm ghost" data-ask-ai>问 AI</button></div>';
     }
     html += '<div data-feedback></div></div>';
     return html;
@@ -17489,7 +18369,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== blocks.js ==== */
 /* 讲义内容块渲染：文本 / 类比 / 公式 / 对比表 / 代码 / 随堂小问 */
 (function (Z) {
   /* 兼容两种写法：数组 [[...],[...]] 或逗号分隔的字符串 */
@@ -17642,7 +18521,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== lesson.js ==== */
 /* 学练一体阅读器：导入 → 学 → 例题 → 跟练 → 独立练 → 小结 */
 (function (Z) {
   var STAGES = [
@@ -18385,11 +19263,54 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
     Z.ui.toast(added ? '已加入记忆卡' : '这张卡已经在卡盒里了');
   }
 
+  function stripMd(text) {
+    return String(text || '')
+      .replace(/```[\s\S]*?```/g, function (m) { return m.replace(/```[a-z]*/g, ''); })
+      .replace(/[`*_#>|]/g, '')
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+  }
+
+  /* 把当前这一块讲义转成纯文本，交给 AI 当上下文 */
+  function blockPlainText(block) {
+    if (!block) return '';
+    if (block.md) return stripMd(block.md);
+    if (block.type === 'formula') {
+      return String(block.latex || '') + (block.caption ? '（' + block.caption + '）' : '');
+    }
+    if (block.type === 'compare') {
+      var rows = Array.isArray(block.rows) ? block.rows : [block.rows];
+      return [].concat(block.headers || []).join(' | ') + '\n' +
+        rows.map(function (r) { return [].concat(r || []).join(' | '); }).join('\n');
+    }
+    if (block.type === 'code') return String(block.code || '');
+    if (block.type === 'diagram') {
+      var d = Z.DIAGRAMS && Z.DIAGRAMS[block.diagramId];
+      return String(block.caption || (d && d.caption) || '');
+    }
+    if (block.type === 'quiz') {
+      var q = Z.Q_BY_ID[block.questionId];
+      return q ? stripMd(q.stem) + (q.analysis ? '\n官方解析：' + stripMd(q.analysis) : '') : '';
+    }
+    return '';
+  }
+
   function openConfused() {
     var l = ctx.lesson;
     var bi = ctx.blockIndex;
     var block = l.sections[bi];
     var prev = bi > 0 ? l.sections[bi - 1] : null;
+
+    /* 有 AI 就直接把这一块原文发给 AI 讲，不再让用户先看通用解释 */
+    var labels = { text: '讲解', analogy: '类比', tip: '技巧', warning: '易错点', formula: '公式', compare: '对比表', code: '代码', diagram: '图解', quiz: '随堂小问' };
+    var excerpt = blockPlainText(block);
+    if (excerpt && Z.aiUI && Z.aiUI.askWithContext) {
+      var subject = (Z.SUBJECTS && Z.SUBJECTS[l.subject] && Z.SUBJECTS[l.subject].name) || '';
+      var contextText = '《' + (l.title || '') + '》' + (subject ? '（' + subject + '）' : '') +
+        ' 第 ' + (bi + 1) + '/' + l.sections.length + ' 段 · ' + (labels[block.type] || block.type) + '\n' + excerpt;
+      if (Z.aiUI.askWithContext(contextText, '这一块我没看懂，请就上面这段讲义直接给我讲明白：先用一句话说它到底在讲什么，再分步骤拆开，最后举一个贴近专升本考点的例子。')) return;
+    }
     var glossary = {
       english: '本课常见符号：n. 名词；v. 动词；adj. 形容词；adv. 副词；prep. 介词；conj. 连词。判断时看位置，不背词义。',
       math: '本课常见符号：Δ 表示变化量；lim 表示极限；f′(x₀) 表示导数；→ 表示趋近。极限不是直接代入。',
@@ -18401,7 +19322,7 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
       (prev ? '上一块讲的是：' + Z.ui.esc(String(prev.md || prev.caption || '').slice(0, 80)) + '…；这一块是在它的基础上再往前一步。' : '这是本课第一块，它负责建立场景，后面才会给定义。') +
       '</p></div>' +
       '<div class="card pad-sm"><b>换一种更笨的说法</b><p class="small muted mt8">先别管公式，问自己三个问题：这块解决什么问题？关键量是什么？如果换个数字，结论还成立吗？</p></div>' +
-      '<div class="tiny faint">本地解释先兜底；接入 AI 后会基于当前段落生成针对性讲解。</div>' +
+      '<div class="tiny faint">当前 AI 助教不可用，先看这份本地解释；在右下角 AI 设置里配好模型后，这里会直接由 AI 针对当前段落讲解。</div>' +
       '</div>';
     Z.ui.sheet({ title: '这块没看懂', body: body, foot: '<button class="btn ghost" data-close>先自己再读一遍</button>' })
       .el.querySelector('[data-close]').addEventListener('click', function (e) { e.target.closest('.sheet').remove(); document.querySelector('.sheet-backdrop').remove(); });
@@ -18489,7 +19410,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== practice.js ==== */
 /* 练习系统：智能组卷 / 答题 / 错因归因 / 错题本 / 记忆卡 / 看讲解抽屉 */
 (function (Z) {
   var ATTRS = [
@@ -18909,7 +19829,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== exam.js ==== */
 /* 模考：计时答题 → 交卷 → 失分分析报告 → 错因归因 */
 (function (Z) {
   var exam = null;
@@ -19233,7 +20152,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== me.js ==== */
 /* 我的：数据雷达 / 学情预测 / 笔记 / 备份 / 设置 / 算法说明 */
 (function (Z) {
   function allNotes() {
@@ -19604,7 +20522,6 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
 </script>
   <script>
-/* ==== app.js ==== */
 /* 应用入口：路由 / 底部导航 / 今日 / 学习地图 / 练习 / 模考 / 引导 */
 (function (Z) {
   var TABS = [
@@ -20197,6 +21114,525 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
   Z.app = { boot: boot, route: route, reboot: reboot, applyTheme: applyTheme };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
+})(window.ZSB = window.ZSB || {});
+
+</script>
+  <script>
+/* AI 助教界面：右下角悬浮入口 + 题目内「问 AI」按钮 + 设置面板 */
+(function (Z) {
+  if (!window.ZSB) window.ZSB = {};
+  var history = [];
+  var busy = false;
+  var activeCard = null;
+  var pendingCtx = '';
+  var els = {};
+
+  var CSS = [
+    '.ai-fab{position:fixed;right:16px;bottom:calc(84px + var(--safe-bottom));z-index:46;',
+    'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:56px;height:56px;',
+    'border-radius:50%;border:1px solid rgba(124,156,255,.45);background:linear-gradient(140deg,var(--accent),var(--accent-2));',
+    'color:#06102a;box-shadow:0 12px 28px rgba(84,132,255,.38);font-weight:800;padding:0}',
+    '.ai-fab b{font-size:16px;line-height:1}',
+    '.ai-fab span{font-size:9px;letter-spacing:1px}',
+    'body.immersive .ai-fab{bottom:calc(20px + var(--safe-bottom))}',
+    '.ai-fab.hide{display:none}',
+    '[hidden]{display:none!important}',
+    '.ai-panel{position:fixed;right:16px;bottom:calc(150px + var(--safe-bottom));z-index:60;width:390px;max-width:calc(100vw - 32px);',
+    'height:min(70vh,560px);display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);',
+    'border-radius:18px;box-shadow:var(--shadow);overflow:hidden}',
+    '.ai-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;',
+    'border-bottom:1px solid var(--line-soft);background:var(--panel-2);flex:none}',
+    '.ai-brand{display:flex;align-items:center;gap:7px;font-size:13.5px;min-width:0}',
+    '.ai-dot{width:7px;height:7px;border-radius:50%;background:var(--text-faint);flex:none}',
+    '.ai-dot.on{background:var(--green);box-shadow:0 0 8px rgba(61,220,151,.7)}',
+    '.ai-model{font-size:10.5px;color:var(--text-faint);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+    '.ai-acts{display:flex;gap:4px;flex:none}',
+    '.ai-acts button{border:0;background:transparent;color:var(--text-dim);font-size:11.5px;padding:4px 6px;border-radius:8px}',
+    '.ai-acts button:hover{background:rgba(124,156,255,.12);color:var(--text)}',
+    '.ai-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:9px;background:var(--bg-soft)}',
+    '.ai-msg{max-width:90%;padding:9px 12px;border-radius:14px;font-size:13.5px;line-height:1.62;word-break:break-word}',
+    '.ai-msg.u{align-self:flex-end;background:linear-gradient(140deg,var(--accent),var(--accent-2));color:#06102a;border-bottom-right-radius:5px}',
+    '.ai-msg.a{align-self:flex-start;background:var(--panel);border:1px solid var(--line-soft);border-bottom-left-radius:5px}',
+    '.ai-msg.e{align-self:flex-start;background:rgba(255,107,122,.12);border:1px solid rgba(255,107,122,.35);color:var(--red);font-size:12.5px}',
+    '.ai-msg code.inline{background:rgba(124,156,255,.16);padding:1px 5px;border-radius:5px;font-size:12.5px}',
+    '.ai-code{margin:6px 0;padding:8px 10px;border-radius:10px;background:#080e1c;border:1px solid var(--line);',
+    'overflow:auto;font-size:12px;line-height:1.5;font-family:ui-monospace,Consolas,monospace;white-space:pre}',
+    'html[data-theme="light"] .ai-code{background:#f2f5ff}',
+    '.ai-cursor{display:inline-block;width:6px;margin-left:2px;animation:aiBlink 1s steps(2) infinite}',
+    '@keyframes aiBlink{0%,49%{opacity:1}50%,100%{opacity:0}}',
+    '.ai-quick{display:flex;gap:6px;overflow-x:auto;padding:7px 10px;border-top:1px solid var(--line-soft);flex:none}',
+    '.ai-quick button{flex:none;font-size:11.5px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);',
+    'background:transparent;color:var(--text-dim)}',
+    '.ai-quick button:hover{color:var(--text);border-color:var(--accent)}',
+    '.ai-composer{border-top:1px solid var(--line-soft);flex:none}',
+    '.ai-composer textarea{width:100%;border:0;outline:none;background:transparent;resize:none;padding:9px 12px 4px;',
+    'font-size:14px;line-height:1.55;max-height:110px}',
+    '.ai-send-row{display:flex;align-items:center;gap:8px;padding:0 10px 9px}',
+    '.ai-ctx{flex:1;font-size:11px;color:var(--text-faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+    '.ai-send{border:0;border-radius:10px;padding:7px 16px;font-size:13px;font-weight:700;',
+    'background:linear-gradient(140deg,var(--accent),var(--accent-2));color:#06102a}',
+    '.ai-send.stop{background:rgba(255,107,122,.16);color:var(--red);border:1px solid rgba(255,107,122,.4)}',
+    '.ai-set{position:absolute;inset:0;background:var(--panel);padding:12px 14px;overflow-y:auto;z-index:2}',
+    '.ai-set label{display:block;font-size:12px;color:var(--text-dim);margin:11px 0 4px}',
+    '.ai-set input{width:100%;padding:9px 10px;border-radius:10px;border:1px solid var(--line);',
+    'background:var(--bg-soft);font-size:13px;outline:none}',
+    '.ai-set input:focus{border-color:var(--accent)}',
+    '.ai-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}',
+    '.ai-row button{border:1px solid var(--line);background:transparent;color:var(--text-dim);border-radius:10px;',
+    'padding:7px 12px;font-size:12.5px}',
+    '.ai-row button.p{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}',
+    '.ai-hint{font-size:11.5px;color:var(--text-faint);line-height:1.55;margin:9px 0 0}',
+    '.ai-hint.warn{color:var(--amber)}',
+    '.ai-hint.ok{color:var(--green)}',
+    '.q-ai-row{margin-top:10px;display:flex;justify-content:flex-end}',
+    '.q-ai-row .btn{font-size:12.5px}',
+    '@media (max-width:640px){',
+    '.ai-panel{left:8px;right:8px;bottom:calc(8px + var(--safe-bottom));width:auto;height:76vh;max-width:none;border-radius:16px}',
+    '.ai-fab{right:12px}}'
+  ].join('');
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  /* 轻量 markdown：代码块 + 粗体 + 行内代码 + 行内公式，其余按纯文本 */
+  function mdRich(text) {
+    var raw = String(text || '');
+    if (((raw.match(/```/g) || []).length) % 2 === 1) raw += '\n```';
+    var out = '';
+    var re = /```[^\n]*\n?([\s\S]*?)```/g;
+    var last = 0;
+    var m;
+    while ((m = re.exec(raw))) {
+      out += mdText(raw.slice(last, m.index));
+      out += '<pre class="ai-code"><code>' + esc(m[1].replace(/\n$/, '')) + '</code></pre>';
+      last = m.index + m[0].length;
+    }
+    out += mdText(raw.slice(last));
+    return out;
+  }
+  function mdText(s) {
+    if (!s) return '';
+    s = s.replace(/^\s*[-*]\s+/gm, '• ');
+    return Z.ui && Z.ui.md ? Z.ui.md(s) : esc(s).replace(/\n/g, '<br>');
+  }
+  function plain(s) {
+    return String(s == null ? '' : s).replace(/\*\*/g, '').replace(/`/g, '').replace(/\n+/g, ' ');
+  }
+
+  function buildStyle() {
+    var st = document.createElement('style');
+    st.textContent = CSS;
+    document.head.appendChild(st);
+  }
+
+  function buildDom() {
+    var fab = document.createElement('button');
+    fab.type = 'button';
+    fab.id = 'aiFab';
+    fab.className = 'ai-fab';
+    fab.innerHTML = '<b>AI</b><span>助教</span>';
+    fab.title = '问 AI 助教';
+    document.body.appendChild(fab);
+
+    var panel = document.createElement('div');
+    panel.id = 'aiPanel';
+    panel.className = 'ai-panel';
+    panel.hidden = true;
+    panel.innerHTML =
+      '<div class="ai-head">' +
+        '<div class="ai-brand"><span class="ai-dot" id="aiDot"></span><b>AI 助教</b>' +
+          '<span class="ai-model" id="aiModelChip">未配置</span></div>' +
+        '<div class="ai-acts">' +
+          '<button type="button" data-ai-act="settings">设置</button>' +
+          '<button type="button" data-ai-act="clear">清空</button>' +
+          '<button type="button" data-ai-act="close">×</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="ai-msgs" id="aiMsgs"></div>' +
+      '<div class="ai-quick" id="aiQuick"></div>' +
+      '<div class="ai-composer">' +
+        '<textarea id="aiInput" rows="2" placeholder="输入问题，Enter 发送，Shift+Enter 换行"></textarea>' +
+        '<div class="ai-send-row"><span class="ai-ctx" id="aiCtx">无上下文</span>' +
+          '<button type="button" class="ai-send" id="aiSend">发送</button></div>' +
+      '</div>' +
+      '<div class="ai-set" id="aiSet" hidden>' +
+        '<p class="ai-hint"><b>云端接口</b>（推荐：你的电脑关机也能用）</p>' +
+        '<label>接口地址</label>' +
+        '<input id="aiCloudBase" placeholder="https://api.siliconflow.cn/v1" />' +
+        '<label>API Key</label>' +
+        '<input id="aiCloudKey" placeholder="sk-..." />' +
+        '<label>模型</label>' +
+        '<input id="aiCloudModel" placeholder="Qwen/Qwen2.5-7B-Instruct" />' +
+        '<div class="ai-row"><button type="button" data-ai-act="testCloud">测试云端</button></div>' +
+        '<p class="ai-hint"><b>本机 Ollama</b>（可选：只在电脑开着、网络可达时生效）</p>' +
+        '<label>服务地址</label>' +
+        '<input id="aiLocalBase" placeholder="http://localhost:11434" />' +
+        '<label>模型</label>' +
+        '<input id="aiLocalModel" list="aiModelList" placeholder="qwen3-8b:latest" />' +
+        '<datalist id="aiModelList"></datalist>' +
+        '<div class="ai-row"><button type="button" data-ai-act="models">拉取本机模型</button>' +
+          '<button type="button" data-ai-act="testLocal">测试本机</button></div>' +
+        '<p class="ai-hint" id="aiSetHint">先填云端；云端连不上时会自动改用本机。</p>' +
+        '<div class="ai-row"><button type="button" class="p" data-ai-act="save">保存</button>' +
+          '<button type="button" data-ai-act="reset">恢复默认</button>' +
+          '<button type="button" data-ai-act="back">返回对话</button></div>' +
+        '<p class="ai-hint">线上 https 页面不能直连 http://localhost，本机地址只在本地打开或离线版里有效。</p>' +
+      '</div>';
+    document.body.appendChild(panel);
+
+    els = {
+      fab: fab,
+      panel: panel,
+      msgs: document.getElementById('aiMsgs'),
+      input: document.getElementById('aiInput'),
+      send: document.getElementById('aiSend'),
+      ctx: document.getElementById('aiCtx'),
+      dot: document.getElementById('aiDot'),
+      modelChip: document.getElementById('aiModelChip'),
+      quick: document.getElementById('aiQuick'),
+      set: document.getElementById('aiSet'),
+      cloudBase: document.getElementById('aiCloudBase'),
+      cloudKey: document.getElementById('aiCloudKey'),
+      cloudModel: document.getElementById('aiCloudModel'),
+      localBase: document.getElementById('aiLocalBase'),
+      localModel: document.getElementById('aiLocalModel'),
+      list: document.getElementById('aiModelList'),
+      setHint: document.getElementById('aiSetHint')
+    };
+  }
+
+  function refreshState() {
+    var ok = !!(Z.ai && Z.ai.ready && Z.ai.ready());
+    els.dot.className = 'ai-dot' + (ok ? ' on' : '');
+    els.modelChip.textContent = ok ? Z.ai.which() : '未配置';
+    var list = ok ? Z.ai.endpoints() : [];
+    els.modelChip.title = list.length ? (list[0].base || '') : '';
+  }
+
+  function addMsg(kind, text) {
+    var div = document.createElement('div');
+    div.className = 'ai-msg ' + kind;
+    div.innerHTML = kind === 'a' ? mdRich(text) : esc(text);
+    els.msgs.appendChild(div);
+    els.msgs.scrollTop = els.msgs.scrollHeight;
+    return div;
+  }
+
+  function openPanel() {
+    els.panel.hidden = false;
+    refreshState();
+    syncCtxChip();
+    if (!history.length && !els.msgs.childElementCount) {
+      addMsg('a', '我是你的 AI 助教。做题卡住时点题目右下角的「问 AI」，或者直接在这里提问。');
+    }
+    setTimeout(function () { try { els.input.focus(); } catch (e) {} }, 30);
+  }
+  function closePanel() {
+    els.panel.hidden = true;
+    Z.ai && Z.ai.stop && Z.ai.stop();
+  }
+  function togglePanel() { els.panel.hidden ? openPanel() : closePanel(); }
+
+  function findQ(id) {
+    var list = (Z.QUESTIONS || []);
+    for (var i = 0; i < list.length; i++) if (list[i] && list[i].id === id) return list[i];
+    return null;
+  }
+  function kpName(id) {
+    var list = (Z.KPS || []);
+    for (var i = 0; i < list.length; i++) if (list[i] && list[i].id === id) return list[i].name;
+    return '';
+  }
+  function subjectName(s) {
+    return (Z.SUBJECTS && Z.SUBJECTS[s] && Z.SUBJECTS[s].name) || '';
+  }
+
+  function questionFromCard(card) {
+    if (!card) return null;
+    return findQ(card.getAttribute('data-qid'));
+  }
+
+  function contextOf() {
+    var bits = [];
+    var hash = location.hash || '#/today';
+    var parts = hash.replace(/^#\//, '').split('/');
+    var names = { today: '今日', study: '学习地图', practice: '练习', exam: '模考', me: '我的', lesson: '讲义', notes: '错题本', algo: '算法练习', layers: '分层练习' };
+    bits.push('页面：' + (names[parts[0]] || parts[0]));
+    var card = (activeCard && document.body.contains(activeCard)) ? activeCard : document.querySelector('.q-card[data-qid]');
+    var q = questionFromCard(card);
+    if (q) {
+      bits.push('科目：' + subjectName(q.subject));
+      var kp = kpName(q.kpIds && q.kpIds[0]);
+      if (kp) bits.push('考点：' + kp);
+      bits.push('题干：' + plain(q.stem));
+      if (q.options && q.options.length) {
+        bits.push('选项：' + q.options.map(function (o) { return o.key + '. ' + plain(o.text); }).join('；'));
+      }
+      if (q.analysis) bits.push('官方解析：' + plain(q.analysis));
+    } else {
+      var head = document.querySelector('#view h1, #view h2, #view .card-title, #view .lesson-title');
+      if (head) bits.push('当前内容：' + plain(head.textContent).slice(0, 140));
+    }
+    return bits.join('\n');
+  }
+
+  function syncCtxChip() {
+    var card = (activeCard && document.body.contains(activeCard)) ? activeCard : document.querySelector('.q-card[data-qid]');
+    var q = questionFromCard(card);
+    els.ctx.textContent = q ? ('已带上当前题目 · ' + (kpName(q.kpIds && q.kpIds[0]) || q.id)) : '无题目上下文';
+  }
+
+  function setBusy(v) {
+    busy = v;
+    els.send.textContent = v ? '停止' : '发送';
+    els.send.classList.toggle('stop', v);
+  }
+
+  function send(text) {
+    var q = String(text || '').trim();
+    if (!q) return;
+    if (busy) { Z.ai.stop(); return; }
+    if (!Z.ai.ready()) {
+      openSettings();
+      els.setHint.className = 'ai-hint warn';
+      els.setHint.textContent = '先填服务地址并选一个模型，保存后再提问。';
+      return;
+    }
+    var ctx = contextOf();
+    if (pendingCtx) {
+      ctx = '用户当前看不懂的讲义片段（请重点讲解这一段，不要跑题）：\n' + pendingCtx +
+        (ctx ? '\n' + ctx : '');
+      pendingCtx = '';
+    }
+    var reply = addMsg('a', '');
+    reply.innerHTML = '<span class="ai-cursor">▍</span>';
+    setBusy(true);
+    history.push({ role: 'user', content: q });
+    if (history.length > 20) history = history.slice(-16);
+    var msgs = [{ role: 'system', content: Z.ai.cfg().system }];
+    if (ctx) msgs.push({ role: 'system', content: '当前学习上下文（供参考，不要原文照抄）：\n' + ctx });
+    msgs = msgs.concat(history);
+    var acc = '';
+    Z.ai.ask(msgs, {
+      onDelta: function (piece) {
+        acc += piece;
+        reply.innerHTML = mdRich(acc) + '<span class="ai-cursor">▍</span>';
+        els.msgs.scrollTop = els.msgs.scrollHeight;
+      },
+      onDone: function (d) {
+        setBusy(false);
+        reply.innerHTML = mdRich(acc) || '<span class="ai-ctx">（没有返回内容，换个问法试试）</span>';
+        if (acc) history.push({ role: 'assistant', content: acc });
+        if (history.length > 20) history = history.slice(-16);
+        els.msgs.scrollTop = els.msgs.scrollHeight;
+      },
+      onError: function (err) {
+        setBusy(false);
+        reply.className = 'ai-msg e';
+        reply.textContent = '出错了：' + (err && err.message ? err.message : '未知错误');
+      }
+    }).catch(function (err) {
+      setBusy(false);
+      reply.className = 'ai-msg e';
+      reply.textContent =
+        '连不上 AI：' + (err && err.message ? err.message : '未知错误') +
+        '\n可能原因：云端 Key/地址/模型名不对，或本机 Ollama 没开。点右上角「设置」检查。';
+    });
+  }
+
+  function openSettings() {
+    var c = Z.ai.cfg();
+    els.cloudBase.value = c.cloud.base;
+    els.cloudKey.value = c.cloud.key;
+    els.cloudModel.value = c.cloud.model;
+    els.localBase.value = c.local.base;
+    els.localModel.value = c.local.model;
+    els.set.hidden = false;
+    els.setHint.className = 'ai-hint';
+    els.setHint.textContent = '云端填好之后所有人都能用；云端失败会自动改用本机（如果本机可达）。';
+  }
+  function closeSettings() { els.set.hidden = true; }
+
+  function fillModels(list) {
+    els.list.innerHTML = list.map(function (m) { return '<option value="' + esc(m) + '"></option>'; }).join('');
+    if (list.length && !els.localModel.value.trim()) els.localModel.value = list[0];
+  }
+
+  function hint(text, kind) {
+    els.setHint.className = 'ai-hint' + (kind ? ' ' + kind : '');
+    els.setHint.textContent = text;
+  }
+
+  function doModels() {
+    hint('正在连接本机…');
+    Z.ai.models(els.localBase.value).then(function (list) {
+      fillModels(list);
+      hint(list.length ? ('本机连接成功，找到 ' + list.length + ' 个模型，已填入第一个。') : '本机连接成功，但还没安装模型。先执行 ollama pull qwen3-8b。', 'ok');
+    }).catch(function (err) {
+      hint('本机连不上：' + err.message + '。确认 Ollama 在运行且地址端口正确。', 'warn');
+    });
+  }
+
+  function doTestLocal() {
+    hint('正在测试本机…');
+    Z.ai.models(els.localBase.value).then(function (list) {
+      hint('本机连接正常，可用模型 ' + list.length + ' 个。', 'ok');
+    }).catch(function (err) {
+      hint('本机测试失败：' + err.message, 'warn');
+    });
+  }
+
+  function doTestCloud() {
+    var base = els.cloudBase.value.trim();
+    if (!base) { hint('先填写云端接口地址。', 'warn'); return; }
+    hint('正在测试云端…');
+    Z.ai.testCloud(base, els.cloudKey.value).then(function (list) {
+      hint(list.length ? ('云端连接正常，可用模型 ' + list.length + ' 个。') : '云端连接正常。', 'ok');
+      if (!epsModelFilled() && list.length) els.cloudModel.value = list[0];
+    }).catch(function (err) {
+      hint('云端测试失败：' + err.message + '。检查地址、Key 和该平台的跨域设置。', 'warn');
+    });
+  }
+
+  function epsModelFilled() {
+    return !!els.cloudModel.value.trim();
+  }
+
+  function doSave() {
+    var cloudBase = els.cloudBase.value.trim();
+    var cloudKey = els.cloudKey.value.trim();
+    var cloudModel = els.cloudModel.value.trim();
+    var localBase = els.localBase.value.trim();
+    var localModel = els.localModel.value.trim();
+    if (cloudBase && !cloudModel) { hint('云端填了地址就要填模型名。', 'warn'); return; }
+    if (cloudModel && !cloudBase) { hint('云端填了模型就要填接口地址。', 'warn'); return; }
+    if (localModel && !localBase) { hint('本机填了模型就要填服务地址。', 'warn'); return; }
+    if (!cloudBase && !localBase) { hint('至少配置一个：云端接口（推荐）或本机 Ollama。', 'warn'); return; }
+    if (location.protocol === 'https:' && localBase && /^http:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0)/i.test(localBase) && !cloudBase) {
+      hint('线上 https 不能直连 http://localhost，只填本机等于没有可用 AI。请补云端接口，或改用离线版。', 'warn');
+      return;
+    }
+    Z.ai.setCfg({
+      cloud: { base: cloudBase, key: cloudKey, model: cloudModel },
+      local: { base: localBase, model: localModel }
+    });
+    refreshState();
+    refreshVisibility();
+    closeSettings();
+    if (Z.ui && Z.ui.toast) Z.ui.toast('AI 配置已保存');
+  }
+
+  function doReset() {
+    Z.ai.resetCfg();
+    openSettings();
+    refreshState();
+    hint('已恢复默认配置。');
+  }
+
+  function bind() {
+    els.fab.addEventListener('click', togglePanel);
+    els.send.addEventListener('click', function () {
+      if (busy) { Z.ai.stop(); return; }
+      var v = els.input.value;
+      els.input.value = '';
+      send(v);
+    });
+    els.input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
+        e.preventDefault();
+        var v = els.input.value;
+        els.input.value = '';
+        send(v);
+      }
+    });
+    els.panel.addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('[data-ai-act]') : null;
+      if (!btn) return;
+      var act = btn.getAttribute('data-ai-act');
+      if (act === 'close') closePanel();
+      else if (act === 'clear') {
+        history = [];
+        els.msgs.innerHTML = '';
+        addMsg('a', '对话已清空，有新问题直接问。');
+        refreshState();
+      } else if (act === 'settings') openSettings();
+      else if (act === 'models') doModels();
+      else if (act === 'testLocal') doTestLocal();
+      else if (act === 'testCloud') doTestCloud();
+      else if (act === 'save') doSave();
+      else if (act === 'reset') doReset();
+      else if (act === 'back') closeSettings();
+    });
+
+    var quick = ['讲讲这道题', '这一步为什么', '换个更简单的例子', '总结这个考点', '出 3 道同类题'];
+    els.quick.innerHTML = quick.map(function (t) {
+      return '<button type="button" data-quick="' + esc(t) + '">' + esc(t) + '</button>';
+    }).join('');
+    els.quick.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-quick]');
+      if (!b) return;
+      send(b.getAttribute('data-quick'));
+    });
+
+    /* 题目卡片里的「问 AI」 */
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('[data-ask-ai]') : null;
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var card = btn.closest('.q-card');
+      if (card) activeCard = card;
+      openPanel();
+      syncCtxChip();
+      send('这道题我不会，请按步骤讲思路，先别直接给答案。');
+    }, true);
+
+    window.addEventListener('hashchange', function () {
+      activeCard = null;
+      setTimeout(function () {
+        syncCtxChip();
+        refreshVisibility();
+      }, 60);
+    });
+  }
+
+  function refreshVisibility() {
+    var hash = location.hash || '#/today';
+    var parts = hash.replace(/^#\//, '').split('/');
+    var inExam = parts[0] === 'exam' && parts[1] !== 'report';
+    var onboarding = parts[0] === 'onboarding';
+    /* 没配置就藏起来，避免访客点开看到设置面板；加 ?ai=1 可以强制显示用来配置 */
+    var forceSetup = /[?&]ai=1(&|$)/.test(location.search);
+    var show = !!((Z.ai && Z.ai.ready()) || forceSetup);
+    els.fab.classList.toggle('hide', inExam || onboarding || !show);
+    if ((inExam || onboarding) && !els.panel.hidden) closePanel();
+  }
+
+  buildStyle();
+  buildDom();
+  bind();
+  refreshState();
+  refreshVisibility();
+
+  /* 带着一段讲义原文直接提问：返回 false 表示当前没有可用 AI */
+  function askWithContext(ctxText, prompt) {
+    if (!Z.ai || !Z.ai.ready || !Z.ai.ready()) return false;
+    pendingCtx = String(ctxText || '').trim().slice(0, 2200);
+    openPanel();
+    send(prompt || '这块我没看懂，请用更通俗的话讲一遍，并举一个贴近考点的例子。');
+    return true;
+  }
+
+  Z.aiUI = {
+    open: openPanel,
+    close: closePanel,
+    ask: send,
+    askWithContext: askWithContext,
+    refresh: refreshState
+  };
 })(window.ZSB = window.ZSB || {});
 
 </script>

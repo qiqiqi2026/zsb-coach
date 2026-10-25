@@ -123,6 +123,9 @@
     if (q.type !== 'code' && !opts.quiz && !opts.exam) {
       html += '<div class="btn-row mt12"><button class="btn primary block" data-submit>提交答案</button></div>';
     }
+    if (!opts.exam && Z.ai && Z.ai.ready && Z.ai.ready()) {
+      html += '<div class="q-ai-row"><button type="button" class="btn sm ghost" data-ask-ai>问 AI</button></div>';
+    }
     html += '<div data-feedback></div></div>';
     return html;
   }

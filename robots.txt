@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+Sitemap: https://qiqiqi2026.github.io/zsb-coach/sitemap.xml

@@ -1,5 +1,5 @@
 /* 离线缓存：应用外壳 + 全部静态资源 */
-var CACHE = 'zsb-coach-v5';
+var CACHE = 'zsb-coach-v9';
 var ASSETS = [
   './',
   './index.html',
@@ -38,6 +38,10 @@ var ASSETS = [
   './js/pack.backfill.cs.js',
   './js/pack.expand.eng.js',
   './js/pack.expand.math.js',
+  './js/cloud.config.js',
+  './js/cloud.js',
+  './js/backend.js',
+  './js/ai.js',
   './js/store.js',
   './js/scheduler.js',
   './js/engine.js',
@@ -49,7 +53,8 @@ var ASSETS = [
   './js/practice.js',
   './js/exam.js',
   './js/me.js',
-  './js/app.js'
+  './js/app.js',
+  './js/ai-ui.js'
 ];
 
 self.addEventListener('install', function (e) {
@@ -74,6 +79,8 @@ self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') return;
   var url = new URL(e.request.url);
   if (url.origin !== location.origin) return;
+  /* 动态后端会实时生成这份配置，不能被缓存接管 */
+  if (url.pathname.indexOf('/js/ai.config.js') >= 0) return;
   e.respondWith(
     caches.match(e.request, { ignoreSearch: true }).then(function (hit) {
       if (hit) return hit;
