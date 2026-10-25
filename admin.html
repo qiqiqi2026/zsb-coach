@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>开发者后台 · 升本教练</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <style>
+    :root {
+      --bg: #0b1020; --panel: #141b2e; --panel-2: #182140;
+      --line: #263250; --line-soft: #1e2a45;
+      --text: #eaf0ff; --dim: #9aa8c7; --faint: #6c7a9c;
+      --accent: #7c9cff; --accent-2: #54d2ff; --green: #3ddc97;
+      --red: #ff6b7a; --amber: #ffc857; --purple: #b28dff;
+      --font: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background:
+        radial-gradient(900px 480px at 80% -10%, rgba(84, 210, 255, .12), transparent 70%),
+        radial-gradient(700px 420px at 10% 0%, rgba(124, 156, 255, .14), transparent 70%),
+        var(--bg);
+      color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.65;
+      min-height: 100vh;
+    }
+    button, input { font-family: inherit; color: inherit; }
+    button { cursor: pointer; }
+    ::selection { background: rgba(124, 156, 255, .35); }
+    [hidden] { display: none !important; }
+
+    .wrap { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 22px 48px; }
+
+    /* 门禁 */
+    .gate {
+      position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 22px;
+      background: radial-gradient(800px 400px at 50% 0%, rgba(84, 132, 255, .16), transparent 70%), #080d1a;
+    }
+    .gate-card {
+      width: 100%; max-width: 380px; padding: 26px; border-radius: 20px;
+      background: linear-gradient(180deg, #182140, #111829);
+      border: 1px solid var(--line); box-shadow: 0 30px 80px rgba(0, 0, 0, .5);
+    }
+    .gate-card h1 { margin: 0 0 6px; font-size: 20px; }
+    .gate-card p { margin: 0 0 18px; font-size: 13px; color: var(--faint); }
+    .gate-card label { display: block; font-size: 12.5px; color: var(--dim); margin: 0 0 6px; }
+    .gate-card input {
+      width: 100%; padding: 11px 13px; border-radius: 11px; font-size: 14.5px;
+      background: rgba(9, 14, 27, .85); border: 1px solid var(--line); color: var(--text); outline: none;
+    }
+    .gate-card input:focus { border-color: var(--accent); }
+    .gate-msg { min-height: 20px; font-size: 12.5px; color: var(--red); margin: 8px 0 12px; }
+    .gate-msg.ok { color: var(--green); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border-radius: 11px; border: 1px solid transparent; padding: 10px 16px;
+      font-size: 14px; font-weight: 600; transition: background .18s, border-color .18s, transform .12s;
+      white-space: nowrap;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #04101f; }
+    .btn-ghost { background: rgba(255, 255, 255, .05); border-color: var(--line); color: var(--text); }
+    .btn-ghost:hover { background: rgba(255, 255, 255, .09); }
+    .btn-danger { background: rgba(255, 107, 122, .12); border-color: rgba(255, 107, 122, .35); color: #ff9aa5; }
+    .btn-block { width: 100%; }
+
+    /* 顶栏 */
+    header.top {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      padding: 22px 0 18px; flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; }
+    .mark {
+      width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--purple), var(--accent)); color: #0b1020; font-weight: 900;
+    }
+    .brand b { font-size: 16px; display: block; }
+    .brand span { font-size: 11.5px; color: var(--faint); letter-spacing: 1px; }
+    .top-actions { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+    .live {
+      display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--dim);
+      padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255, 255, 255, .03);
+    }
+    .pulse {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+      box-shadow: 0 0 0 0 rgba(61, 220, 151, .55); animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      70% { box-shadow: 0 0 0 8px rgba(61, 220, 151, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(61, 220, 151, 0); }
+    }
+
+    /* KPI */
+    .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 16px; }
+    .kpi {
+      border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px;
+      background: linear-gradient(180deg, rgba(24, 33, 64, .8), rgba(18, 25, 44, .55));
+    }
+    .kpi span { font-size: 12.5px; color: var(--faint); display: block; }
+    .kpi b { font-size: 27px; font-weight: 900; letter-spacing: -.5px; }
+    .kpi.c1 b { color: var(--accent); }
+    .kpi.c2 b { color: var(--accent-2); }
+    .kpi.c3 b { color: var(--green); }
+    .kpi.c4 b { color: var(--amber); }
+    .kpi.c5 b { color: var(--purple); }
+
+    .grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 16px; align-items: start; }
+    .panel {
+      border: 1px solid var(--line); border-radius: 18px; overflow: hidden;
+      background: rgba(19, 26, 46, .72);
+    }
+    .panel-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 14px 18px; border-bottom: 1px solid var(--line-soft);
+    }
+    .panel-head h2 { margin: 0; font-size: 15px; }
+    .panel-head small { color: var(--faint); font-size: 12px; }
+    .panel-body { padding: 8px 0; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    th, td { text-align: left; padding: 11px 18px; border-bottom: 1px solid rgba(38, 50, 80, .5); white-space: nowrap; }
+    th { font-size: 12px; color: var(--faint); font-weight: 500; }
+    tbody tr:hover { background: rgba(124, 156, 255, .05); }
+    td.num { font-variant-numeric: tabular-nums; }
+    .tag {
+      font-size: 11.5px; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--line);
+      color: var(--dim); background: rgba(255, 255, 255, .03);
+    }
+    .tag.green { color: var(--green); border-color: rgba(61, 220, 151, .3); background: rgba(61, 220, 151, .1); }
+    .tag.red { color: #ff9aa5; border-color: rgba(255, 107, 122, .3); background: rgba(255, 107, 122, .1); }
+    .empty { padding: 26px 18px; color: var(--faint); font-size: 13px; text-align: center; }
+
+    .feed { max-height: 460px; overflow-y: auto; padding: 6px 18px 14px; }
+    .ev { display: flex; gap: 11px; padding: 11px 0; border-bottom: 1px dashed rgba(38, 50, 80, .55); }
+    .ev:last-child { border-bottom: 0; }
+    .ev i {
+      width: 8px; height: 8px; border-radius: 50%; margin-top: 7px; flex: 0 0 auto; background: var(--accent);
+    }
+    .ev i.bad { background: var(--red); }
+    .ev i.good { background: var(--green); }
+    .ev div { min-width: 0; }
+    .ev b { font-size: 13px; font-weight: 600; display: block; }
+    .ev span { font-size: 12px; color: var(--faint); }
+
+    .tools { display: flex; flex-wrap: wrap; gap: 9px; padding: 14px 18px; }
+    .note {
+      margin-top: 14px; padding: 14px 16px; border-radius: 14px; font-size: 12.5px; color: var(--dim);
+      border: 1px solid rgba(255, 200, 87, .28); background: rgba(255, 200, 87, .07);
+    }
+    .note b { color: var(--amber); }
+
+    @media (max-width: 1040px) {
+      .kpis { grid-template-columns: repeat(3, 1fr); }
+      .grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .wrap { padding: 0 14px 40px; }
+      .kpis { grid-template-columns: 1fr 1fr; }
+      .kpi b { font-size: 23px; }
+      th, td { padding: 10px 12px; }
+      .table-scroll { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <form class="gate-card" id="gateForm" autocomplete="off">
+    <h1>开发者后台</h1>
+    <p id="gateSub">首次使用：为这个浏览器设置开发者口令，之后凭口令进入。</p>
+    <label for="gatePass" id="gateLabel">设置口令（至少 8 位）</label>
+    <input id="gatePass" type="password" maxlength="64" placeholder="只有你知道" />
+    <div class="gate-msg" id="gateMsg"></div>
+    <button class="btn btn-primary btn-block" type="submit" id="gateBtn">设置并进入</button>
+  </form>
+</div>
+
+<div class="wrap" id="board" hidden>
+  <header class="top">
+    <div class="brand">
+      <span class="mark">开</span>
+      <div><b>开发者后台</b><span>ZSB COACH · ADMIN</span></div>
+    </div>
+    <div class="top-actions">
+      <span class="live"><span class="pulse"></span><span id="liveText">实时同步中</span></span>
+      <button class="btn btn-ghost" type="button" id="btnRefresh">立即刷新</button>
+      <button class="btn btn-ghost" type="button" id="btnLock">锁定</button>
+    </div>
+  </header>
+
+  <div class="kpis">
+    <div class="kpi c1"><span>注册账号</span><b id="kUsers">0</b></div>
+    <div class="kpi c2"><span>当前会话</span><b id="kOnline">0</b></div>
+    <div class="kpi c3"><span>已学考点</span><b id="kKp">0</b></div>
+    <div class="kpi c4"><span>累计答题</span><b id="kAns">0</b></div>
+    <div class="kpi c5"><span>正确率</span><b id="kAcc">--</b></div>
+  </div>
+
+  <div class="grid">
+    <section class="panel">
+      <div class="panel-head">
+        <h2>账号与学习记录</h2>
+        <small id="userMeta">本机浏览器</small>
+      </div>
+      <div class="panel-body table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>用户名</th><th>注册时间</th><th>最近登录</th><th>状态</th>
+            </tr>
+          </thead>
+          <tbody id="userRows"></tbody>
+        </table>
+        <div class="empty" id="userEmpty" hidden>还没有账号。打开官网注册一个，这里会立刻出现。</div>
+      </div>
+      <div class="panel-head" style="border-top:1px solid var(--line-soft);border-bottom:0">
+        <h2>本机学习概况</h2>
+        <small id="learnMeta">--</small>
+      </div>
+      <div class="panel-body table-scroll">
+        <table>
+          <tbody id="learnRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>最近动态</h2>
+        <small id="feedMeta">最近 30 条</small>
+      </div>
+      <div class="feed" id="feed"></div>
+      <div class="tools">
+        <button class="btn btn-ghost" type="button" id="btnExport">导出数据（JSON）</button>
+        <button class="btn btn-ghost" type="button" id="btnCsv">导出明细（CSV）</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="note">
+    <b>数据范围说明：</b>当前站点是纯静态部署，没有服务器。后台读取的是<strong>这台浏览器</strong>里的账号与学习记录，实时刷新只对本机有效。
+    若要查看所有用户的真实数据（跨设备、实时汇总），需要接入一个云端数据库（例如 Supabase 免费版），我可以再帮你接上。
+  </div>
+
+  <div class="panel" style="margin-top:16px">
+    <div class="panel-head"><h2>危险操作</h2><small>不可撤销，谨慎点击</small></div>
+    <div class="tools">
+      <button class="btn btn-danger" type="button" id="btnClearLearn">清空本机学习数据</button>
+      <button class="btn btn-danger" type="button" id="btnClearAcc">清空本机账号</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var DEV_KEY = 'zsb.dev.v1';
+  var ACC_KEY = 'zsb.accounts.v1';
+  var SESSION_KEY = 'zsb.session.v1';
+  var APP_KEY = 'zsb-coach-v2';
+  var UNLOCK_KEY = 'zsb.dev.unlocked';
+
+  var gate = document.getElementById('gate');
+  var gateForm = document.getElementById('gateForm');
+  var gatePass = document.getElementById('gatePass');
+  var gateMsg = document.getElementById('gateMsg');
+  var gateBtn = document.getElementById('gateBtn');
+  var gateSub = document.getElementById('gateSub');
+  var gateLabel = document.getElementById('gateLabel');
+  var board = document.getElementById('board');
+
+  var dev = readJSON(DEV_KEY, null);
+  var fails = 0;
+  var lockedUntil = 0;
+
+  function readJSON(k, fb) {
+    try { return JSON.parse(localStorage.getItem(k) || 'null') || fb; }
+    catch (e) { return fb; }
+  }
+  function writeJSON(k, v) {
+    try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
+  }
+  function sha(text) {
+    if (!window.crypto || !window.crypto.subtle) return Promise.resolve('p:' + text);
+    var buf = new TextEncoder().encode(text);
+    return window.crypto.subtle.digest('SHA-256', buf).then(function (d) {
+      return Array.prototype.map.call(new Uint8Array(d), function (b) {
+        return ('0' + b.toString(16)).slice(-2);
+      }).join('');
+    });
+  }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function fmt(ts) {
+    if (!ts) return '--';
+    var d = new Date(ts);
+    var p = function (n) { return (n < 10 ? '0' : '') + n; };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+  function ago(ts) {
+    if (!ts) return '--';
+    var s = Math.floor((Date.now() - ts) / 1000);
+    if (s < 60) return s + ' 秒前';
+    if (s < 3600) return Math.floor(s / 60) + ' 分钟前';
+    if (s < 86400) return Math.floor(s / 3600) + ' 小时前';
+    return Math.floor(s / 86400) + ' 天前';
+  }
+
+  if (dev) {
+    gateSub.textContent = '这个浏览器已设置开发者口令，输入后进入后台。';
+    gateLabel.textContent = '开发者口令';
+    gateBtn.textContent = '进入后台';
+  }
+
+  var unlockedAt = Number(sessionStorage.getItem(UNLOCK_KEY) || 0);
+  if (dev && unlockedAt && Date.now() - unlockedAt < 30 * 60 * 1000) enter();
+
+  gateForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var pwd = gatePass.value;
+    if (Date.now() < lockedUntil) {
+      gateMsg.textContent = '尝试过于频繁，请 ' + Math.ceil((lockedUntil - Date.now()) / 1000) + ' 秒后再试';
+      return;
+    }
+    if (!dev) {
+      if (pwd.length < 8) { gateMsg.textContent = '口令至少 8 位'; return; }
+      sha('dev::' + pwd).then(function (h) {
+        dev = { hash: h, at: Date.now() };
+        writeJSON(DEV_KEY, dev);
+        enter();
+      });
+      return;
+    }
+    sha('dev::' + pwd).then(function (h) {
+      if (h !== dev.hash) {
+        fails += 1;
+        gateMsg.textContent = '口令不正确（第 ' + fails + ' 次）';
+        if (fails >= 5) {
+          lockedUntil = Date.now() + 60000;
+          fails = 0;
+          gateMsg.textContent = '连续错误 5 次，锁定 60 秒';
+        }
+        return;
+      }
+      enter();
+    });
+  });
+
+  function enter() {
+    sessionStorage.setItem(UNLOCK_KEY, String(Date.now()));
+    gate.hidden = true;
+    board.hidden = false;
+    gatePass.value = '';
+    render();
+    startLoop();
+  }
+
+  document.getElementById('btnLock').addEventListener('click', function () {
+    sessionStorage.removeItem(UNLOCK_KEY);
+    stopLoop();
+    board.hidden = true;
+    gate.hidden = false;
+    gatePass.value = '';
+    gateMsg.textContent = '';
+    gateMsg.className = 'gate-msg';
+  });
+
+  var timer = null;
+  var listening = false;
+  function startLoop() {
+    stopLoop();
+    timer = setInterval(render, 2000);
+    if (!listening) {
+      window.addEventListener('storage', render);
+      listening = true;
+    }
+  }
+  function stopLoop() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+
+  function appState() {
+    var s = readJSON(APP_KEY, null);
+    if (!s) return null;
+    return s;
+  }
+
+  function attemptOk(a) {
+    if (!a || typeof a !== 'object') return false;
+    if (typeof a.correct === 'boolean') return a.correct;
+    if (typeof a.ok === 'boolean') return a.ok;
+    if (typeof a.isCorrect === 'boolean') return a.isCorrect;
+    return false;
+  }
+
+  function render() {
+    var accounts = readJSON(ACC_KEY, {});
+    var sess = readJSON(SESSION_KEY, null);
+    var state = appState();
+
+    var users = Object.keys(accounts).map(function (k) { return accounts[k]; });
+    users.sort(function (a, b) { return (b.at || 0) - (a.at || 0); });
+
+    document.getElementById('kUsers').textContent = users.length;
+    document.getElementById('kOnline').textContent = sess && sess.user ? 1 : 0;
+
+    var progress = (state && state.progress) || {};
+    var kpCount = 0;
+    Object.keys(progress).forEach(function (k) {
+      var v = progress[k];
+      if (!v) return;
+      if (typeof v === 'object') {
+        if (v.lessonDone || v.done || v.stage >= 6 || (v.score != null)) kpCount += 1;
+      } else if (v) {
+        kpCount += 1;
+      }
+    });
+
+    var attempts = (state && state.attempts) || [];
+    var acc = attempts.length ? Math.round(attempts.filter(attemptOk).length / attempts.length * 100) : null;
+
+    document.getElementById('kKp').textContent = kpCount;
+    document.getElementById('kAns').textContent = attempts.length;
+    document.getElementById('kAcc').textContent = acc == null ? '--' : acc + '%';
+
+    var rows = users.map(function (u) {
+      var isMe = sess && sess.user && sess.user.toLowerCase() === String(u.user || '').toLowerCase();
+      return '<tr>' +
+        '<td>' + esc(u.user || '--') + '</td>' +
+        '<td>' + fmt(u.at) + '</td>' +
+        '<td>' + (isMe ? ago(sess.at) : '--') + '</td>' +
+        '<td>' + (isMe ? '<span class="tag green">本机在线</span>' : '<span class="tag">已注册</span>') + '</td>' +
+        '</tr>';
+    }).join('');
+    document.getElementById('userRows').innerHTML = rows;
+    document.getElementById('userEmpty').hidden = users.length > 0;
+    document.getElementById('userMeta').textContent = users.length + ' 个账号 · 本机浏览器';
+
+    var sessions = (state && state.sessions) || [];
+    var mocks = (state && state.mocks) || [];
+    var learnedMin = 0;
+    sessions.forEach(function (s) {
+      if (s && s.minutes) learnedMin += Number(s.minutes) || 0;
+      else if (s && s.ms) learnedMin += (Number(s.ms) || 0) / 60000;
+    });
+    var learnRows = [
+      ['学习会话', sessions.length + ' 次'],
+      ['累计时长', Math.round(learnedMin) + ' 分钟'],
+      ['模考记录', mocks.length + ' 次'],
+      ['收藏记忆卡', ((state && state.cards) || []).length + ' 张'],
+      ['最近活动', attempts.length ? ago(lastTs(attempts)) : '--'],
+      ['数据更新时间', state ? fmt(lastTs(attempts) || (state.createdAt || 0)) : '--']
+    ].map(function (r) {
+      return '<tr><td style="color:var(--faint)">' + r[0] + '</td><td class="num">' + esc(r[1]) + '</td></tr>';
+    }).join('');
+    document.getElementById('learnRows').innerHTML = learnRows;
+    document.getElementById('learnMeta').textContent = state ? '已读取' : '暂无应用数据';
+
+    renderFeed(attempts);
+    document.getElementById('liveText').textContent = '实时 · ' + new Date().toLocaleTimeString('zh-CN', { hour12: false });
+  }
+
+  function lastTs(list) {
+    var max = 0;
+    list.forEach(function (x) {
+      var t = (x && (x.at || x.ts || x.time)) || 0;
+      if (Number(t) > max) max = Number(t);
+    });
+    return max;
+  }
+
+  function renderFeed(attempts) {
+    var items = attempts.slice(-30).reverse().map(function (a) {
+      var ok = attemptOk(a);
+      var kp = a.kpId || a.kp || a.kpIds && a.kpIds[0] || '未知考点';
+      var t = a.at || a.ts || a.time || 0;
+      return '<div class="ev"><i class="' + (ok ? 'good' : 'bad') + '"></i><div>' +
+        '<b>' + (ok ? '答对' : '答错') + ' · ' + esc(kp) + '</b>' +
+        '<span>' + (a.type ? esc(a.type) + ' · ' : '') + fmt(t) + ' · ' + ago(t) + '</span></div></div>';
+    });
+    document.getElementById('feed').innerHTML = items.length ? items.join('') :
+      '<div class="empty">还没有答题记录。去应用里做几道题，这里会实时出现。</div>';
+  }
+
+  document.getElementById('btnRefresh').addEventListener('click', render);
+
+  function download(name, text, mime) {
+    var blob = new Blob([text], { type: mime });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }
+
+  document.getElementById('btnExport').addEventListener('click', function () {
+    var payload = {
+      exportedAt: new Date().toISOString(),
+      accounts: readJSON(ACC_KEY, {}),
+      session: readJSON(SESSION_KEY, null),
+      app: appState()
+    };
+    download('zsb-admin-' + Date.now() + '.json', JSON.stringify(payload, null, 2), 'application/json');
+  });
+
+  document.getElementById('btnCsv').addEventListener('click', function () {
+    var attempts = ((appState() || {}).attempts) || [];
+    var lines = ['时间,考点,类型,结果'];
+    attempts.forEach(function (a) {
+      var t = a.at || a.ts || a.time || 0;
+      lines.push([
+        t ? new Date(t).toISOString() : '',
+        (a.kpId || a.kp || '').toString().replace(/,/g, ' '),
+        (a.type || '').toString(),
+        attemptOk(a) ? '正确' : '错误'
+      ].join(','));
+    });
+    download('zsb-attempts-' + Date.now() + '.csv', '\ufeff' + lines.join('\n'), 'text/csv');
+  });
+
+  document.getElementById('btnClearLearn').addEventListener('click', function () {
+    if (!confirm('确定清空这台浏览器里的全部学习数据？此操作不可恢复。')) return;
+    try { localStorage.removeItem(APP_KEY); } catch (e) {}
+    render();
+  });
+
+  document.getElementById('btnClearAcc').addEventListener('click', function () {
+    if (!confirm('确定清空本机全部账号与登录状态？此操作不可恢复。')) return;
+    try {
+      localStorage.removeItem(ACC_KEY);
+      localStorage.removeItem(SESSION_KEY);
+    } catch (e) {}
+    render();
+  });
+})();
+</script>
+</body>
+</html>
