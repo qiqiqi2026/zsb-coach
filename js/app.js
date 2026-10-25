@@ -35,7 +35,7 @@
         : '';
       bar.innerHTML = '<div class="topbar-row"><div class="brand"><div class="brand-mark">升</div>' +
         '<div><div class="brand-title">升本教练</div><div class="brand-sub">' +
-        (isDev ? '开发者版本 · 全站数据' : '学练一体 · 本地优先') + '</div></div></div>' +
+        (isDev ? ((Z.backend && Z.backend.isAdmin && Z.backend.isAdmin()) ? '开发者版本 · 全站数据' : '开发者版本 · 本地数据') : '学练一体 · 本地优先') + '</div></div></div>' +
         '<div class="topbar-actions">' + devBtn +
         '<button class="icon-btn" data-theme-btn aria-label="切换主题">' + Z.ui.icon(themeIcon()) + '</button></div></div>';
     }
