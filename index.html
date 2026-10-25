@@ -342,7 +342,7 @@
         </p>
         <div class="hero-cta">
           <button class="btn btn-primary btn-lg" type="button" data-cta="start">在线使用</button>
-          <a class="btn btn-ghost btn-lg" href="升本教练-单文件版.html" download>下载离线版</a>
+          <a class="btn btn-ghost btn-lg" href="升本教练-单文件版.html" download data-download="升本教练-单文件版.html">下载离线版</a>
         </div>
         <div class="hero-note">
           <span><i class="dot"></i>无需安装，浏览器打开即用</span>
@@ -508,7 +508,7 @@
           </ul>
           <div class="hero-cta">
             <button class="btn btn-primary btn-lg" type="button" data-cta="start">登录并开始</button>
-            <a class="btn btn-ghost btn-lg" href="升本教练-单文件版.html" download>下载单文件版</a>
+            <a class="btn btn-ghost btn-lg" href="升本教练-单文件版.html" download data-download="升本教练-单文件版.html">下载单文件版</a>
           </div>
           <p class="dl-meta">单文件约 1.5 MB，无需安装、无需联网、不收集任何数据。</p>
         </div>
@@ -703,6 +703,36 @@
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !modal.hidden) closeAuth();
+  });
+
+  function downloadFile(url, name, link) {
+    var label = link.textContent;
+    link.textContent = '正在准备…';
+    fetch(url, { cache: 'no-cache' }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.blob();
+    }).then(function (blob) {
+      var u = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = u;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { URL.revokeObjectURL(u); }, 5000);
+      link.textContent = '已开始下载';
+      setTimeout(function () { link.textContent = label; }, 2600);
+    }).catch(function () {
+      link.textContent = label;
+      window.open(url, '_blank');
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest ? e.target.closest('a[data-download]') : null;
+    if (!link) return;
+    e.preventDefault();
+    downloadFile(link.getAttribute('href'), link.getAttribute('data-download'), link);
   });
 
   renderNav();
