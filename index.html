@@ -66,6 +66,30 @@
             "acceptedAnswer": { "@type": "Answer", "text": "电脑、手机、平板都适配。注册登录后学习进度会保存并同步，换设备登录即可继续。" }
           }
         ]
+      },
+      {
+        "@type": "Course",
+        "name": "专升本英语全考点课程",
+        "description": "覆盖专升本英语语法、词汇、阅读、翻译、写作 28 个考点，配六阶段讲义与配套练习。",
+        "inLanguage": "zh-CN",
+        "url": "https://qiqiqi2026.github.io/zsb-coach/english.html",
+        "provider": { "@type": "EducationalOrganization", "name": "升本教练" }
+      },
+      {
+        "@type": "Course",
+        "name": "专升本高等数学全考点课程",
+        "description": "覆盖函数极限、导数与微分、中值定理、积分、微分方程、级数等 40 个考点。",
+        "inLanguage": "zh-CN",
+        "url": "https://qiqiqi2026.github.io/zsb-coach/math.html",
+        "provider": { "@type": "EducationalOrganization", "name": "升本教练" }
+      },
+      {
+        "@type": "Course",
+        "name": "专升本计算机全考点课程",
+        "description": "覆盖计算机基础、Python、前端、网络安全、数据库、操作系统、数据结构与算法等 13 个模块 76 个考点。",
+        "inLanguage": "zh-CN",
+        "url": "https://qiqiqi2026.github.io/zsb-coach/computer.html",
+        "provider": { "@type": "EducationalOrganization", "name": "升本教练" }
       }
     ]
   }
@@ -266,6 +290,8 @@
       font-size: 12.5px; padding: 5px 10px; border-radius: 8px;
       background: rgba(255, 255, 255, .04); border: 1px solid var(--line); color: var(--dim);
     }
+    .subject-more { display: inline-block; margin-top: 14px; font-size: 13px; color: var(--accent-2); }
+    .subject-more:hover { text-decoration: underline; }
 
     /* ---------- 六阶段 ---------- */
     .flow { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
@@ -527,6 +553,7 @@
             <span class="mod">倒装强调</span><span class="mod">完形阅读</span>
             <span class="mod">翻译写作</span>
           </div>
+          <a class="subject-more" href="english.html">查看专升本英语考点 →</a>
         </article>
         <article class="subject">
           <div class="subject-top"><h3>高等数学</h3><span>40 考点 · 160 题</span></div>
@@ -538,6 +565,7 @@
             <span class="mod">反常积分</span><span class="mod">微分方程</span>
             <span class="mod">级数</span><span class="mod">向量与经济应用</span>
           </div>
+          <a class="subject-more" href="math.html">查看专升本高数考点 →</a>
         </article>
         <article class="subject">
           <div class="subject-top"><h3>计算机</h3><span>76 考点 · 308 题</span></div>
@@ -550,6 +578,7 @@
             <span class="mod">计算机基础</span><span class="mod">网络基础</span>
             <span class="mod">编程基础</span>
           </div>
+          <a class="subject-more" href="computer.html">查看专升本计算机考点 →</a>
         </article>
       </div>
     </div>
@@ -641,6 +670,7 @@
 <footer>
   <div class="shell" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;width:100%">
     <span>升本教练 · 学练一体</span>
+    <span><a href="english.html">专升本英语</a> · <a href="math.html">专升本高数</a> · <a href="computer.html">专升本计算机</a></span>
     <span id="footNote">纯静态版进度保存在本机浏览器；接入本站后端后自动同步</span>
   </div>
 </footer>
