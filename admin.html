@@ -384,10 +384,33 @@
     timer = null;
   }
 
+  function learnKeys() {
+    var out = [];
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf(APP_KEY) === 0) out.push(k);
+      }
+    } catch (e) {}
+    return out;
+  }
+
   function appState() {
-    var s = readJSON(APP_KEY, null);
-    if (!s) return null;
-    return s;
+    var sess = readJSON(SESSION_KEY, null);
+    var user = sess && sess.user ? String(sess.user).toLowerCase() : '';
+    if (user) {
+      var mine = readJSON(APP_KEY + ':' + user, null);
+      if (mine) return mine;
+    }
+    var best = null;
+    var bestScore = -1;
+    learnKeys().forEach(function (k) {
+      var s = readJSON(k, null);
+      if (!s) return;
+      var score = ((s.attempts || []).length) + Object.keys(s.progress || {}).length;
+      if (score > bestScore) { bestScore = score; best = s; }
+    });
+    return best;
   }
 
   function attemptOk(a) {
@@ -526,7 +549,9 @@
 
   document.getElementById('btnClearLearn').addEventListener('click', function () {
     if (!confirm('确定清空这台浏览器里的全部学习数据？此操作不可恢复。')) return;
-    try { localStorage.removeItem(APP_KEY); } catch (e) {}
+    learnKeys().forEach(function (k) {
+      try { localStorage.removeItem(k); } catch (e) {}
+    });
     render();
   });
 

@@ -16024,7 +16024,18 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 /* ==== store.js ==== */
 /* 本地数据层：localStorage 持久化（离线优先、刷新不丢） */
 (function (Z) {
-  var KEY = 'zsb-coach-v2';
+  var BASE_KEY = 'zsb-coach-v2';
+
+  /* 按账号隔离存储：不同账号在同一浏览器里互不影响，新账号自动从零开始 */
+  function storageKey() {
+    try {
+      var s = JSON.parse(localStorage.getItem('zsb.session.v1') || 'null');
+      var u = s && s.user ? String(s.user).trim().toLowerCase() : '';
+      return BASE_KEY + (u ? ':' + u : '');
+    } catch (e) {
+      return BASE_KEY;
+    }
+  }
   var listeners = [];
 
   function defaultState() {
@@ -16054,7 +16065,7 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
   function load() {
     try {
-      var raw = localStorage.getItem(KEY);
+      var raw = localStorage.getItem(storageKey());
       if (!raw) return defaultState();
       var data = JSON.parse(raw);
       var base = defaultState();
@@ -16082,7 +16093,7 @@ code.inline { font-family: ui-monospace, Consolas, monospace; font-size: .88em; 
 
   function save() {
     try {
-      localStorage.setItem(KEY, JSON.stringify(state));
+      localStorage.setItem(storageKey(), JSON.stringify(state));
     } catch (e) {
       console.warn('本地数据保存失败', e);
       if (Z.ui && Z.ui.toast) Z.ui.toast('本地存储写入失败，请清理空间');
